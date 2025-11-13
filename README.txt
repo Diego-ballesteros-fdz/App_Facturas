@@ -2,18 +2,15 @@ CLAVES DE LA BASE DE DATOS:
 ROOT:
 USER ROOT
 PSW ROOT.
-USUARIO1:
-USER USUARIO1
-PSW USUARIO1.
 
 para que el script funcione, y podamos practicar todos lo mismo.
 La base de datos no se sincronizara entre dispositivos pero si almacenara los datos.
 En la raíz del proyecto teneis el script BDFacturas.sql
 debéis configurar la base de datos en el puerto 3306 el de serie, y tener los ususarios de arriba con el comando
 añadir la carpeta programs_files/MySQL/mysqlserver/bin en la variable de entorno
-ejecutar el comando en el cmd
+abrir el cmd e ir al repositorio
 MySQL -u root -p 
-source /rutacomplea/BDFacturas.sql;
+source BDFacturas.sql;
 y la tendríamos lista.
 
 Está es la estructura de la BD
