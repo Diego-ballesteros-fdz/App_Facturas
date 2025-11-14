@@ -13,6 +13,10 @@ MySQL -u root -p
 source BDFacturas.sql;
 y la tendríamos lista.
 
+Para ejecutar la base de datos y poder conectarnos debemos usar
+net start MySQL80 
+en una cmd como administrador
+
 Está es la estructura de la BD
               +---------------+
               |   Empresa     |
