@@ -17,45 +17,68 @@ Para ejecutar la base de datos y poder conectarnos debemos usar
 net start MySQL80 
 en una cmd como administrador
 
-Está es la estructura de la BD
-              +---------------+
-              |   Empresa     |
-              |---------------|
-              | *idEm (PK)    |
-              |   nombreEm    |
-              |   nifEm       |
-              +-------+-------+
-                      |
-      .---------------+---------------.
-      | (1:N)                         | (1:N)
-      | idEm                          | empresa_idEm
-+-----+---------+                     |
-|   Cli_Prov    |                     |
-|---------------|                     |
-| *idCP (PK)    |                     |
-|  idEm (FK)    |                     |
-+-------+-------+                     |
-        |                             |
-        | (idCP)                      |
-.-------+-------.---------------------+ (idCP)
-| (1:N)         | (1:N)               |
-|               |                     |
-+-------+   +-------+           +-----+---------+
-|Direccion|   |Producto |           |    Factura    |
-|---------|   |---------|           |---------------|
-|*idDi(PK)|   |*idPRO(PK|           | *idF (PK)     |
-| idCP(FK)|   | idCP(FK)|           |  idCP (FK)    |
-+---------+   | ...     |           |  empresa_idEm(FK)
-              +----+----+           +-------+-------+
-                   |                         |
-                   | (idPRO)                 | (idF)
-                   |                         |
-                   '--------(N:1)------+ (1:N)
-                                    |
-                               +----+----------+
-                               | Factura_Linea |
-                               |---------------|
-                               | *idFL (PK)    |
-                               |  idF (FK)     |
-                               |  idPRO (FK)   |
-                               +---------------+
+Está es la estructura de la BD:
+                         +---------------------------+
+                         |         ENTIDAD           |
+                         |---------------------------|
+                         | *idEntidad (PK)           |
+                         |  nombre (NVARCHAR 200)    |
+                         |  nif (NVARCHAR 20)        |
+                         |  email (NVARCHAR 150)     |
+                         |  telefono (NVARCHAR 30)   |
+                         |  observaciones (MAX)      |
+                         +--------------+------------+
+                                        |
+                      .-----------------+-------------------.
+                      | (1:N)                              | (1:N)
+                      |                                     |
+             +--------+----------+                 +--------+----------+
+             |    ROLES_ENTIDAD  |                 |      DIRECCION     |
+             |--------------------|                 |---------------------|
+             | *idRol (PK)        |                 | *idDireccion (PK)   |
+             |  idEntidad (FK)    |<--------------->|  idEntidad (FK)     |
+             |  rol (CLIENTE/     |                 |  via (NVARCHAR 200) |
+             |       PROVEEDOR)   |                 |  numero (NVARCHAR50)|
+             +--------------------+                 |  ciudad (NVARCHAR100)|
+                                                    |  provincia (NVARCHAR100)|
+                                                    |  cp (NVARCHAR10)     |
+                                                    |  pais (NVARCHAR100)  |
+                                                    +----------+-----------+
+                                                               |
+                                                               |
+                                                               | (1:N)
+                                                               |
+                                                 +-------------+-------------+
+                                                 |           FACTURA         |
+                                                 |---------------------------|
+                                                 | *idFactura (PK)           |
+                                                 |  fecha (DATE)             |
+                                                 |  idEntidad (FK - CLIENTE) |
+                                                 |  total (DECIMAL)          |
+                                                 +--------------+------------+
+                                                                |
+                                                                | (1:N)
+                                                                |
+                                            +-------------------+----------------------+
+                                            |               LINEA_FACTURA              |
+                                            |------------------------------------------|
+                                            | *idLinea (PK)                            |
+                                            |  idFactura (FK)                          |
+                                            |  idProducto (FK)                         |
+                                            |  cantidad (INT)                          |
+                                            |  precioUnitario (DECIMAL)                |
+                                            |  subtotal = cantidad * precioUnitario    |
+                                            +-------------------+----------------------+
+                                                                ^
+                                                                |
+                                                                | (N:1)
+                                       +------------------------+-------------------------+
+                                       |                        PRODUCTO                  |
+                                       |--------------------------------------------------|
+                                       | *idProducto (PK)                                  |
+                                       |  nombre (NVARCHAR 200)                            |
+                                       |  descripcion (MAX)                                |
+                                       |  precio (DECIMAL)                                 |
+                                       |  stock (INT)                                      |
+                                       |  idProveedor (FK → ENTIDAD con rol PROVEEDOR)     |
+                                       +---------------------------------------------------+
