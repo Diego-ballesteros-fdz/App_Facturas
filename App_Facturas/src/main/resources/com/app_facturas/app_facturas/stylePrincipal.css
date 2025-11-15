@@ -1,0 +1,15 @@
+.flat-button {
+    /* --- Elimina los bordes y el fondo de botón --- */
+    -fx-background-radius: 0; /* Sin esquinas redondeadas */
+    -fx-border-width: 0;       /* Sin borde */
+    -fx-background-insets: 0;  /* Sin relleno interno */
+}
+
+.flat-button:hover {
+    -fx-background-color: #DCDCDC; /* Un gris un poco más oscuro */
+    -fx-cursor: hand;              /* Muestra la "manita" */
+}
+
+.flat-button:pressed {
+    -fx-background-color: #C8C8C8; /* Un gris más oscuro para el clic */
+}
