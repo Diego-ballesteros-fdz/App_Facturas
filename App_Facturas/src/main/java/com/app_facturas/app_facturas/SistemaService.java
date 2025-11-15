@@ -12,6 +12,7 @@ import objeto.Factura;
 import objeto.LineaFactura;
 import objeto.Producto;
 import objeto.Proveedor;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -70,11 +71,11 @@ public class SistemaService {
     }
 
     public List<Entidad> listarClientes() {
-        return entidadDAO.obtenerTodas().stream().filter(e -> e.isCliente()).toList();
+        return entidadDAO.obtenerTodas().stream().filter(e -> e.isCliente()).collect(Collectors.toList());
     }
 
     public List<Entidad> listarProveedores() {
-        return entidadDAO.obtenerTodas().stream().filter(e -> e.isProveedor()).toList();
+        return entidadDAO.obtenerTodas().stream().filter(e -> e.isProveedor()).collect(Collectors.toList());
     }
 
     // ============================================================
