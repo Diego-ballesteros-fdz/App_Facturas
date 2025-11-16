@@ -2,23 +2,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.app_facturas.app_facturas;
+package connection;
 
+import connection.DAO.RolDAO;
+import connection.DAO.EntidadDAO;
+import connection.DAO.FacturaDAO;
+import connection.DAO.ProductoDAO;
+import connection.DAO.DireccionDAO;
+import connection.DAO.LineaFacturaDAO;
 import java.util.List;
-import objeto.Direccion;
-import objeto.Cliente;
-import objeto.Entidad;
-import objeto.Factura;
-import objeto.LineaFactura;
-import objeto.Producto;
-import objeto.Proveedor;
+import objects.Direccion;
+import objects.Cliente;
+import objects.Entidad;
+import objects.Factura;
+import objects.LineaFactura;
+import objects.Producto;
+import objects.Proveedor;
 import java.util.stream.Collectors;
 
 /**
  *
  * @author roque
  */
-public class SistemaService {
+public class DAOController {
     
     // DAOs del sistema
     private EntidadDAO entidadDAO = new EntidadDAO();

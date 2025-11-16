@@ -10,10 +10,5 @@ public class PrimaryController {
     @FXML
     private void switchToSecondary() throws IOException {
         App.setRoot("secondary");
-        try (Connection con = ConexionBD.get()) {
-            System.out.println("Conectados!!!");
-        }catch(Exception e){
-            System.out.println(e);
-        }
     }
 }

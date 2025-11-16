@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.app_facturas.app_facturas;
+package connection.DAO;
 
 import connection.ConexionBD;
 import java.sql.Connection;
@@ -11,8 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import objeto.Entidad;
-import objeto.Rol;
+import objects.Entidad;
+import objects.Rol;
 
 /**
  *

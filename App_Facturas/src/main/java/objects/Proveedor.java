@@ -2,18 +2,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package objeto;
+package objects;
 
 /**
  *
  * @author roque
  */
-public class Cliente extends Entidad{
+public class Proveedor extends Entidad{
     
-    public Cliente() {}
+    
+    public Proveedor() {}
 
     
-    public Cliente(Entidad e) {
+    public Proveedor(Entidad e) {
         super();
         this.setIdEntidad(e.getIdEntidad());
         this.setNombre(e.getNombre());
@@ -21,12 +22,12 @@ public class Cliente extends Entidad{
         this.setEmail(e.getEmail());
         this.setTelefono(e.getTelefono());
         this.setObservaciones(e.getObservaciones());
+        
     }
-    
 
     @Override
     public String toString() {
-        return "Cliente: " + nombre + " (" + nif + ")";
+       return "Proveedor: " + nombre + " (" + nif + ")";
     }
     
     
