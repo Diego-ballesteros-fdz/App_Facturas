@@ -34,4 +34,12 @@ public class Factura {
     public Entidad getCliente() { return cliente; }
 
     public void setCliente(Entidad cliente) { this.cliente = cliente; }
+    
+    @Override
+    public String toString() {
+        return "Factura #" + idFactura +
+               " | " + fecha +
+               " | Cliente: " + (cliente != null ? cliente.getNombre() : "N/A");
+    }
+
 }

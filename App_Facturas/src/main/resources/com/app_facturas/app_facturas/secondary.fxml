@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-
 <AnchorPane fx:id="secondary" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app_facturas.app_facturas.SecondaryController">
    <children>
       <SplitPane dividerPositions="0.09839357429718877" layoutX="213.0" layoutY="76.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -32,21 +31,24 @@
                                       <items>
                                         <MenuItem fx:id="add" mnemonicParsing="false" text="Añadir" />
                                         <MenuItem fx:id="delete" mnemonicParsing="false" text="Eliminar" />
-                                          <MenuItem fx:id="modify" mnemonicParsing="false" text="Modificar" />
+                                        <MenuItem fx:id="modify" mnemonicParsing="false" text="Modificar" />
+                                        <MenuItem fx:id="search" mnemonicParsing="false" onAction="#buscarCliente" text="Buscar" />  
                                       </items>
                                     </MenuButton>
                                     <MenuButton fx:id="factOptions" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Factura" HBox.hgrow="ALWAYS">
                                       <items>
                                         <MenuItem fx:id="add" mnemonicParsing="false" text="Añadir" />
                                         <MenuItem fx:id="delete" mnemonicParsing="false" text="Eliminar" />
-                                          <MenuItem fx:id="modify" mnemonicParsing="false" text="Modificar" />
+                                        <MenuItem fx:id="modify" mnemonicParsing="false" text="Modificar" />
+                                        <MenuItem fx:id="search" mnemonicParsing="false" onAction="#buscarFactura" text="Buscar" />
                                       </items>
                                     </MenuButton>
                                     <MenuButton fx:id="prodOptions" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Producto" HBox.hgrow="ALWAYS">
                                       <items>
                                         <MenuItem fx:id="add" mnemonicParsing="false" text="Añadir" />
                                         <MenuItem fx:id="delete" mnemonicParsing="false" text="Eliminar" />
-                                          <MenuItem fx:id="modify" mnemonicParsing="false" text="Modificar" />
+                                        <MenuItem fx:id="modify" mnemonicParsing="false" text="Modificar" />
+                                        <MenuItem fx:id="search" mnemonicParsing="false" onAction="#buscarProducto" text="Buscar" />
                                       </items>
                                     </MenuButton>
                                  </children>

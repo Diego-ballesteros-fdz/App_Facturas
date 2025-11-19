@@ -43,6 +43,7 @@ public class DAOController {
     }
 
     public Cliente crearCliente(Entidad e) {
+        
         Entidad creada = crearEntidad(e);
         rolDAO.insertarRol(creada.getIdEntidad(), "CLIENTE");
         return (Cliente) entidadDAO.buscarPorId(creada.getIdEntidad());
