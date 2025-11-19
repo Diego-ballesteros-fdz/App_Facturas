@@ -57,8 +57,8 @@ private void buscar() {
                             .collect(Collectors.toList())
             );
             break;
-            
 
+        case "proveedor":
             List<Entidad> proveedores = dao.listarProveedores();
             System.out.println("Proveedores cargados: " + proveedores.size());
 
