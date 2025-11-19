@@ -86,6 +86,10 @@ public class FormController {
     private TextField emailEmpField11;
     @FXML
     private TextField telefonoEmpField11;
+    
+    public void initialize(){
+        
+    }
 
     @FXML
     /**
