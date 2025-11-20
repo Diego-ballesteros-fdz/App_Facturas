@@ -29,26 +29,26 @@
                                  <children>
                                     <MenuButton fx:id="provCliOptions" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Proveedor/Cliente" HBox.hgrow="ALWAYS">
                                       <items>
-                                        <MenuItem fx:id="add" mnemonicParsing="false" text="Añadir" />
-                                        <MenuItem fx:id="delete" mnemonicParsing="false" text="Eliminar" />
-                                        <MenuItem fx:id="modify" mnemonicParsing="false" text="Modificar" />
-                                        <MenuItem fx:id="search" mnemonicParsing="false" onAction="#buscarCliente" text="Buscar" />  
+                                        <MenuItem fx:id="addProvCli" mnemonicParsing="false" onAction="#añadirCliente" text="Añadir" />
+                                        <MenuItem fx:id="deleteProvCli" mnemonicParsing="false" onAction="#eliminarCliente" text="Eliminar" />
+                                        <MenuItem fx:id="modifyProvCli" mnemonicParsing="false" onAction="#modificarCliente" text="Modificar" />
+                                        <MenuItem fx:id="searchProvCli" mnemonicParsing="false" onAction="#buscarCliente" text="Buscar" />  
                                       </items>
                                     </MenuButton>
                                     <MenuButton fx:id="factOptions" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Factura" HBox.hgrow="ALWAYS">
                                       <items>
-                                        <MenuItem fx:id="add" mnemonicParsing="false" text="Añadir" />
-                                        <MenuItem fx:id="delete" mnemonicParsing="false" text="Eliminar" />
-                                        <MenuItem fx:id="modify" mnemonicParsing="false" text="Modificar" />
+                                        <MenuItem fx:id="add" mnemonicParsing="false" onAction="#añadirFact" text="Añadir" />
+                                        <MenuItem fx:id="delete" mnemonicParsing="false" onAction="#eliminarFact" text="Eliminar" />
+                                        <MenuItem fx:id="modify" mnemonicParsing="false" onAction="#modificarFact" text="Modificar" />
                                         <MenuItem fx:id="search" mnemonicParsing="false" onAction="#buscarFactura" text="Buscar" />
                                       </items>
                                     </MenuButton>
                                     <MenuButton fx:id="prodOptions" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Producto" HBox.hgrow="ALWAYS">
                                       <items>
-                                        <MenuItem fx:id="add" mnemonicParsing="false" text="Añadir" />
-                                        <MenuItem fx:id="delete" mnemonicParsing="false" text="Eliminar" />
-                                        <MenuItem fx:id="modify" mnemonicParsing="false" text="Modificar" />
-                                        <MenuItem fx:id="search" mnemonicParsing="false" onAction="#buscarProducto" text="Buscar" />
+                                        <MenuItem fx:id="addP" mnemonicParsing="false" onAction="#añadirProd" text="Añadir" />
+                                        <MenuItem fx:id="deleteP" mnemonicParsing="false" onAction="#elimianrProd" text="Eliminar" />
+                                        <MenuItem fx:id="modifyP" mnemonicParsing="false" onAction="#modificarProd" text="Modificar" />
+                                        <MenuItem fx:id="searchP" mnemonicParsing="false" onAction="#buscarProducto" text="Buscar" />
                                       </items>
                                     </MenuButton>
                                  </children>
@@ -62,7 +62,7 @@
                                     <Image url="@../../../../../../../../../../Pictures/Screenshots/Captura%20de%20pantalla%202025-09-23%20091407.png" />
                                  </image>
                               </ImageView>
-                              <Button fx:id="boton" layoutX="90.0" layoutY="36.0" mnemonicParsing="false" onAction="#switchToPrimary" text="Button" />
+                              <Button fx:id="boton" layoutX="24.0" layoutY="274.0" mnemonicParsing="false" onAction="#volver" text="Volver" />
                            </children>
                         </AnchorPane>
                     </items>

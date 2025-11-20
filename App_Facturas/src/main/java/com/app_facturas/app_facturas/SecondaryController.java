@@ -42,12 +42,16 @@ public class SecondaryController implements Initializable{
     private ImageView logo;
     @FXML
     private Button boton;
-    
-    
     @FXML
-    private void switchToPrimary() throws IOException {
-        App.setRoot("formulary");
-    }
+    private MenuItem addProvCli;
+    @FXML
+    private MenuItem deleteProvCli;
+    @FXML
+    private MenuItem modifyProvCli;
+    @FXML
+    private MenuItem searchProvCli;
+    
+    
     @FXML
     private void buscarCliente() {
         abrirBusqueda("cliente");
@@ -93,34 +97,48 @@ public class SecondaryController implements Initializable{
             e.printStackTrace();
         }
     }
-    private void accionesProductos(ActionEvent event) throws IOException{
-        // Averiguamos qué item se pulsó
-        MenuItem itemPulsado = (MenuItem) event.getSource();
 
-        // Recogemos en un String el nombre del Menuitem pulsado para filtrar en el switch
-        String accion = (String) itemPulsado.getUserData(); 
+    @FXML
+    private void añadirCliente(ActionEvent event) throws IOException{
+        App.setRootWithParam("formulary", "CliPro","add");
+    }
 
-        int idEmpresa = App.empresaActualId; 
+    @FXML
+    private void eliminarCliente(ActionEvent event) {
+    }
 
-        switch (accion) {
-            case "add":
-                App.setRoot("formulary");
-                break;
+    @FXML
+    private void modificarCliente(ActionEvent event) {
+    }
 
-            case "delete":
-                App.setRoot("formulary");
-                break;
+    @FXML
+    private void añadirFact(ActionEvent event) throws IOException{
+        App.setRootWithParam("formulary", "Fac","add");
+    }
 
-            case "modify":
-                App.setRoot("formulary");
-                break;
+    @FXML
+    private void eliminarFact(ActionEvent event) {
+    }
 
-            case "search":
-                App.setRoot("formulary");
-                break;
+    @FXML
+    private void modificarFact(ActionEvent event) {
+    }
 
-            default:
-                break;
-        }
+    @FXML
+    private void añadirProd(ActionEvent event) throws IOException{
+        App.setRootWithParam("formulary", "Prod","add");
+    }
+
+    @FXML
+    private void elimianrProd(ActionEvent event) {
+    }
+
+    @FXML
+    private void modificarProd(ActionEvent event) {
+    }
+
+    @FXML
+    private void volver(ActionEvent event)throws IOException{
+        App.setRoot("primary");
     }
 }

@@ -93,11 +93,8 @@ public class PrimaryController implements Initializable {
         }
     }
 
-    private void switchToSecondary(ActionEvent event) throws IOException{
-        App.setRootWithParam("formulary", "Emp");   
-    }
-
     @FXML
-    private void crearEmpresa(ActionEvent event) {
+    private void crearEmpresa(ActionEvent event) throws IOException {
+         App.setRootWithParam("formulary", "Emp","add");
     }
 }

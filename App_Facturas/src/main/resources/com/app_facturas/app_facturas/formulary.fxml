@@ -216,13 +216,34 @@
             </HBox>
          </children>
       </Pane>
-      <Pane fx:id="buttonsPane" layoutX="1.0" layoutY="449.0" prefHeight="54.0" prefWidth="706.0" AnchorPane.bottomAnchor="5.79999999999999" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.1999999999999318" AnchorPane.topAnchor="449.0">
+      <Pane fx:id="buttonsPaneAñadir" layoutX="1.0" layoutY="449.0" prefHeight="54.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="5.79999999999999" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.1999999999999318" AnchorPane.topAnchor="449.0">
          <children>
             <HBox layoutX="75.0" layoutY="14.0" prefHeight="26.0" prefWidth="557.0" spacing="200.0">
                <children>
                   <Button mnemonicParsing="false" onAction="#volverAction" text="Volver" />
                   <Button mnemonicParsing="false" onAction="#limpiarAction" text="Limpiar" />
                   <Button mnemonicParsing="false" onAction="#enviarAction" text="Enviar" />
+               </children>
+            </HBox>
+         </children>
+      </Pane>
+      <Pane fx:id="buttonsPaneModificar" layoutX="1.0" layoutY="455.0" prefHeight="54.0" prefWidth="706.0" visible="false">
+         <children>
+            <HBox layoutX="75.0" layoutY="14.0" prefHeight="26.0" prefWidth="557.0" spacing="440.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#volverAction" text="Volver" />
+                  <Button mnemonicParsing="false" onAction="#modificarAction" text="modificar" />
+               </children>
+            </HBox>
+         </children>
+      </Pane>
+      <Pane fx:id="buttonsPaneEliminar" layoutY="453.0" prefHeight="54.0" prefWidth="706.0" visible="false">
+         <children>
+            <HBox layoutX="75.0" layoutY="14.0" prefHeight="26.0" prefWidth="557.0" spacing="195.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#volverAction" text="Volver" />
+                  <Button mnemonicParsing="false" onAction="#limpiarAction" text="Limpiar" />
+                  <Button mnemonicParsing="false" onAction="#eliminarAction" text="eliminar" />
                </children>
             </HBox>
          </children>

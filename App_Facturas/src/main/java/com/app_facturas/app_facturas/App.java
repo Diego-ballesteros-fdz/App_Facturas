@@ -24,12 +24,12 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        scene = new Scene(loadFXML("primary"), 700, 500);
         stage.setScene(scene);
         stage.show();
     }
     
-    public static void setRootWithParam(String fxml, String tipo) throws IOException {
+    public static void setRootWithParam(String fxml, String tipo, String accion) throws IOException {
     FXMLLoader loader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
     Parent root = loader.load();
 
@@ -39,6 +39,13 @@ public class App extends Application {
     // Intentar pasar el parámetro "tipo" si el método existe
     try {
         controller.getClass().getMethod("setTipo", String.class).invoke(controller, tipo);
+    } catch (Exception e) {
+        System.out.println("No se pudo pasar el parámetro: " + e.getMessage());
+    }
+    
+    // Intentar pasar el parámetro "accion" si el método existe
+    try {
+        controller.getClass().getMethod("setAccion", String.class).invoke(controller, accion);
     } catch (Exception e) {
         System.out.println("No se pudo pasar el parámetro: " + e.getMessage());
     }

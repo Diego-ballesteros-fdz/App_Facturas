@@ -75,8 +75,6 @@ public class FormController {
     @FXML
     private TextField codigoPostalEmpField;
     @FXML
-    private Pane buttonsPane;
-    @FXML
     private Pane productosPane;
     @FXML
     private TextField DocumentoEmpField11;
@@ -86,7 +84,7 @@ public class FormController {
     private TextField emailEmpField11;
     @FXML
     private TextField telefonoEmpField11;
-    
+
     @FXML
     private Pane factPane;
     @FXML
@@ -97,40 +95,74 @@ public class FormController {
     private TextField provEmpField1;
     @FXML
     private TextField paisEmpField1;
-    
+
     private String tipo;
-    
-    public void initialize(){
-        if(tipo!=null){
-        switch(tipo){
-            case "Emp":
-                cliProvPane.setVisible(false);
-                productosPane.setVisible(false);
-                EmpresaPane.setVisible(true);
-                factPane.setVisible(false);
-                break;
-            case "CliPro":
-                cliProvPane.setVisible(true);
-                productosPane.setVisible(false);
-                EmpresaPane.setVisible(false);
-                factPane.setVisible(false);
-                break;
-            case "Prod":
-                cliProvPane.setVisible(false);
-                productosPane.setVisible(true);
-                EmpresaPane.setVisible(false);
-                factPane.setVisible(false);
-                break;
-            case "Fac":
-                cliProvPane.setVisible(false);
-                productosPane.setVisible(false);
-                EmpresaPane.setVisible(false);
-                factPane.setVisible(true);
-                break;
-            default:
-                System.out.println("Algo salio mal al iniciar el formulario");
-                break;
+    private String accion;
+    @FXML
+    private Pane buttonsPaneAñadir;
+    @FXML
+    private Pane buttonsPaneModificar;
+    @FXML
+    private Pane buttonsPaneEliminar;
+
+    public void initialize() {
+        System.out.println("Tipo "+tipo);
+        if (tipo != null) {
+            switch (tipo) {
+                case "Emp":
+                    cliProvPane.setVisible(false);
+                    productosPane.setVisible(false);
+                    EmpresaPane.setVisible(true);
+                    factPane.setVisible(false);
+                    break;
+                case "CliPro":
+                    cliProvPane.setVisible(true);
+                    productosPane.setVisible(false);
+                    EmpresaPane.setVisible(false);
+                    factPane.setVisible(false);
+                    break;
+                case "Prod":
+                    cliProvPane.setVisible(false);
+                    productosPane.setVisible(true);
+                    EmpresaPane.setVisible(false);
+                    factPane.setVisible(false);
+                    break;
+                case "Fac":
+                    cliProvPane.setVisible(false);
+                    productosPane.setVisible(false);
+                    EmpresaPane.setVisible(false);
+                    factPane.setVisible(true);
+                    break;
+                default:
+                    System.out.println("Algo salio mal al iniciar el formulario");
+                    break;
+            }
         }
+        System.out.println("accion "+accion);
+        if (accion != null) {
+            System.out.println("Entra al segundo switch");
+            switch (accion) {
+                case "add":
+                    System.out.println("Entra al add");
+                    buttonsPaneAñadir.setVisible(true);
+                    buttonsPaneEliminar.setVisible(false);
+                    buttonsPaneModificar.setVisible(false);
+                    break;
+                case "modiffy":
+                    buttonsPaneAñadir.setVisible(false);
+                    buttonsPaneEliminar.setVisible(false);
+                    buttonsPaneModificar.setVisible(true);
+                    break;
+                case "delete":
+                    buttonsPaneAñadir.setVisible(false);
+                    buttonsPaneEliminar.setVisible(true);
+                    buttonsPaneModificar.setVisible(false);
+                    break;
+                default:
+                    System.out.println("Algo salio mal al iniciar los botones del formulario");
+                    break;
+
+            }
         }
     }
 
@@ -138,8 +170,13 @@ public class FormController {
     /**
      * volver a la pantalla anterior
      */
-    private void volverAction(ActionEvent event) throws IOException{
-        App.setRoot("primary"); 
+    private void volverAction(ActionEvent event) throws IOException {
+        if(tipo.equals("Emp")){
+            App.setRoot("primary");
+        }else{
+            App.setRoot("secondary");
+        }
+        
     }
 
     @FXML
@@ -169,10 +206,22 @@ public class FormController {
      */
     private void prodSelection(MouseEvent event) {
     }
-    
-    public void setTipo(String tipo){
-        this.tipo=tipo;
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setAccion(String accion) {
+        this.accion = accion;
         initialize();//actualizamos la vista
     }
-    
+
+    @FXML
+    private void modificarAction(ActionEvent event) {
+    }
+
+    @FXML
+    private void eliminarAction(ActionEvent event) {
+    }
+
 }

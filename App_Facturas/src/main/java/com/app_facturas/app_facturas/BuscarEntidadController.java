@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import objects.Entidad;
 import objects.Factura;
@@ -31,6 +32,10 @@ public class BuscarEntidadController {
 
     private String tipo;
     private DAOController dao = new DAOController();
+    @FXML
+    private Button btnBuscar;
+    @FXML
+    private Button btnVolver;
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
