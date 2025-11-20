@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import static javafx.application.Application.launch;
 
 /**
  * JavaFX App
@@ -14,6 +15,8 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    public static int empresaActualId = 0;
+    public static String nombreEmpresaActual = "";
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -22,10 +25,28 @@ public class App extends Application {
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
+    /**
+     * Cambia la raíz de la escena cargando un archivo FXML por su nombre.
+     */
+    public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
+    /**
+     * NUEVO → Cambia la raíz usando un nodo Parent directamente.
+     * Esto permite hacer:
+     * 
+     *    FXMLLoader loader = new FXMLLoader(...);
+     *    Parent root = loader.load();
+     *    App.setRoot(root);
+     */
+    public static void setRoot(Parent root) {
+        scene.setRoot(root);
+    }
+
+    /**
+     * Carga un archivo FXML y devuelve el nodo raíz.
+     */
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();

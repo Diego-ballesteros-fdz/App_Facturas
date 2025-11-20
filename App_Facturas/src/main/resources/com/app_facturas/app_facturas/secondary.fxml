@@ -16,7 +16,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="43.2" prefWidth="598.4" text="*Nombre de la empresa seleccionada*" />
+                  <Label fx:id="nombreEmpresaCabecera" alignment="CENTER" prefHeight="43.2" prefWidth="598.4" text="Nombre de la empresa seleccionada" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
