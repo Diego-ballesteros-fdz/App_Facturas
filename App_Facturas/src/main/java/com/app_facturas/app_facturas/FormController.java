@@ -87,8 +87,51 @@ public class FormController {
     @FXML
     private TextField telefonoEmpField11;
     
+    @FXML
+    private Pane factPane;
+    @FXML
+    private TextField NombreEmpField1;
+    @FXML
+    private TextField observacionesEmpField1;
+    @FXML
+    private TextField provEmpField1;
+    @FXML
+    private TextField paisEmpField1;
+    
+    private String tipo;
+    
     public void initialize(){
-        
+        if(tipo!=null){
+        switch(tipo){
+            case "Emp":
+                cliProvPane.setVisible(false);
+                productosPane.setVisible(false);
+                EmpresaPane.setVisible(true);
+                factPane.setVisible(false);
+                break;
+            case "CliPro":
+                cliProvPane.setVisible(true);
+                productosPane.setVisible(false);
+                EmpresaPane.setVisible(false);
+                factPane.setVisible(false);
+                break;
+            case "Prod":
+                cliProvPane.setVisible(false);
+                productosPane.setVisible(true);
+                EmpresaPane.setVisible(false);
+                factPane.setVisible(false);
+                break;
+            case "Fac":
+                cliProvPane.setVisible(false);
+                productosPane.setVisible(false);
+                EmpresaPane.setVisible(false);
+                factPane.setVisible(true);
+                break;
+            default:
+                System.out.println("Algo salio mal al iniciar el formulario");
+                break;
+        }
+        }
     }
 
     @FXML
@@ -96,7 +139,7 @@ public class FormController {
      * volver a la pantalla anterior
      */
     private void volverAction(ActionEvent event) throws IOException{
-        App.setRoot("secondary"); 
+        App.setRoot("primary"); 
     }
 
     @FXML
@@ -125,6 +168,11 @@ public class FormController {
      * listener del click en productos en el listview
      */
     private void prodSelection(MouseEvent event) {
+    }
+    
+    public void setTipo(String tipo){
+        this.tipo=tipo;
+        initialize();//actualizamos la vista
     }
     
 }
