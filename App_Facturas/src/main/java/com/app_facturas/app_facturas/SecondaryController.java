@@ -9,9 +9,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 
 public class SecondaryController implements Initializable{
@@ -33,6 +36,12 @@ public class SecondaryController implements Initializable{
     private MenuItem modify;
     @FXML 
     private MenuItem search;
+    @FXML
+    private AnchorPane secondary;
+    @FXML
+    private ImageView logo;
+    @FXML
+    private Button boton;
     
     
     @FXML
@@ -44,7 +53,6 @@ public class SecondaryController implements Initializable{
         abrirBusqueda("cliente");
     }
 
-    @FXML
     private void buscarProveedor() {
         abrirBusqueda("proveedor");
     }
@@ -85,7 +93,6 @@ public class SecondaryController implements Initializable{
             e.printStackTrace();
         }
     }
-    @FXML
     private void accionesProductos(ActionEvent event) throws IOException{
         // Averiguamos qué item se pulsó
         MenuItem itemPulsado = (MenuItem) event.getSource();
