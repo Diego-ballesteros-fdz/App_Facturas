@@ -26,7 +26,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <SplitMenuButton layoutX="133.0" layoutY="199.0" mnemonicParsing="false" text="Seleccione Una Empresa">
+                  <SplitMenuButton fx:id="menuEmpresas" layoutX="133.0" layoutY="199.0" mnemonicParsing="false" text="Seleccione Una Empresa">
                     <items>
                       <MenuItem mnemonicParsing="false" text="Action 1" />
                       <MenuItem mnemonicParsing="false" text="Action 2" />

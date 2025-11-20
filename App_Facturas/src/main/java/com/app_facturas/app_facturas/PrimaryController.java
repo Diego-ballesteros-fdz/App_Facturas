@@ -35,6 +35,7 @@ public class PrimaryController implements Initializable {
     private Button deleteButton;
     @FXML
     private Button modifyButton;
+    @FXML
     private SplitMenuButton menuEmpresas;
     private int idEmpresaSeleccionada = -1;
     /**
