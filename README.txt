@@ -17,11 +17,21 @@ Para ejecutar la base de datos y poder conectarnos debemos usar
 net start MySQL80 
 en una cmd como administrador
 
-Está es la estructura de la BD:
-                         +---------------------------+
-                         |         ENTIDAD           |
-                         |---------------------------|
-                         | *idEntidad (PK)           |
+Está es la estructura de la BD:                                                                   +-------------------------------------+ 
+                                                                                                  |         EMPRESA_RELACION            |
+                                                                                                  |-------------------------------------|
+                                                                                                  | *idRelacion (PK)                    |
+                                                                                                  | idEmpresaBase (FK → ENTIDAD)        |
+                                                                                                  | idEmpresaAsociada (FK → ENTIDAD)    |
+                                                                                                  | tipoRelacion (VARCHAR 100)          |
+                                                                                                  +----------------+---------------------+
+                                                                                                                   ^                
+                                                                                                                   |                 
+                                                                                                                   |                 
+                         +---------------------------+                                                             |   
+                         |         ENTIDAD           |                                                             |                                             
+                         |---------------------------|                              RECIPROCO                      |   
+                         | *idEntidad (PK)           | -- -- -------------------------------------------------------
                          |  nombre (NVARCHAR 200)    |
                          |  nif (NVARCHAR 20)        |
                          |  email (NVARCHAR 150)     |
