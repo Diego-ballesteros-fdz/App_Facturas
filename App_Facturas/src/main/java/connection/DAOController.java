@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  * @author roque
  */
 public class DAOController {
-    
+
     // DAOs del sistema
     private EntidadDAO entidadDAO = new EntidadDAO();
     private RolDAO rolDAO = new RolDAO();
@@ -37,13 +37,12 @@ public class DAOController {
     // ============================================================
     //            ENTIDADES (Cliente, Proveedor, Empresa)
     // ============================================================
-
     public Entidad crearEntidad(Entidad e) {
         return entidadDAO.crear(e);
     }
 
     public Cliente crearCliente(Entidad e) {
-        
+
         Entidad creada = crearEntidad(e);
         rolDAO.insertarRol(creada.getIdEntidad(), "CLIENTE");
         return (Cliente) entidadDAO.buscarPorId(creada.getIdEntidad());
@@ -77,18 +76,24 @@ public class DAOController {
         return entidadDAO.obtenerTodas();
     }
 
+    // Clientes solo
     public List<Entidad> listarClientes() {
-        return entidadDAO.obtenerTodas().stream().filter(e -> e.isCliente()).collect(Collectors.toList());
+        return entidadDAO.listarClientes();
     }
 
+    // Proveedores solo
     public List<Entidad> listarProveedores() {
-        return entidadDAO.obtenerTodas().stream().filter(e -> e.isProveedor()).collect(Collectors.toList());
+        return entidadDAO.listarProveedores();
+    }
+
+    // Clientes + Proveedores
+    public List<Entidad> listarClientesYProveedores() {
+        return entidadDAO.listarClientesYProveedores();
     }
 
     // ============================================================
     //                     DIRECCIONES
     // ============================================================
-
     public boolean agregarDireccion(Direccion d) {
         return direccionDAO.insertar(d);
     }
@@ -100,7 +105,6 @@ public class DAOController {
     // ============================================================
     //                     PRODUCTOS
     // ============================================================
-
     public Producto crearProducto(Producto p) {
         return productoDAO.crear(p);
     }
@@ -120,7 +124,6 @@ public class DAOController {
     // ============================================================
     //                     FACTURAS
     // ============================================================
-
     public Factura crearFactura(Factura f) {
         return facturaDAO.crear(f);
     }
@@ -141,7 +144,6 @@ public class DAOController {
     // ============================================================
     //                     LINEAS DE FACTURA
     // ============================================================
-
     public boolean agregarLineaFactura(LineaFactura lf) {
         return lineaFacturaDAO.insertar(lf);
     }
@@ -149,5 +151,5 @@ public class DAOController {
     public List<LineaFactura> listarLineasDeFactura(long idFactura) {
         return lineaFacturaDAO.obtenerPorFactura(idFactura);
     }
-    
+
 }

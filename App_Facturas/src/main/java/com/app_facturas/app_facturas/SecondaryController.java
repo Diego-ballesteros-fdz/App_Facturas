@@ -16,8 +16,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-
-public class SecondaryController implements Initializable{
+public class SecondaryController implements Initializable {
 
     @FXML
     private Label nombreEmpresaCabecera;
@@ -27,14 +26,14 @@ public class SecondaryController implements Initializable{
     private MenuButton factOptions;
     @FXML
     private MenuButton prodOptions;
-    
-    @FXML 
+
+    @FXML
     private MenuItem add;
-    @FXML 
+    @FXML
     private MenuItem delete;
-    @FXML 
+    @FXML
     private MenuItem modify;
-    @FXML 
+    @FXML
     private MenuItem search;
     @FXML
     private AnchorPane secondary;
@@ -50,8 +49,7 @@ public class SecondaryController implements Initializable{
     private MenuItem modifyProvCli;
     @FXML
     private MenuItem searchProvCli;
-    
-    
+
     @FXML
     private void buscarCliente() {
         abrirBusqueda("cliente");
@@ -70,17 +68,22 @@ public class SecondaryController implements Initializable{
     private void buscarFactura() {
         abrirBusqueda("factura");
     }
-    
+
+    @FXML
+    private void buscarCliProv() {
+        abrirBusqueda("cli_prov");
+    }
+
     public String nombreEmp;
     public int idEmp;
-    
+
     @Override
-    public void initialize(URL url, ResourceBundle rb){
+    public void initialize(URL url, ResourceBundle rb) {
         //Guardamos nombre e id de la empresa para filtrar búsquedas
         nombreEmp = App.nombreEmpresaActual;
         idEmp = App.empresaActualId;
         nombreEmpresaCabecera.setText(nombreEmp);
-        
+
     }
 
     private void abrirBusqueda(String tipo) {
@@ -91,7 +94,7 @@ public class SecondaryController implements Initializable{
             BuscarEntidadController controller = loader.getController();
             controller.setTipo(tipo);
 
-            App.setRoot("Busqueda");
+            App.setRoot(root);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -99,8 +102,8 @@ public class SecondaryController implements Initializable{
     }
 
     @FXML
-    private void añadirCliente(ActionEvent event) throws IOException{
-        App.setRootWithParam("formulary", "CliPro","add");
+    private void añadirCliente(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "CliPro", "add");
     }
 
     @FXML
@@ -112,8 +115,8 @@ public class SecondaryController implements Initializable{
     }
 
     @FXML
-    private void añadirFact(ActionEvent event) throws IOException{
-        App.setRootWithParam("formulary", "Fac","add");
+    private void añadirFact(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "Fac", "add");
     }
 
     @FXML
@@ -125,8 +128,8 @@ public class SecondaryController implements Initializable{
     }
 
     @FXML
-    private void añadirProd(ActionEvent event) throws IOException{
-        App.setRootWithParam("formulary", "Prod","add");
+    private void añadirProd(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "Prod", "add");
     }
 
     @FXML
@@ -138,7 +141,7 @@ public class SecondaryController implements Initializable{
     }
 
     @FXML
-    private void volver(ActionEvent event)throws IOException{
+    private void volver(ActionEvent event) throws IOException {
         App.setRoot("primary");
     }
 }

@@ -32,76 +32,73 @@ public class BuscarEntidadController {
 
     private String tipo;
     private DAOController dao = new DAOController();
-    @FXML
-    private Button btnBuscar;
-    @FXML
-    private Button btnVolver;
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-        lblTitulo.setText("Buscar " +  tipo.substring(0,1).toUpperCase() + tipo.substring(1));
+        lblTitulo.setText("Buscar " + tipo.substring(0, 1).toUpperCase() + tipo.substring(1));
     }
-    
+
     @FXML
-private void buscar() {
+    private void buscar() {
 
-    System.out.println("Buscando tipo: " + tipo);
+        String filtro = txtNombre.getText();
+        if (filtro == null) {
+            filtro = "";
+        }
+        filtro = filtro.trim().toLowerCase();
 
-    String filtro = txtNombre.getText().trim().toLowerCase();
-    System.out.println("Filtro: " + filtro);
+        final String filtroFinal = filtro;  // 👈 necesario para lambdas en Java 11
 
-    switch (tipo) {
+        System.out.println("Filtro: " + filtroFinal);
 
-        case "cliente":
-            List<Entidad> clientes = dao.listarClientes();
-            System.out.println("Clientes cargados: " + clientes.size());
+        switch (tipo) {
 
-            listaResultados.getItems().setAll(
-                    clientes.stream()
-                            .filter(c -> c.getNombre().toLowerCase().contains(filtro))
-                            .collect(Collectors.toList())
-            );
-            break;
+            case "cliente":
+                listaResultados.getItems().setAll(
+                        dao.listarClientes().stream()
+                                .filter(c -> c.getNombre() != null
+                                && c.getNombre().toLowerCase().contains(filtroFinal))
+                                .collect(java.util.stream.Collectors.toList())
+                );
+                break;
 
-        case "proveedor":
-            List<Entidad> proveedores = dao.listarProveedores();
-            System.out.println("Proveedores cargados: " + proveedores.size());
+            case "proveedor":
+                listaResultados.getItems().setAll(
+                        dao.listarProveedores().stream()
+                                .filter(p -> p.getNombre() != null
+                                && p.getNombre().toLowerCase().contains(filtroFinal))
+                                .collect(java.util.stream.Collectors.toList())
+                );
+                break;
 
-            listaResultados.getItems().setAll(
-                    proveedores.stream()
-                            .filter(p -> p.getNombre().toLowerCase().contains(filtro))
-                            .collect(Collectors.toList())
-            );
-            break;
+            case "cli_prov":
+                listaResultados.getItems().setAll(
+                        dao.listarClientesYProveedores().stream()
+                                .filter(e -> e.getNombre() != null
+                                && e.getNombre().toLowerCase().contains(filtroFinal))
+                                .collect(Collectors.toList())
+                );
+                break;
 
-        case "producto":
-            List<Producto> productos = dao.listarProductos();
-            System.out.println("Productos cargados: " + productos.size());
+            case "producto":
+                listaResultados.getItems().setAll(
+                        dao.listarProductos().stream()
+                                .filter(prod -> prod.getNombre() != null
+                                && prod.getNombre().toLowerCase().contains(filtroFinal))
+                                .collect(java.util.stream.Collectors.toList())
+                );
+                break;
 
-            listaResultados.getItems().setAll(
-                    productos.stream()
-                            .filter(pr -> pr.getNombre().toLowerCase().contains(filtro))
-                            .collect(Collectors.toList())
-            );
-            break;
-
-        case "factura":
-            List<Factura> facturas = dao.listarFacturas();
-            System.out.println("Facturas cargadas: " + facturas.size());
-
-            listaResultados.getItems().setAll(
-                    facturas.stream()
-                            .filter(f -> f.getCliente() != null
-                                    && f.getCliente().getNombre().toLowerCase().contains(filtro))
-                            .collect(Collectors.toList())
-            );
-            break;
+            case "factura":
+                listaResultados.getItems().setAll(
+                        dao.listarFacturas().stream()
+                                .filter(f -> String.valueOf(f.getIdFactura()).contains(filtroFinal))
+                                .collect(java.util.stream.Collectors.toList())
+                );
+                break;
+        }
     }
-}
 
-
-    
-    
     @FXML
     private void volver() throws IOException {
         App.setRoot("secondary");

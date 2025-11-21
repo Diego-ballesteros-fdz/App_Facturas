@@ -23,6 +23,92 @@ import objects.Proveedor;
 public class EntidadDAO {
     
     private RolDAO rolDAO = new RolDAO();
+    
+    
+     // ============================================================
+    //   LISTAR SOLO CLIENTES
+    // ============================================================
+    public List<Entidad> listarClientes() {
+        List<Entidad> lista = new ArrayList<>();
+
+        String sql =
+            "SELECT e.* FROM ENTIDAD e " +
+            "JOIN ROLES_ENTIDAD r ON e.idEntidad = r.idEntidad " +
+            "WHERE r.rol = 'CLIENTE'";
+
+        try (Connection con = ConexionBD.get();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Entidad e = mapear(rs);
+                e.setRoles(rolDAO.obtenerRolesPorEntidad(e));
+                lista.add(e);   // IMPORTANTE
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("❌ Error al listar clientes: " + ex.getMessage());
+        }
+
+        return lista;
+    }
+
+    // ============================================================
+    //   LISTAR SOLO PROVEEDORES
+    // ============================================================
+        public List<Entidad> listarProveedores() {
+        List<Entidad> lista = new ArrayList<>();
+
+        String sql =
+            "SELECT e.* FROM ENTIDAD e " +
+            "JOIN ROLES_ENTIDAD r ON e.idEntidad = r.idEntidad " +
+            "WHERE r.rol = 'PROVEEDOR'";
+
+        try (Connection con = ConexionBD.get();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Entidad e = mapear(rs);
+                e.setRoles(rolDAO.obtenerRolesPorEntidad(e));
+                lista.add(e);   // IMPORTANTE
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("❌ Error al listar proveedores: " + ex.getMessage());
+        }
+
+        return lista;
+    }
+
+    // ============================================================
+    //   LISTAR CLIENTES + PROVEEDORES
+    // ============================================================
+    public List<Entidad> listarClientesYProveedores() {
+        List<Entidad> lista = new ArrayList<>();
+
+        String sql =
+            "SELECT DISTINCT e.* " +
+            "FROM ENTIDAD e " +
+            "JOIN ROLES_ENTIDAD r ON e.idEntidad = r.idEntidad " +
+            "WHERE r.rol IN ('CLIENTE','PROVEEDOR')";
+
+        try (Connection con = ConexionBD.get();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Entidad e = mapear(rs);
+                e.setRoles(rolDAO.obtenerRolesPorEntidad(e));
+                lista.add(e);  // SIEMPRE ENTIDAD
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("❌ Error al listar cliente+proveedor: " + ex.getMessage());
+        }
+
+        return lista;
+    }
 
     // ==================================
     //   CREAR ENTIDAD
@@ -173,14 +259,22 @@ public class EntidadDAO {
         return e;
     }
 
-    // ==================================
+     // ==================================
     //   CREAR CLASE HIJO SEGÚN EL ROL
     // ==================================
     private Entidad convertirSegunRol(Entidad e) {
 
-        if (e.isCliente()) return new Cliente(e);
-        if (e.isProveedor()) return new Proveedor(e);
+        boolean cli = e.isCliente();
+        boolean prov = e.isProveedor();
 
-        return e; // Empresa o entidad sin rol
+        // Si tiene AMBOS roles → devolver Entidad normal
+        if (cli && prov) return e;
+
+        // Si solo tiene uno, devolver la clase correspondiente
+        if (cli) return new Cliente(e);
+        if (prov) return new Proveedor(e);
+
+        // Sin rol → entidad base
+        return e;
     }
 }

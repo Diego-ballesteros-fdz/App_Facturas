@@ -89,9 +89,16 @@ public class Entidad {
         return roles.stream().anyMatch(r -> r.getRol().equalsIgnoreCase("PROVEEDOR"));
     }
 
-    @Override
+     @Override
     public String toString() {
-        return nombre + " (" + nif + ")";
+        return getEtiquetaRol() + ": " + nombre + " (" + nif + ")";
+    }
+    
+    public String getEtiquetaRol() {
+        if (isCliente() && isProveedor()) return "Cliente y Proveedor";
+        if (isCliente()) return "Cliente";
+        if (isProveedor()) return "Proveedor";
+        return "Entidad";
     }
     
     
