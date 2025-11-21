@@ -30,32 +30,58 @@ public class App extends Application {
     }
     
     public static void setRootWithParam(String fxml, String tipo, String accion) throws IOException {
-    FXMLLoader loader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-    Parent root = loader.load();
 
-    // Obtener el controller
-    Object controller = loader.getController();
+        FXMLLoader loader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        Parent root = loader.load();
 
-    // Intentar pasar el parámetro "tipo" si el método existe
-    try {
-        controller.getClass().getMethod("setTipo", String.class).invoke(controller, tipo);
-    } catch (Exception e) {
-        System.out.println("No se pudo pasar el parámetro: " + e.getMessage());
-    }
-    
-    // Intentar pasar el parámetro "accion" si el método existe
-    if(accion!=null){
-        
-    try {
-        controller.getClass().getMethod("setAccion", String.class).invoke(controller, accion);
-    } catch (Exception e) {
-        System.out.println("No se pudo pasar el parámetro: " + e.getMessage());
-    }
-    }
+        Object controller = loader.getController();
 
-    // Cambiar la escena
-    primaryStage.getScene().setRoot(root);
-}
+        // ==========================================================
+        // 1️⃣ PASAR "tipo" (si el controller tiene ese método)
+        // ==========================================================
+        try {
+            controller.getClass()
+                    .getMethod("setTipo", String.class)
+                    .invoke(controller, tipo);
+        } catch (Exception e) {
+            System.out.println("No se pudo pasar 'tipo': " + e.getMessage());
+        }
+
+        // ==========================================================
+        // 2️⃣ PASAR “accion” (si existe en el controller)
+        // ==========================================================
+        if (accion != null) {
+            try {
+                controller.getClass()
+                        .getMethod("setAccion", String.class)
+                        .invoke(controller, accion);
+            } catch (Exception e) {
+                System.out.println("No se pudo pasar 'accion': " + e.getMessage());
+            }
+        }
+
+        // ==========================================================
+        // 3️⃣ PASAR **idEmpresaActual** SOLO si el FXML es “busqueda”
+        // ==========================================================
+        if (fxml.equals("busqueda")) {
+
+            try {
+                controller.getClass()
+                        .getMethod("setEmpresa", long.class)
+                        .invoke(controller, App.empresaActualId);
+
+                System.out.println("➡️ Empresa enviada al buscador: " + App.empresaActualId);
+
+            } catch (Exception e) {
+                System.out.println("No se pudo pasar 'idEmpresaActual': " + e.getMessage());
+            }
+        }
+
+        // ==========================================================
+        // CAMBIAR LA ESCENA
+        // ==========================================================
+        primaryStage.getScene().setRoot(root);
+    }
 
 
     /**

@@ -32,7 +32,7 @@
                                         <MenuItem fx:id="addProvCli" mnemonicParsing="false" onAction="#añadirCliente" text="Añadir" />
                                         <MenuItem fx:id="deleteProvCli" mnemonicParsing="false" onAction="#eliminarCliente" text="Eliminar" />
                                         <MenuItem fx:id="modifyProvCli" mnemonicParsing="false" onAction="#modificarCliente" text="Modificar" />
-                                        <MenuItem fx:id="searchProvCli" mnemonicParsing="false" onAction="#buscarCliente" text="Buscar" />  
+                                        <MenuItem fx:id="searchProvCli" mnemonicParsing="false" onAction="#buscarCliProv" text="Buscar" />  
                                       </items>
                                     </MenuButton>
                                     <MenuButton fx:id="factOptions" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Factura" HBox.hgrow="ALWAYS">

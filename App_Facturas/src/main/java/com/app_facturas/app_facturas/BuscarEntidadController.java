@@ -29,6 +29,12 @@ public class BuscarEntidadController {
 
     @FXML
     private ListView listaResultados;
+    
+    private long idEmpresaActual;
+    
+    public void setEmpresa(long idEmpresa) {
+        this.idEmpresaActual = idEmpresa;
+    }
 
     private String tipo;
     private DAOController dao = new DAOController();
@@ -72,11 +78,12 @@ public class BuscarEntidadController {
                 break;
 
             case "cli_prov":
+                List<Entidad> datos = dao.listarClientesYProveedores(idEmpresaActual);
+
                 listaResultados.getItems().setAll(
-                        dao.listarClientesYProveedores().stream()
-                                .filter(e -> e.getNombre() != null
-                                && e.getNombre().toLowerCase().contains(filtroFinal))
-                                .collect(Collectors.toList())
+                    datos.stream()
+                         .filter(e -> e.getNombre().toLowerCase().contains(filtroFinal))
+                         .toList()
                 );
                 break;
 

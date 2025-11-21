@@ -47,49 +47,45 @@ public class PrimaryController implements Initializable {
     }    
     
     private void cargarEmpresas() {
-    menuEmpresas.getItems().clear();
-    
-    String sql = "SELECT idEntidad, nombre FROM entidad";
+        menuEmpresas.getItems().clear();
 
-    try {
-        Connection con = new ConexionBD().get();
-        if (con == null) {
-            System.out.println("Error: Conexión nula");
-            return;
-        }
-        
-        PreparedStatement pst = con.prepareStatement(sql);
-        ResultSet rs = pst.executeQuery();
+        // SOLO empresas NO asociadas
+        String sql =
+            "SELECT idEntidad, nombre " +
+            "FROM entidad " +
+            "WHERE idEntidad NOT IN (SELECT idEntidad FROM roles_entidad)";
 
-        while (rs.next()) {
-             int id = rs.getInt("idEntidad"); 
-            String nombre = rs.getString("nombre");
+        try (Connection con = new ConexionBD().get();
+             PreparedStatement pst = con.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
 
-            MenuItem item = new MenuItem(nombre);
-            
-            item.setOnAction(event -> {
-            try {
-                App.empresaActualId = id;
-                App.nombreEmpresaActual = nombre;
-                App.setRoot("secondary");
-            } catch (IOException e) {
-                System.err.println("Error al cambiar de ventana: " + e.getMessage());
-                e.printStackTrace();
+            while (rs.next()) {
+
+                int id = rs.getInt("idEntidad");
+                String nombre = rs.getString("nombre");
+
+                MenuItem item = new MenuItem(nombre);
+
+                item.setOnAction(event -> {
+                    try {
+                        App.empresaActualId = id;
+                        App.nombreEmpresaActual = nombre;
+                        App.setRoot("secondary");
+                    } catch (IOException e) {
+                        System.err.println("Error al cambiar de ventana: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                });
+
+                menuEmpresas.getItems().add(item);
             }
-            });
             
-            menuEmpresas.getItems().add(item);
-            
-        };
-        rs.close();
-        pst.close();
-        con.close();
+             rs.close();
+            pst.close();
+            con.close();
+
         } catch (SQLException e) {
-            // Esto es lo que estaba pasando antes: "Column 'id' not found"
             System.err.println("Error SQL: " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

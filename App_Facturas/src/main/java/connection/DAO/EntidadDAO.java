@@ -277,4 +277,34 @@ public class EntidadDAO {
         // Sin rol → entidad base
         return e;
     }
+    
+    public List<Entidad> listarRelacionados(long idEmpresa) {
+
+        List<Entidad> lista = new ArrayList<>();
+
+        String sql =
+            "SELECT e.* FROM EMPRESA_RELACION er " +
+            "JOIN ENTIDAD e ON e.idEntidad = er.idHija " +
+            "WHERE er.idPadre = ?";
+
+        try (Connection con = ConexionBD.get();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setLong(1, idEmpresa);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Entidad e = mapear(rs);
+                e.setRoles(rolDAO.obtenerRolesPorEntidad(e));
+                lista.add(e);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("❌ Error al listar relacionados: " + ex.getMessage());
+        }
+
+        return lista;
+    }
+
 }

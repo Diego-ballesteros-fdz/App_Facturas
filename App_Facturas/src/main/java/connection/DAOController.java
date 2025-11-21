@@ -88,9 +88,13 @@ public class DAOController {
 
     // Clientes + Proveedores
     public List<Entidad> listarClientesYProveedores() {
-        return entidadDAO.listarClientesYProveedores();
+    return entidadDAO.listarClientesYProveedores();
     }
 
+    //Busqueda solo por Id de Clientes y Provedores
+    public List<Entidad> listarClientesYProveedores(long idEmpresa) {
+        return entidadDAO.listarRelacionados(idEmpresa);
+    }
     // ============================================================
     //                     DIRECCIONES
     // ============================================================
