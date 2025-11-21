@@ -51,27 +51,25 @@ public class SecondaryController implements Initializable {
     private MenuItem searchProvCli;
 
     @FXML
-    private void buscarCliente() {
-        abrirBusqueda("cliente");
+    private void buscarCliente() throws IOException{
+        App.setRootWithParam("busqueda","cliente",null);
     }
-
-    private void buscarProveedor() {
-        abrirBusqueda("proveedor");
-    }
-
-    @FXML
-    private void buscarProducto() {
-        abrirBusqueda("producto");
+    private void buscarProveedor() throws IOException{
+        App.setRootWithParam("busqueda","proveedor",null);
     }
 
     @FXML
-    private void buscarFactura() {
-        abrirBusqueda("factura");
+    private void buscarProducto() throws IOException{
+        App.setRootWithParam("busqueda","producto",null);
     }
 
     @FXML
-    private void buscarCliProv() {
-        abrirBusqueda("cli_prov");
+    private void buscarFactura() throws IOException{
+        App.setRootWithParam("busqueda","factura",null);
+    }
+    @FXML
+    private void buscarCliProv() throws IOException{
+        App.setRootWithParam("busqueda","cli_prov",null);
     }
 
     public String nombreEmp;

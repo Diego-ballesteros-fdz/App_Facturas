@@ -44,10 +44,13 @@ public class App extends Application {
     }
     
     // Intentar pasar el parámetro "accion" si el método existe
+    if(accion!=null){
+        
     try {
         controller.getClass().getMethod("setAccion", String.class).invoke(controller, accion);
     } catch (Exception e) {
         System.out.println("No se pudo pasar el parámetro: " + e.getMessage());
+    }
     }
 
     // Cambiar la escena

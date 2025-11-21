@@ -97,4 +97,14 @@ public class PrimaryController implements Initializable {
     private void crearEmpresa(ActionEvent event) throws IOException {
          App.setRootWithParam("formulary", "Emp","add");
     }
+
+    @FXML
+    private void borrarEmpresa(ActionEvent event)  throws IOException {
+         App.setRootWithParam("formulary", "Emp","delete");
+    }
+
+    @FXML
+    private void modificarEmpresa(ActionEvent event)  throws IOException {
+         App.setRootWithParam("formulary", "Emp","modiffy");
+    }
 }

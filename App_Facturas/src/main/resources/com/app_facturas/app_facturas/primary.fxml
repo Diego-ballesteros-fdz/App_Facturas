@@ -18,8 +18,8 @@
                   <VBox layoutX="-6.0" layoutY="83.0" prefHeight="74.0" prefWidth="170.0">
                      <children>
                         <Button fx:id="createButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#crearEmpresa" text="Nueva Empresa" />
-                        <Button fx:id="deleteButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Eliminar Empresa" />
-                        <Button fx:id="modifyButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Modificar Empresa" />
+                        <Button fx:id="deleteButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#borrarEmpresa" text="Eliminar Empresa" />
+                        <Button fx:id="modifyButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#modificarEmpresa" text="Modificar Empresa" />
                      </children>
                   </VBox>
                </children>
@@ -43,4 +43,3 @@
       </SplitPane>
    </children>
 </AnchorPane>
-
