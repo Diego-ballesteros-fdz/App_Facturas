@@ -35,6 +35,7 @@ public class Factura {
 
     public void setCliente(Entidad cliente) { this.cliente = cliente; }
     
+    
     @Override
     public String toString() {
         return "Factura #" + idFactura +

@@ -98,11 +98,11 @@ public class BuscarEntidadController {
 
             case "factura":
                 listaResultados.getItems().setAll(
-                        dao.listarFacturas().stream()
-                                .filter(f -> String.valueOf(f.getIdFactura()).contains(filtroFinal))
-                                .collect(java.util.stream.Collectors.toList())
+                   dao.listarFacturasPorEntidad(idEmpresaActual).stream()
+                       .filter(f -> String.valueOf(f.getIdFactura()).contains(filtroFinal))
+                       .collect(Collectors.toList())
                 );
-                break;
+    break;
         }
     }
 
