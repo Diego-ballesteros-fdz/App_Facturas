@@ -105,11 +105,13 @@ public class SecondaryController implements Initializable {
     }
 
     @FXML
-    private void eliminarCliente(ActionEvent event) {
+    private void eliminarCliente(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "CliPro", "delete");
     }
 
     @FXML
-    private void modificarCliente(ActionEvent event) {
+    private void modificarCliente(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "CliPro", "modiffy");
     }
 
     @FXML
@@ -118,11 +120,13 @@ public class SecondaryController implements Initializable {
     }
 
     @FXML
-    private void eliminarFact(ActionEvent event) {
+    private void eliminarFact(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "Fac", "delete");
     }
 
     @FXML
-    private void modificarFact(ActionEvent event) {
+    private void modificarFact(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "Fac", "modiffy");
     }
 
     @FXML
@@ -131,11 +135,13 @@ public class SecondaryController implements Initializable {
     }
 
     @FXML
-    private void elimianrProd(ActionEvent event) {
+    private void elimianrProd(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "Prod", "delete");
     }
 
     @FXML
-    private void modificarProd(ActionEvent event) {
+    private void modificarProd(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "Prod", "modiffy");
     }
 
     @FXML

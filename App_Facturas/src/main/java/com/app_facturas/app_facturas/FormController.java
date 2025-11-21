@@ -185,9 +185,7 @@ public class FormController {
      */
     private void limpiarAction(ActionEvent event) {
         try {
-            Parent nuevoRoot = FXMLLoader.load(getClass().getResource("/com/app_facturas/app_facturas/formulary.fxml"));
-            Scene scene = ((Node) event.getSource()).getScene();
-            scene.setRoot(nuevoRoot);
+            App.setRootWithParam("formulary", tipo, accion);
         } catch (Exception e) {
             System.out.println(e);
         }
