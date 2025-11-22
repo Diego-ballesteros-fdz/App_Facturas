@@ -16,6 +16,7 @@ public class Producto {
     private double precio;
     private int stock;
     private Proveedor proveedor;  // relación con ENTIDAD (proveedor)
+    private long idProveedor; //relacion con proveedor (solo id)
     
     
     public long getIdProducto() {
@@ -45,6 +46,21 @@ public class Producto {
     public Proveedor getProveedor() { return proveedor; }
 
     public void setProveedor(Proveedor proveedor) { this.proveedor = proveedor; }
+
+    public long getIdProveedor() {
+        return idProveedor;
+    }
+
+    public void setIdProveedor(long idProveedor) {
+        this.idProveedor = idProveedor;
+    }
+    
+    @Override
+    public String toString() {
+        return nombre + " | " + precio + "€";
+    }
+    
+
 }
     
 

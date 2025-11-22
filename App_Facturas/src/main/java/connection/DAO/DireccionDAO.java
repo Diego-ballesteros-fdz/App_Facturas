@@ -28,7 +28,7 @@ public class DireccionDAO {
         String sql = "INSERT INTO DIRECCION (idEntidad, via, numero, ciudad, provincia, cp, pais) "
                    + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = ConexionBD.getConexion();
+        try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             if (d.getEntidad() == null) {
@@ -61,7 +61,7 @@ public class DireccionDAO {
 
         String sql = "SELECT * FROM DIRECCION WHERE idEntidad = ?";
 
-        try (Connection con = ConexionBD.getConexion();
+        try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setLong(1, idEntidad);
@@ -94,7 +94,7 @@ public class DireccionDAO {
 
         String sql = "DELETE FROM DIRECCION WHERE idEntidad = ?";
 
-        try (Connection con = ConexionBD.getConexion();
+        try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setLong(1, idEntidad);

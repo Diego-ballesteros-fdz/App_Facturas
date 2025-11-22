@@ -64,7 +64,4 @@ public class ConexionBD {
         return DriverManager.getConnection(URL, USER, PASS);
     }
 
-    public static Connection getConexion() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

@@ -89,20 +89,20 @@ public class BuscarEntidadController {
 
             case "producto":
                 listaResultados.getItems().setAll(
-                        dao.listarProductos().stream()
-                                .filter(prod -> prod.getNombre() != null
-                                && prod.getNombre().toLowerCase().contains(filtroFinal))
-                                .collect(java.util.stream.Collectors.toList())
+                      dao.listarProductosPorEmpresa(idEmpresaActual).stream()
+                          .filter(p -> p.getNombre().toLowerCase().contains(filtroFinal))
+                          .toList()
                 );
                 break;
+                
 
             case "factura":
                 listaResultados.getItems().setAll(
-                   dao.listarFacturasPorEntidad(idEmpresaActual).stream()
-                       .filter(f -> String.valueOf(f.getIdFactura()).contains(filtroFinal))
-                       .collect(Collectors.toList())
+                    dao.listarProductosPorProveedor(idEmpresaActual).stream()
+                        .filter(p -> p.getNombre().toLowerCase().contains(filtroFinal))
+                        .toList()
                 );
-    break;
+                break;
         }
     }
 

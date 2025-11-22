@@ -20,12 +20,15 @@ import objects.Producto;
  */
 public class ProductoDAO {
     
+    private EmpresaRelacionDAO empresaRelacionDAO = new EmpresaRelacionDAO();
+
+    
     public Producto crear(Producto p) {
 
         String sql = "INSERT INTO PRODUCTO (nombre, descripcion, precio, stock, idProveedor) "
                    + "VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection con = ConexionBD.getConexion();
+        try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, p.getNombre());
@@ -52,7 +55,7 @@ public class ProductoDAO {
         List<Producto> lista = new ArrayList<>();
         String sql = "SELECT * FROM PRODUCTO";
 
-        try (Connection con = ConexionBD.getConexion();
+        try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -74,40 +77,59 @@ public class ProductoDAO {
     }
 
     public List<Producto> obtenerPorProveedor(long idProveedor) {
-
         List<Producto> lista = new ArrayList<>();
+
         String sql = "SELECT * FROM PRODUCTO WHERE idProveedor = ?";
 
-        try (Connection con = ConexionBD.getConexion();
+        try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setLong(1, idProveedor);
-
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                Producto p = new Producto();
-                p.setIdProducto(rs.getLong("idProducto"));
-                p.setNombre(rs.getString("nombre"));
-                p.setDescripcion(rs.getString("descripcion"));
-                p.setPrecio(rs.getDouble("precio"));
-                p.setStock(rs.getInt("stock"));
-
-                lista.add(p);
+                lista.add(mapear(rs));
             }
 
-        } catch (SQLException e) {
-            System.out.println("❌ Error obteniendo productos por proveedor: " + e.getMessage());
+        } catch (Exception e) {
+            System.out.println("❌ Error productos por proveedor: " + e.getMessage());
+        }
+
+        return lista;
+    }
+    
+    public List<Producto> listarProductosPorEmpresa(long idEmpresa) {
+
+        List<Producto> lista = new ArrayList<>();
+
+        try {
+            // 1️⃣ Obtener proveedores asociados a la empresa
+            List<Long> proveedores = empresaRelacionDAO.obtenerProveedoresDeEmpresa(idEmpresa);
+
+            if (proveedores.isEmpty()) {
+                System.out.println("⚠ La empresa " + idEmpresa + " no tiene proveedores asociados.");
+                return lista;
+            }
+
+            // 2️⃣ Por cada proveedor obtener sus productos
+            for (Long idProv : proveedores) {
+                lista.addAll(obtenerPorProveedor(idProv));
+            }
+
+        } catch (Exception e) {
+            System.out.println("❌ Error en listarProductosPorEmpresa(): " + e.getMessage());
         }
 
         return lista;
     }
 
+
+
     public boolean eliminar(long idProducto) {
 
         String sql = "DELETE FROM PRODUCTO WHERE idProducto = ?";
 
-        try (Connection con = ConexionBD.getConexion();
+        try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setLong(1, idProducto);
@@ -118,5 +140,22 @@ public class ProductoDAO {
             return false;
         }
     }
+    
+    // ============================================================
+//   MAPEAR PRODUCTO DESDE RESULTSET
+// ============================================================
+private Producto mapear(ResultSet rs) throws SQLException {
+        Producto p = new Producto();
+
+        p.setIdProducto(rs.getLong("idProducto"));
+        p.setNombre(rs.getString("nombre"));
+        p.setDescripcion(rs.getString("descripcion"));
+        p.setPrecio(rs.getDouble("precio"));
+        p.setStock(rs.getInt("stock"));
+        p.setIdProveedor(rs.getLong("idProveedor"));
+
+        return p;
+    }
+
     
 }

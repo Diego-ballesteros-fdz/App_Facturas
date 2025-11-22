@@ -9,6 +9,7 @@ import connection.DAO.EntidadDAO;
 import connection.DAO.FacturaDAO;
 import connection.DAO.ProductoDAO;
 import connection.DAO.DireccionDAO;
+import connection.DAO.EmpresaRelacionDAO;
 import connection.DAO.LineaFacturaDAO;
 import java.util.List;
 import objects.Direccion;
@@ -33,7 +34,9 @@ public class DAOController {
     private ProductoDAO productoDAO = new ProductoDAO();
     private FacturaDAO facturaDAO = new FacturaDAO();
     private LineaFacturaDAO lineaFacturaDAO = new LineaFacturaDAO();
+    private EmpresaRelacionDAO empresaRelacionDAO = new EmpresaRelacionDAO();
 
+    
     // ============================================================
     //            ENTIDADES (Cliente, Proveedor, Empresa)
     // ============================================================
@@ -120,10 +123,16 @@ public class DAOController {
     public List<Producto> listarProductosPorProveedor(long idProveedor) {
         return productoDAO.obtenerPorProveedor(idProveedor);
     }
+    
+    public List<Producto> listarProductosPorEmpresa(long idProveedor) {
+        return productoDAO.listarProductosPorEmpresa(idProveedor);
+    }
+    
 
     public boolean eliminarProducto(long idProducto) {
         return productoDAO.eliminar(idProducto);
     }
+    
 
     // ============================================================
     //                     FACTURAS
