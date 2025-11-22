@@ -142,6 +142,7 @@ CREATE TABLE EMPRESA_RELACION (
     idHija BIGINT NOT NULL,
     tipoRelacion VARCHAR(50) NOT NULL,
     PRIMARY KEY(idPadre, idHija),
+
     FOREIGN KEY(idPadre) REFERENCES ENTIDAD(idEntidad) ON DELETE CASCADE,
     FOREIGN KEY(idHija) REFERENCES ENTIDAD(idEntidad) ON DELETE CASCADE
 );
@@ -149,18 +150,24 @@ CREATE TABLE EMPRESA_RELACION (
 -- ===========================================================
 -- ASOCIAR LAS 5 EMPRESAS NUEVAS A LAS 3 ORIGINALES
 -- ===========================================================
-
--- Empresa 1 se relaciona con dos empresas nuevas
 INSERT INTO EMPRESA_RELACION VALUES
 (1, (SELECT idEntidad FROM ENTIDAD WHERE nif='T98765432'), 'ASOCIADA'),
-(1, (SELECT idEntidad FROM ENTIDAD WHERE nif='L54321987'), 'ASOCIADA');
+(1, (SELECT idEntidad FROM ENTIDAD WHERE nif='L54321987'), 'ASOCIADA'),
 
--- Empresa 2 se relaciona con dos empresas nuevas
-INSERT INTO EMPRESA_RELACION VALUES
 (2, (SELECT idEntidad FROM ENTIDAD WHERE nif='F87651234'), 'COLABORA'),
-(2, (SELECT idEntidad FROM ENTIDAD WHERE nif='E11223344'), 'COLABORA');
+(2, (SELECT idEntidad FROM ENTIDAD WHERE nif='E11223344'), 'COLABORA'),
 
--- Empresa 3 se relaciona con una empresa nueva
-INSERT INTO EMPRESA_RELACION VALUES
 (3, (SELECT idEntidad FROM ENTIDAD WHERE nif='N55667788'), 'CLIENTE DE');
 
+-- ===========================================================
+-- PRODUCTOS DEL PROVEEDOR LOGÍSTICA EXPRESS (idEntidad = 5)
+-- ===========================================================
+INSERT INTO PRODUCTO (nombre, descripcion, precio, stock, idProveedor) VALUES
+('Caja de Envío XL', 'Caja reforzada para grandes volúmenes', 4.50, 1200, (SELECT idEntidad FROM ENTIDAD WHERE nif='L54321987')),
+('Papel Burbuja Premium', 'Rollo de burbuja 50m para embalaje', 12.90, 500, (SELECT idEntidad FROM ENTIDAD WHERE nif='L54321987')),
+('Palet Europeo Tipo A', 'Palet de madera 120x80 cm homologado', 22.00, 300, (SELECT idEntidad FROM ENTIDAD WHERE nif='L54321987')),
+('Cinta Adhesiva UltraGrip', 'Cinta adhesiva industrial 48mm x 66m', 1.60, 2000, (SELECT idEntidad FROM ENTIDAD WHERE nif='L54321987')),
+('Carrito de Transporte 300kg', 'Carrito metálico de carga alta resistencia', 89.90, 80, (SELECT idEntidad FROM ENTIDAD WHERE nif='L54321987')),
+('Transpaleta Manual 2500kg', 'Transpaleta hidráulica para almacén', 329.00, 25, (SELECT idEntidad FROM ENTIDAD WHERE nif='L54321987')),
+('Film Transparente Industrial', 'Rollo de film transparente 23 micras', 9.90, 900, (SELECT idEntidad FROM ENTIDAD WHERE nif='L54321987')),
+('Etiquetas de Envío 1000u', 'Pack de etiquetas adhesivas térmicas', 14.50, 700, (SELECT idEntidad FROM ENTIDAD WHERE nif='L54321987'));
