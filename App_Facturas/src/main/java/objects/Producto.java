@@ -8,7 +8,7 @@ package objects;
  *
  * @author roque
  */
-public class Producto {
+public class Producto extends Entidad {
     
     private long idProducto;
     private String nombre;

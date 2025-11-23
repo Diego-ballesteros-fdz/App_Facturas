@@ -10,7 +10,7 @@ import java.time.LocalDate;
  *
  * @author roque
  */
-public class Factura {
+public class Factura extends Entidad {
     
     private long idFactura;
     private LocalDate fecha;

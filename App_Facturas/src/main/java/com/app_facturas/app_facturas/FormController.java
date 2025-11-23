@@ -18,6 +18,7 @@ import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import objects.Entidad;
 
 /**
  *
@@ -122,6 +123,9 @@ public class FormController {
     @FXML
     private MenuItem cifType;
     private String nombreEmpresa = App.nombreEmpresaActual;
+    private Entidad entidad;
+    
+    
 
     public void initialize() {
         System.out.println("Tipo "+tipo);
@@ -222,12 +226,7 @@ public class FormController {
         }
     }
 
-    @FXML
-    /**
-     * boton de enviar
-     */
-    private void enviarAction(ActionEvent event) {
-    }
+   
 
     @FXML
     /**
@@ -244,6 +243,10 @@ public class FormController {
         this.accion = accion;
         initialize();//actualizamos la vista
     }
+    
+    public void setEntidad(Entidad e){
+        entidad=e;  
+    }
 
     @FXML
     private void modificarAction(ActionEvent event) {
@@ -251,6 +254,13 @@ public class FormController {
 
     @FXML
     private void eliminarAction(ActionEvent event) {
+    }
+    
+     @FXML
+    /**
+     * boton de enviar
+     */
+    private void enviarAction(ActionEvent event) {
     }
 
 }

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import objects.Entidad;
 import objects.Factura;
 import objects.Producto;
@@ -29,15 +30,24 @@ public class BuscarEntidadController {
 
     @FXML
     private ListView listaResultados;
-    
+    private String tipo;
+    private DAOController dao = new DAOController();
+
     private long idEmpresaActual;
-    
+    @FXML
+    private Button btnBuscar;
+    @FXML
+    private Button btnVolver;
+
+    private String accion;
+
     public void setEmpresa(long idEmpresa) {
         this.idEmpresaActual = idEmpresa;
     }
 
-    private String tipo;
-    private DAOController dao = new DAOController();
+    public void setAccion(String accion) {
+        this.accion = accion;
+    }
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
@@ -77,30 +87,30 @@ public class BuscarEntidadController {
                 );
                 break;
 
-            case "cli_prov":
+            case "CliPro":
+                System.out.println("idEmpres:"+idEmpresaActual);
                 List<Entidad> datos = dao.listarClientesYProveedores(idEmpresaActual);
 
                 listaResultados.getItems().setAll(
-                    datos.stream()
-                         .filter(e -> e.getNombre().toLowerCase().contains(filtroFinal))
-                         .toList()
+                        datos.stream()
+                                .filter(e -> e.getNombre().toLowerCase().contains(filtroFinal))
+                                .toList()
                 );
                 break;
 
-            case "producto":
+            case "Prod":
                 listaResultados.getItems().setAll(
-                      dao.listarProductosPorEmpresa(idEmpresaActual).stream()
-                          .filter(p -> p.getNombre().toLowerCase().contains(filtroFinal))
-                          .toList()
+                        dao.listarProductosPorEmpresa(idEmpresaActual).stream()
+                                .filter(p -> p.getNombre().toLowerCase().contains(filtroFinal))
+                                .toList()
                 );
                 break;
-                
 
-            case "factura":
+            case "Fac":
                 listaResultados.getItems().setAll(
-                    dao.listarProductosPorProveedor(idEmpresaActual).stream()
-                        .filter(p -> p.getNombre().toLowerCase().contains(filtroFinal))
-                        .toList()
+                        dao.listarProductosPorProveedor(idEmpresaActual).stream()
+                                .filter(p -> p.getNombre().toLowerCase().contains(filtroFinal))
+                                .toList()
                 );
                 break;
         }
@@ -109,5 +119,42 @@ public class BuscarEntidadController {
     @FXML
     private void volver() throws IOException {
         App.setRoot("secondary");
+    }
+
+    @FXML
+    /**
+     * metodo para seleccionar entidad y enviar a modificar o eliminar
+     */
+    private void seleccionListaResult(MouseEvent event) {
+        Entidad e;
+        if (accion != null) {
+            switch (accion) {
+                case "modiffy":
+                    e = (Entidad) listaResultados.getSelectionModel().getSelectedItem();
+                    try {
+                        App.setRootWithParam("formulary", tipo, "modiffy", e);
+                    } catch (Exception ex) {
+                        System.out.println(ex);
+                    }
+
+                    break;
+                case "delete":
+                    e = (Entidad) listaResultados.getSelectionModel().getSelectedItem();
+                    try {
+                        App.setRootWithParam("formulary", tipo, "delete", e);
+                    } catch (Exception ex) {
+                        System.out.println(ex);
+                    }
+                    break;
+                default:
+                    System.out.println("Algo ha fallado");
+                    break;
+
+            }
+        }
+    }
+
+    private void wathEntidad() {
+
     }
 }

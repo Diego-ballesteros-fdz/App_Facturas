@@ -96,11 +96,11 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private void borrarEmpresa(ActionEvent event)  throws IOException {
-         App.setRootWithParam("formulary", "Emp","delete");
+         App.setRootWithParam("busqueda", "Emp","delete");
     }
 
     @FXML
     private void modificarEmpresa(ActionEvent event)  throws IOException {
-         App.setRootWithParam("formulary", "Emp","modiffy");
+         App.setRootWithParam("busqueda", "Emp","modiffy");
     }
 }

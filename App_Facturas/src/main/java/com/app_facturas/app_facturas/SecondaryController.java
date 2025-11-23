@@ -16,8 +16,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
-
-public class SecondaryController implements Initializable{
+public class SecondaryController implements Initializable {
 
     @FXML
     private Label nombreEmpresaCabecera;
@@ -27,14 +26,14 @@ public class SecondaryController implements Initializable{
     private MenuButton factOptions;
     @FXML
     private MenuButton prodOptions;
-    
-    @FXML 
+
+    @FXML
     private MenuItem add;
-    @FXML 
+    @FXML
     private MenuItem delete;
-    @FXML 
+    @FXML
     private MenuItem modify;
-    @FXML 
+    @FXML
     private MenuItem search;
     @FXML
     private AnchorPane secondary;
@@ -50,104 +49,90 @@ public class SecondaryController implements Initializable{
     private MenuItem modifyProvCli;
     @FXML
     private MenuItem searchProvCli;
-    
-    
+
     @FXML
-    private void buscarCliente() throws IOException{
-        App.setRootWithParam("busqueda","cliente",null);
+    private void buscarCliente() throws IOException {
+        App.setRootWithParam("busqueda", "cliente", null);
     }
-    private void buscarProveedor() throws IOException{
-        App.setRootWithParam("busqueda","proveedor",null);
+
+    private void buscarProveedor() throws IOException {
+        App.setRootWithParam("busqueda", "proveedor", null);
     }
 
     @FXML
-    private void buscarProducto() throws IOException{
-        App.setRootWithParam("busqueda","producto",null);
+    private void buscarProducto() throws IOException {
+        App.setRootWithParam("busqueda", "Prod", null);
     }
 
     @FXML
-    private void buscarFactura() throws IOException{
-        App.setRootWithParam("busqueda","factura",null);
+    private void buscarFactura() throws IOException {
+        App.setRootWithParam("busqueda", "Fac", null);
     }
+
     @FXML
-    private void buscarCliProv() throws IOException{
-        App.setRootWithParam("busqueda","cli_prov",null);
+    private void buscarCliProv() throws IOException {
+        App.setRootWithParam("busqueda", "CliPro", null);
 
     }
     public String nombreEmp;
     public int idEmp;
-    
+
     @Override
-    public void initialize(URL url, ResourceBundle rb){
+    public void initialize(URL url, ResourceBundle rb) {
         //Guardamos nombre e id de la empresa para filtrar búsquedas
         nombreEmp = App.nombreEmpresaActual;
         idEmp = App.empresaActualId;
         nombreEmpresaCabecera.setText(nombreEmp);
-        
-    }
 
-    private void abrirBusqueda(String tipo) {
-        try {
-            FXMLLoader loader = new FXMLLoader(App.class.getResource("Busqueda.fxml"));
-            Parent root = loader.load();
-
-            BuscarEntidadController controller = loader.getController();
-            controller.setTipo(tipo);
-
-            App.setRoot(root);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @FXML
-    private void añadirCliente(ActionEvent event) throws IOException{
-        App.setRootWithParam("formulary", "CliPro","add");
+    private void añadirCliente(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "CliPro", "add");
     }
 
     @FXML
     private void eliminarCliente(ActionEvent event) throws IOException {
-        App.setRootWithParam("formulary", "CliPro", "delete");
+        App.setRootWithParam("busqueda", "CliProv", "delete");
     }
 
     @FXML
     private void modificarCliente(ActionEvent event) throws IOException {
-        App.setRootWithParam("formulary", "CliPro", "modiffy");
+        App.setRootWithParam("busqueda", "CliPro", "modiffy");
     }
 
     @FXML
-    private void añadirFact(ActionEvent event) throws IOException{
-        App.setRootWithParam("formulary", "Fac","add");
+    private void añadirFact(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "Fac", "add");
     }
 
     @FXML
     private void eliminarFact(ActionEvent event) throws IOException {
-        App.setRootWithParam("formulary", "Fac", "delete");
+        App.setRootWithParam("busqueda", "Fac", "delete");
     }
 
     @FXML
     private void modificarFact(ActionEvent event) throws IOException {
-        App.setRootWithParam("formulary", "Fac", "modiffy");
+        App.setRootWithParam("busqueda", "Fac", "modiffy");
     }
 
     @FXML
-    private void añadirProd(ActionEvent event) throws IOException{
-        App.setRootWithParam("formulary", "Prod","add");
+    private void añadirProd(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "Prod", "add");
     }
 
     @FXML
     private void elimianrProd(ActionEvent event) throws IOException {
-        App.setRootWithParam("formulary", "Prod", "delete");
+        App.setRootWithParam("busqueda", "Prod", "delete");
     }
 
     @FXML
     private void modificarProd(ActionEvent event) throws IOException {
-        App.setRootWithParam("formulary", "Prod", "modiffy");
+        App.setRootWithParam("busqueda", "Prod", "modiffy");
     }
 
     @FXML
-    private void volver(ActionEvent event)throws IOException{
+    private void volver(ActionEvent event) throws IOException {
         App.setRoot("primary");
     }
 }
