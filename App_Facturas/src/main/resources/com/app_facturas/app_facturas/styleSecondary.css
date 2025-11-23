@@ -1,0 +1,70 @@
+.header-pane {
+    -fx-background-color: #e2e8f0; /* Mismo gris que .sidebar */
+    -fx-border-color: #cbd5e1;
+    -fx-border-width: 0 0 2 0;     /* Borde abajo */
+}
+
+.company-title {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 24px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #1e3a8a;        /* Azul oscuro */
+}
+
+.toolbar-pane {
+    -fx-background-color: #f8fafc; /* Mismo fondo que .root */
+    -fx-padding: 15px;
+}
+
+.top-menu-button {
+    -fx-background-color: #93c5fd; /* Azul Cielo (Igual que Primary) */
+    -fx-background-radius: 6;      /* Un poco redondeados */
+    -fx-border-color: #60a5fa;
+    -fx-border-radius: 6;
+    -fx-cursor: hand;
+}
+
+.top-menu-button > .label {
+    -fx-text-fill: #172554 !important; /* Texto oscuro */
+    -fx-font-weight: 700;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER;
+}
+
+.top-menu-button > .arrow-button > .arrow {
+    -fx-background-color: #172554;
+}
+
+.top-menu-button:hover {
+    -fx-background-color: #2563eb; /* Azul fuerte (Igual que Primary) */
+    -fx-border-color: #1e3a8a;
+}
+
+.top-menu-button:hover > .label {
+    -fx-text-fill: white !important; 
+}
+
+.top-menu-button:hover > .arrow-button > .arrow {
+    -fx-background-color: white;
+}
+
+.context-menu {
+    -fx-background-color: white;
+    -fx-border-color: #cbd5e1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+.menu-item .label {
+    -fx-text-fill: black;
+}
+
+.back-button {
+    -fx-background-color: #cbd5e1; /* Gris neutro */
+    -fx-text-fill: #334155;
+    -fx-font-weight: 700;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+}
+.back-button:hover {
+    -fx-background-color: #64748b;
+    -fx-text-fill: white;
+}

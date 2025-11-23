@@ -19,7 +19,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="509.0" prefWidth="706.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app_facturas.app_facturas.FormController">
    <children>
-      <Pane fx:id="cliProvPane" prefHeight="445.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="63.39999999999998" AnchorPane.topAnchor="0.19999999999998863">
+      <Pane fx:id="cliProvPane" layoutX="1.0" layoutY="14.0" prefHeight="445.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="49.19999999999999" AnchorPane.topAnchor="14.0">
          <children>
             <GridPane hgap="15.0" layoutX="19.0" layoutY="69.0" prefHeight="376.0" prefWidth="675.0">
                <columnConstraints>
@@ -72,10 +72,11 @@
                   <CheckBox fx:id="clienteCPCheck" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.rowIndex="6" />
                </children>
             </GridPane>
-            <Label layoutX="293.0" layoutY="32.0" text="Clientes y proveedores" />
+            <Label layoutX="293.0" layoutY="45.0" text="Clientes y proveedores" />
+            <Label fx:id="nomEmpCliProv" layoutX="343.0" layoutY="6.0" text="Label" />
          </children>
       </Pane>
-      <Pane fx:id="EmpresaPane" prefHeight="445.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="63.39999999999998" AnchorPane.topAnchor="0.0">
+      <Pane fx:id="EmpresaPane" prefHeight="445.0" prefWidth="706.0" AnchorPane.bottomAnchor="63.39999999999998" AnchorPane.topAnchor="0.0">
          <children>
             <GridPane hgap="15.0" layoutX="19.0" layoutY="69.0" prefHeight="376.0" prefWidth="675.0">
               <columnConstraints>
@@ -101,11 +102,11 @@
                   <Label text="numero" GridPane.columnIndex="2" />
                   <Label text="ciudad" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Label text="provincia" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <SplitMenuButton mnemonicParsing="false" text="Tipo de documento">
+                  <SplitMenuButton fx:id="docType" mnemonicParsing="false" text="Tipo de documento">
                     <items>
-                      <MenuItem mnemonicParsing="false" text="N.I.F" />
-                      <MenuItem mnemonicParsing="false" text="N.I.E" />
-                        <MenuItem mnemonicParsing="false" text="C.I.F" />
+                      <MenuItem fx:id="nifType" mnemonicParsing="false" text="N.I.F" />
+                      <MenuItem fx:id="nieType" mnemonicParsing="false" text="N.I.E" />
+                        <MenuItem fx:id="cifType" mnemonicParsing="false" text="C.I.F" />
                     </items>
                   </SplitMenuButton>
                   <TextField fx:id="DocumentoEmpField" GridPane.columnIndex="1" />
@@ -150,13 +151,14 @@
                   <Label text="Nombre del producto" />
                </children>
             </GridPane>
-            <Label layoutX="293.0" layoutY="32.0" text="Productos" />
+            <Label layoutX="315.0" layoutY="52.0" text="Productos" />
             <Pane layoutX="362.0" layoutY="90.0" prefHeight="351.0" prefWidth="323.0">
                <children>
                   <ListView layoutX="62.0" layoutY="48.0" onMouseClicked="#prodSelection" prefHeight="262.0" prefWidth="200.0" />
                   <Label layoutX="62.0" layoutY="14.0" text="Seleccione el proveedor:" />
                </children>
             </Pane>
+            <Label fx:id="nomEmpProd" layoutX="328.0" layoutY="6.0" text="Label" />
          </children>
       </Pane>
       <Pane fx:id="factPane" layoutX="10.0" layoutY="10.0" prefHeight="445.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="10.0">
@@ -165,8 +167,8 @@
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="349.0" minWidth="10.0" prefWidth="149.80001220703124" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="10.0" prefWidth="181.19999999999996" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="10.0" prefWidth="88.39999999999998" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="10.0" prefWidth="215.19998779296873" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="10.0" prefWidth="97.39997558593751" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="10.0" prefWidth="204.60002441406243" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -179,12 +181,12 @@
                   <Label text="Nombre empresa" />
                   <Label text="I.V.A" GridPane.columnIndex="2" />
                   <Label text="fecha emision" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label text="fecha de entrega" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Label prefHeight="18.0" prefWidth="95.0" text="fecha de entrega" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                   <TextField fx:id="NombreEmpField1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="observacionesEmpField1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <TextField fx:id="provEmpField1" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                   <TextField fx:id="paisEmpField1" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Label text="Nombre empresa" GridPane.columnIndex="1" />
+                  <Label fx:id="nomEmp" text="Nombre empresa" GridPane.columnIndex="1" />
                   <SplitMenuButton mnemonicParsing="false" text="--Tipo I.V.A--" GridPane.columnIndex="3">
                     <items>
                       <MenuItem mnemonicParsing="false" text="4%" />

@@ -12,6 +12,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -104,6 +107,21 @@ public class FormController {
     private Pane buttonsPaneModificar;
     @FXML
     private Pane buttonsPaneEliminar;
+    @FXML
+    private Label nomEmp;
+    @FXML
+    private Label nomEmpProd;
+    @FXML
+    private Label nomEmpCliProv;
+    @FXML
+    private SplitMenuButton docType;
+    @FXML
+    private MenuItem nifType;
+    @FXML
+    private MenuItem nieType;
+    @FXML
+    private MenuItem cifType;
+    private String nombreEmpresa = App.nombreEmpresaActual;
 
     public void initialize() {
         System.out.println("Tipo "+tipo);
@@ -120,18 +138,21 @@ public class FormController {
                     productosPane.setVisible(false);
                     EmpresaPane.setVisible(false);
                     factPane.setVisible(false);
+                    nomEmpCliProv.setText(nombreEmpresa);
                     break;
                 case "Prod":
                     cliProvPane.setVisible(false);
                     productosPane.setVisible(true);
                     EmpresaPane.setVisible(false);
                     factPane.setVisible(false);
+                    nomEmpProd.setText(nombreEmpresa);
                     break;
                 case "Fac":
                     cliProvPane.setVisible(false);
                     productosPane.setVisible(false);
                     EmpresaPane.setVisible(false);
                     factPane.setVisible(true);
+                    nomEmp.setText(nombreEmpresa);
                     break;
                 default:
                     System.out.println("Algo salio mal al iniciar el formulario");
@@ -164,7 +185,17 @@ public class FormController {
 
             }
         }
-    }
+        
+        //Cambiamos el texto del SplitMenuButton en función del tipo de documento seleccionado (NIF, NIE o CIF)
+        javafx.event.EventHandler<javafx.event.ActionEvent> accionCambio = e -> {
+            MenuItem itemPulsado = (MenuItem) e.getSource();
+            docType.setText(itemPulsado.getText());
+        };
+        //Asigno la acción a los 3 documentos
+        nifType.setOnAction(accionCambio);
+        nieType.setOnAction(accionCambio);
+        cifType.setOnAction(accionCambio);
+   }
 
     @FXML
     /**
