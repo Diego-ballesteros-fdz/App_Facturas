@@ -109,6 +109,33 @@ public class EntidadDAO {
 
         return lista;
     }
+    
+    public List<Entidad> listarSoloEmpresas() {
+    List<Entidad> lista = new ArrayList<>();
+
+    String sql = """
+        SELECT e.*
+        FROM ENTIDAD e
+        LEFT JOIN ROLES_ENTIDAD r ON e.idEntidad = r.idEntidad
+        WHERE r.idEntidad IS NULL
+        ORDER BY e.idEntidad;
+    """;
+
+    try (Connection con = ConexionBD.get();
+         PreparedStatement ps = con.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            lista.add(mapearEntidad(rs));
+        }
+
+    } catch (Exception ex) {
+        System.out.println("❌ Error listando solo empresas: " + ex.getMessage());
+    }
+
+    return lista;
+}
+
 
     // ==================================
     //   CREAR ENTIDAD
@@ -258,6 +285,24 @@ public class EntidadDAO {
 
         return e;
     }
+    
+    // ==================================
+    //   MAPEAR SOLO ENTIDAD (SIN ROLES)
+    // ==================================
+    private Entidad mapearEntidad(ResultSet rs) throws SQLException {
+
+        Entidad e = new Entidad();
+
+        e.setIdEntidad(rs.getLong("idEntidad"));
+        e.setNombre(rs.getString("nombre"));
+        e.setNif(rs.getString("nif"));
+        e.setEmail(rs.getString("email"));
+        e.setTelefono(rs.getString("telefono"));
+        e.setObservaciones(rs.getString("observaciones"));
+
+        return e;
+    }
+
 
      // ==================================
     //   CREAR CLASE HIJO SEGÚN EL ROL
