@@ -102,7 +102,7 @@
                   <Label text="numero" GridPane.columnIndex="2" />
                   <Label text="ciudad" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Label text="provincia" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <SplitMenuButton fx:id="docType" mnemonicParsing="false" text="Tipo de documento">
+                  <SplitMenuButton fx:id="docType" mnemonicParsing="false" onAction="#establecerTipoDoc" text="Tipo de documento">
                     <items>
                       <MenuItem fx:id="nifType" mnemonicParsing="false" text="N.I.F" />
                       <MenuItem fx:id="nieType" mnemonicParsing="false" text="N.I.E" />

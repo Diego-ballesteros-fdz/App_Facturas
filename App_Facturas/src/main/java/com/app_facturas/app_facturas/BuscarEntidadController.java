@@ -68,6 +68,7 @@ public class BuscarEntidadController {
         System.out.println("Filtro: " + filtroFinal);
 
         switch (tipo) {
+            
 
             case "cliente":
                 listaResultados.getItems().setAll(
@@ -113,6 +114,15 @@ public class BuscarEntidadController {
                                 .toList()
                 );
                 break;
+                
+            case "Emp":
+                listaResultados.getItems().setAll(
+                    dao.listarSoloEmpresas().stream()
+                        .filter(e -> e.getNombre().toLowerCase().contains(filtroFinal))
+                        .toList()
+                );
+                break;
+
         }
     }
 

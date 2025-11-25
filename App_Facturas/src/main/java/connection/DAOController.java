@@ -98,6 +98,12 @@ public class DAOController {
     public List<Entidad> listarClientesYProveedores(long idEmpresa) {
         return entidadDAO.listarRelacionados(idEmpresa);
     }
+    
+    public List<Entidad> listarSoloEmpresas() {
+        return entidadDAO.listarSoloEmpresas();
+    }
+
+    
     // ============================================================
     //                     DIRECCIONES
     // ============================================================
