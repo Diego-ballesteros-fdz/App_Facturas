@@ -118,7 +118,11 @@ public class BuscarEntidadController {
 
     @FXML
     private void volver() throws IOException {
-        App.setRoot("secondary");
+           if(tipo.equals("Emp")){
+            App.setRoot("primary");
+        }else{
+            App.setRoot("secondary");
+        }
     }
 
     @FXML

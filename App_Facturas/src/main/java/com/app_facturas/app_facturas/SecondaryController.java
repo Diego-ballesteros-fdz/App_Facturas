@@ -93,7 +93,7 @@ public class SecondaryController implements Initializable {
 
     @FXML
     private void eliminarCliente(ActionEvent event) throws IOException {
-        App.setRootWithParam("busqueda", "CliProv", "delete");
+        App.setRootWithParam("busqueda", "CliPro", "delete");
     }
 
     @FXML

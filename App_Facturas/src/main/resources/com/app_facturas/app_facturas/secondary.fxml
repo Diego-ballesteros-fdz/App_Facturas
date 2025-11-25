@@ -37,13 +37,21 @@
                                       </items>
                                     </MenuButton>
                                     
-                                    <MenuButton fx:id="factOptions" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="top-menu-button" text="Factura" HBox.hgrow="ALWAYS">
+                                    <MenuButton fx:id="factOptions" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="top-menu-button" text="Ventas" HBox.hgrow="ALWAYS">
                                       <items>
                                         <MenuItem fx:id="add" mnemonicParsing="false" onAction="#añadirFact" text="Añadir" />
                                         <MenuItem fx:id="delete" mnemonicParsing="false" onAction="#eliminarFact" text="Eliminar" />
                                         <MenuItem fx:id="modify" mnemonicParsing="false" onAction="#modificarFact" text="Modificar" />
                                         <MenuItem fx:id="search" mnemonicParsing="false" onAction="#buscarFactura" text="Buscar" />
                                       </items>
+                                    </MenuButton>
+                                    <MenuButton fx:id="factOptions1" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="top-menu-button" text="Compras">
+                                       <items>
+                                          <MenuItem fx:id="add1" mnemonicParsing="false" onAction="#añadirFact" text="Añadir" />
+                                          <MenuItem fx:id="delete1" mnemonicParsing="false" onAction="#eliminarFact" text="Eliminar" />
+                                          <MenuItem fx:id="modify1" mnemonicParsing="false" onAction="#modificarFact" text="Modificar" />
+                                          <MenuItem fx:id="search1" mnemonicParsing="false" onAction="#buscarFactura" text="Buscar" />
+                                       </items>
                                     </MenuButton>
                                     
                                     <MenuButton fx:id="prodOptions" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="top-menu-button" text="Producto" HBox.hgrow="ALWAYS">
