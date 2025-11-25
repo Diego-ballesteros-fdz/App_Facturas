@@ -18,7 +18,9 @@ import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import objects.Empresa;
 import objects.Entidad;
+import validations.Validation;
 
 /**
  *
@@ -124,11 +126,9 @@ public class FormController {
     private MenuItem cifType;
     private String nombreEmpresa = App.nombreEmpresaActual;
     private Entidad entidad;
-    
-    
 
     public void initialize() {
-        System.out.println("Tipo "+tipo);
+        System.out.println("Tipo " + tipo);
         if (tipo != null) {
             switch (tipo) {
                 case "Emp":
@@ -163,7 +163,7 @@ public class FormController {
                     break;
             }
         }
-        System.out.println("accion "+accion);
+        System.out.println("accion " + accion);
         if (accion != null) {
             System.out.println("Entra al segundo switch");
             switch (accion) {
@@ -189,12 +189,11 @@ public class FormController {
 
             }
         }
-        
-        
-   }
-    
+
+    }
+
     @FXML
-    public void establecerTipoDoc(){
+    public void establecerTipoDoc() {
         //Cambiamos el texto del SplitMenuButton en función del tipo de documento seleccionado (NIF, NIE o CIF)
         javafx.event.EventHandler<javafx.event.ActionEvent> accionCambio = e -> {
             MenuItem itemPulsado = (MenuItem) e.getSource();
@@ -211,12 +210,12 @@ public class FormController {
      * volver a la pantalla anterior
      */
     private void volverAction(ActionEvent event) throws IOException {
-        if(tipo.equals("Emp")){
+        if (tipo.equals("Emp")) {
             App.setRoot("primary");
-        }else{
+        } else {
             App.setRoot("secondary");
         }
-        
+
     }
 
     @FXML
@@ -230,8 +229,6 @@ public class FormController {
             System.out.println(e);
         }
     }
-
-   
 
     @FXML
     /**
@@ -248,9 +245,9 @@ public class FormController {
         this.accion = accion;
         initialize();//actualizamos la vista
     }
-    
-    public void setEntidad(Entidad e){
-        entidad=e;  
+
+    public void setEntidad(Entidad e) {
+        entidad = e;
     }
 
     @FXML
@@ -260,12 +257,43 @@ public class FormController {
     @FXML
     private void eliminarAction(ActionEvent event) {
     }
-    
-     @FXML
+
+    @FXML
     /**
      * boton de enviar
      */
     private void enviarAction(ActionEvent event) {
     }
 
+    public Entidad crearEntidad() {
+        Entidad e=null;
+        switch (tipo) {
+            case "Emp":
+                //creamos el obj empresa de los campos field
+                //verificamos el tipo de documento
+                String tipoDoc=docType.getText();
+                switch(tipoDoc){
+                    case "N.I.F":
+                        validations.Error error=Validation.esNIE(DocumentoEmpField.getText());
+                        break;
+
+                }
+                Error error=Validation.  DocumentoEmpField.getText();
+                Entidad em=new Entidad();
+                break;
+            case "CliPro":
+                //creamos el obj clipro de los campos field
+                break;
+            case "Prod":
+                //creamos el obj producto
+                break;
+            case "Fac":
+                //creamos el obj factura
+                break;
+            default:
+                System.out.println("Algo salio mal al iniciar el formulario");
+                break;
+        }
+    }
 }
+

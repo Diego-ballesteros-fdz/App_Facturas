@@ -20,6 +20,16 @@ public class Entidad {
     protected String telefono;
     protected String observaciones;
 
+    public Entidad( String nombre, String nif, String email, String telefono, String observaciones) {
+        this.nombre = nombre;
+        this.nif = nif;
+        this.email = email;
+        this.telefono = telefono;
+        this.observaciones = observaciones;
+    }
+    
+    
+
   
     private List<Rol> roles = new ArrayList<>();
 
