@@ -190,6 +190,11 @@ public class FormController {
             }
         }
         
+        
+   }
+    
+    @FXML
+    public void establecerTipoDoc(){
         //Cambiamos el texto del SplitMenuButton en función del tipo de documento seleccionado (NIF, NIE o CIF)
         javafx.event.EventHandler<javafx.event.ActionEvent> accionCambio = e -> {
             MenuItem itemPulsado = (MenuItem) e.getSource();
@@ -199,7 +204,7 @@ public class FormController {
         nifType.setOnAction(accionCambio);
         nieType.setOnAction(accionCambio);
         cifType.setOnAction(accionCambio);
-   }
+    }
 
     @FXML
     /**
