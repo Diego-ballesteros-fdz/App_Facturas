@@ -23,7 +23,9 @@ public class SecondaryController implements Initializable {
     @FXML
     private MenuButton provCliOptions;
     @FXML
-    private MenuButton factOptions;
+    private MenuButton comprasOptions;
+    @FXML
+    private MenuButton ventasOptions;
     @FXML
     private MenuButton prodOptions;
 
@@ -65,8 +67,12 @@ public class SecondaryController implements Initializable {
     }
 
     @FXML
-    private void buscarFactura() throws IOException {
-        App.setRootWithParam("busqueda", "Fac", null);
+    private void buscarComp() throws IOException {
+        App.setRootWithParam("busqueda", "Comp", null);
+    }
+    @FXML
+    private void buscarVent() throws IOException {
+        App.setRootWithParam("busqueda", "Vent", null);
     }
 
     @FXML
@@ -102,18 +108,32 @@ public class SecondaryController implements Initializable {
     }
 
     @FXML
-    private void añadirFact(ActionEvent event) throws IOException {
-        App.setRootWithParam("formulary", "Fac", "add");
+    private void añadirComp(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "Comp", "add");
     }
 
     @FXML
-    private void eliminarFact(ActionEvent event) throws IOException {
-        App.setRootWithParam("busqueda", "Fac", "delete");
+    private void eliminarComp(ActionEvent event) throws IOException {
+        App.setRootWithParam("busqueda", "Comp", "delete");
     }
 
     @FXML
-    private void modificarFact(ActionEvent event) throws IOException {
-        App.setRootWithParam("busqueda", "Fac", "modiffy");
+    private void modificarComp(ActionEvent event) throws IOException {
+        App.setRootWithParam("busqueda", "Comp", "modiffy");
+    }
+    @FXML
+    private void añadirVent(ActionEvent event) throws IOException {
+        App.setRootWithParam("formulary", "Vent", "add");
+    }
+
+    @FXML
+    private void eliminarVent(ActionEvent event) throws IOException {
+        App.setRootWithParam("busqueda", "Vent", "delete");
+    }
+
+    @FXML
+    private void modificarVent(ActionEvent event) throws IOException {
+        App.setRootWithParam("busqueda", "Vent", "modiffy");
     }
 
     @FXML

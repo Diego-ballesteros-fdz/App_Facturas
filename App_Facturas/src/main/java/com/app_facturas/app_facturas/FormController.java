@@ -151,13 +151,20 @@ public class FormController {
                     factPane.setVisible(false);
                     nomEmpProd.setText(nombreEmpresa);
                     break;
-                case "Fac":
+                case "Vent":
                     cliProvPane.setVisible(false);
                     productosPane.setVisible(false);
                     EmpresaPane.setVisible(false);
                     factPane.setVisible(true);
                     nomEmp.setText(nombreEmpresa);
-                    break;
+                    break;  
+                case "Comp":
+                    cliProvPane.setVisible(false);
+                    productosPane.setVisible(false);
+                    EmpresaPane.setVisible(false);
+                    factPane.setVisible(true);
+                    nomEmp.setText(nombreEmpresa);
+                    break;    
                 default:
                     System.out.println("Algo salio mal al iniciar el formulario");
                     break;
