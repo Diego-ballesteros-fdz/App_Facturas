@@ -153,7 +153,7 @@ public class Validation {
             if (t.matches(regex)) {
                 return new Error(false, "", Color.GREEN);
             } else {
-                return new Error(true, "El valor introducido no es un Nombre valido", Color.RED);
+                return new Error(true, "El valor introducido no es un Nombre valido: "+t, Color.RED);
             }
         }
     }

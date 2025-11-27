@@ -104,9 +104,9 @@
                   <Label text="provincia" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                   <SplitMenuButton fx:id="docType" mnemonicParsing="false" onAction="#establecerTipoDoc" text="Tipo de documento">
                     <items>
-                      <MenuItem fx:id="nifType" mnemonicParsing="false" text="N.I.F" />
-                      <MenuItem fx:id="nieType" mnemonicParsing="false" text="N.I.E" />
-                        <MenuItem fx:id="cifType" mnemonicParsing="false" text="C.I.F" />
+                      <MenuItem fx:id="nifType" mnemonicParsing="false" onAction="#establecerTipoDoc" text="N.I.F" />
+                      <MenuItem fx:id="nieType" mnemonicParsing="false" onAction="#establecerTipoDoc" text="N.I.E" />
+                        <MenuItem fx:id="cifType" mnemonicParsing="false" onAction="#establecerTipoDoc" text="C.I.F" />
                     </items>
                   </SplitMenuButton>
                   <TextField fx:id="DocumentoEmpField" GridPane.columnIndex="1" />
@@ -125,6 +125,7 @@
                </children>
             </GridPane>
             <Label layoutX="334.0" layoutY="28.0" text="Empresa" />
+            <Label fx:id="labelError" layoutX="344.0" layoutY="51.0" />
          </children>
       </Pane>
       <Pane fx:id="productosPane" layoutX="10.0" layoutY="10.0" prefHeight="445.0" prefWidth="706.0" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="-10.799999999999955" AnchorPane.topAnchor="10.0">

@@ -18,6 +18,8 @@ import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import objects.Direccion;
 import objects.Empresa;
 import objects.Entidad;
 import validations.Validation;
@@ -126,6 +128,8 @@ public class FormController {
     private MenuItem cifType;
     private String nombreEmpresa = App.nombreEmpresaActual;
     private Entidad entidad;
+    @FXML
+    private Label labelError;
 
     public void initialize() {
         System.out.println("Tipo " + tipo);
@@ -205,6 +209,7 @@ public class FormController {
         javafx.event.EventHandler<javafx.event.ActionEvent> accionCambio = e -> {
             MenuItem itemPulsado = (MenuItem) e.getSource();
             docType.setText(itemPulsado.getText());
+            System.out.println("Se asigna el tipo");
         };
         //Asigno la acción a los 3 documentos
         nifType.setOnAction(accionCambio);
@@ -270,23 +275,148 @@ public class FormController {
      * boton de enviar
      */
     private void enviarAction(ActionEvent event) {
+       Entidad e= crearEntidad();
+        System.out.println(e);
     }
 
     public Entidad crearEntidad() {
-        Entidad e=null;
+        Entidad e = null;
+        validations.Error error = null;
+        boolean sePuede = false;
+
         switch (tipo) {
             case "Emp":
                 //creamos el obj empresa de los campos field
+                String tipoDocumento="",
+                 nombre="",
+                 email="",
+                 telefono="",
+                 obser="",
+                 nombreVia="",
+                 numero="",
+                 ciudad="",
+                 provincia="",
+                 codigoPostal="",
+                 pais="";
                 //verificamos el tipo de documento
-                String tipoDoc=docType.getText();
-                switch(tipoDoc){
-                    case "N.I.F":
-                        validations.Error error=Validation.esNIE(DocumentoEmpField.getText());
-                        break;
+                String tipoDoc = docType.getText();
 
+                switch (tipoDoc) {
+                    case "N.I.F":
+                        error = Validation.esNIF(DocumentoEmpField.getText());
+                        break;
+                    case "N.I.E":
+                        error = Validation.esNIE(DocumentoEmpField.getText());
+                        break;
+                    case "C.I.F":
+                        error = Validation.esCIF(DocumentoEmpField.getText());
+                        break;
+                    case "Tipo de documento":
+                        error=new validations.Error(true,"debe seleccionar un tipo de documento",Color.RED);
+                        break;
+                        
                 }
-                Error error=Validation.  DocumentoEmpField.getText();
-                Entidad em=new Entidad();
+                //si no ha habido fallos almacenamos la info
+                if (!mostrarMensaje(error)) {
+                    tipoDocumento = DocumentoEmpField.getText();
+                    sePuede = true;
+                } else {
+                    sePuede = false;
+                    break;
+                }
+                //el nombre de la empresa
+                error = Validation.esNombre(NombreEmpField.getText());
+                if (!mostrarMensaje(error)) {
+                    nombre = NombreEmpField.getText();
+                    sePuede = true;
+                } else {
+                    sePuede = false;
+                    break;
+                }
+                //el email de la empresa
+                error = Validation.esEmail(emailEmpField.getText());
+                if (!mostrarMensaje(error)) {
+                    email = emailEmpField.getText();
+                    sePuede = true;
+                } else {
+                    sePuede = false;
+                    break;
+                }
+                //el telefono de la empresa
+                error = Validation.esTelefono(telefonoEmpField.getText());
+                if (!mostrarMensaje(error)) {
+                    telefono = telefonoEmpField.getText();
+                    sePuede = true;
+                } else {
+                    sePuede = false;
+                    break;
+                }
+                //el observaciones de la empresa
+                obser = observacionesEmpField.getText();
+
+                //el nombre de via de la empresa
+                error = Validation.esNombre(viaEmpField.getText());
+                if (!mostrarMensaje(error)) {
+                    nombreVia = viaEmpField.getText();
+                    sePuede = true;
+                } else {
+                    sePuede = false;
+                    break;
+                }
+                //el numero de la empresa
+                error = Validation.esEnteroPos(numEmpField.getText());
+                if (!mostrarMensaje(error)) {
+                    numero = numEmpField.getText();
+                    sePuede = true;
+                } else {
+                    sePuede = false;
+                    break;
+                }
+                //la ciudad de la empresa
+                error = Validation.esNombre(ciudadEmpField.getText());
+                if (!mostrarMensaje(error)) {
+                    ciudad = ciudadEmpField.getText();
+                    sePuede = true;
+                } else {
+                    sePuede = false;
+                    break;
+                }
+                //la provincia de la empresa
+                error = Validation.esNombre(provEmpField.getText());
+                if (!mostrarMensaje(error)) {
+                    provincia = provEmpField.getText();
+                    sePuede = true;
+                } else {
+                    sePuede = false;
+                    break;
+                }
+                //el codigopostal de la empresa
+                error = Validation.esTexto(codigoPostalEmpField.getText());
+                if (!mostrarMensaje(error)) {
+                    codigoPostal = codigoPostalCPField.getText();
+                    sePuede = true;
+                } else {
+                    sePuede = false;
+                    break;
+                }
+                //el pais de la empresa
+                error = Validation.esTexto(paisEmpField.getText());
+                if (!mostrarMensaje(error)) {
+                    pais = paisEmpField.getText();
+                    sePuede = true;
+                } else {
+                    sePuede = false;
+                    break;
+                }
+                if (sePuede) {
+                    System.out.println("Creando Entidad para empresa");
+                    Entidad em = new Entidad(nombre, tipoDocumento, email, telefono, obser);
+                    Direccion dir= new Direccion(em,nombreVia,numero,ciudad,provincia,codigoPostal,pais);
+                    Empresa empresa=new Empresa(em);
+                    System.out.println("obj Empresa creada");
+                    return empresa;
+                }
+
                 break;
             case "CliPro":
                 //creamos el obj clipro de los campos field
@@ -301,6 +431,19 @@ public class FormController {
                 System.out.println("Algo salio mal al iniciar el formulario");
                 break;
         }
+        return e;
+    }
+
+    private boolean mostrarMensaje(validations.Error error) {
+        if (error.isError()) {
+            //algo fallo en el tipo doc
+            labelError.setTextFill(error.getColor());
+            labelError.setText(error.getMensaje());
+        } else {
+            System.out.println("Algo salio mal en el form");
+            labelError.setTextFill(Color.GREEN);
+            labelError.setText("");
+        }
+        return error.isError();
     }
 }
-
