@@ -12,9 +12,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import objects.Cliente;
+import objects.CliPro;
 import objects.Entidad;
-import objects.Proveedor;
 
 /**
  *
@@ -232,7 +231,7 @@ public class EntidadDAO {
                 // 🌟 Cargar roles
                 e.setRoles(rolDAO.obtenerRolesPorEntidad(e));
 
-                // 🌟 Convertir a Cliente / Proveedor / Empresa
+                // 🌟 Convertir a CliPro / Proveedor / Empresa
                 return convertirSegunRol(e);
             }
 
@@ -315,9 +314,6 @@ public class EntidadDAO {
         // Si tiene AMBOS roles → devolver Entidad normal
         if (cli && prov) return e;
 
-        // Si solo tiene uno, devolver la clase correspondiente
-        if (cli) return new Cliente(e);
-        if (prov) return new Proveedor(e);
 
         // Sin rol → entidad base
         return e;

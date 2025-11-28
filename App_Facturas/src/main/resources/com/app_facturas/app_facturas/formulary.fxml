@@ -128,7 +128,7 @@
             <Label fx:id="labelError" layoutX="344.0" layoutY="51.0" />
          </children>
       </Pane>
-      <Pane fx:id="productosPane" layoutX="10.0" layoutY="10.0" prefHeight="445.0" prefWidth="706.0" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="-10.799999999999955" AnchorPane.topAnchor="10.0">
+      <Pane fx:id="productosPane" layoutX="10.0" layoutY="10.0" prefHeight="445.0" prefWidth="706.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="-10.799999999999955" AnchorPane.topAnchor="10.0">
          <children>
             <GridPane hgap="15.0" layoutX="19.0" layoutY="69.0" prefHeight="376.0" prefWidth="323.0">
                <columnConstraints>
@@ -155,7 +155,7 @@
             <Label layoutX="315.0" layoutY="52.0" text="Productos" />
             <Pane layoutX="362.0" layoutY="90.0" prefHeight="351.0" prefWidth="323.0">
                <children>
-                  <ListView layoutX="62.0" layoutY="48.0" onMouseClicked="#prodSelection" prefHeight="262.0" prefWidth="200.0" />
+                  <ListView fx:id="provList" layoutX="62.0" layoutY="48.0" onMouseClicked="#prodSelection" prefHeight="262.0" prefWidth="200.0" />
                   <Label layoutX="62.0" layoutY="14.0" text="Seleccione el proveedor:" />
                </children>
             </Pane>

@@ -13,12 +13,11 @@ import connection.DAO.EmpresaRelacionDAO;
 import connection.DAO.LineaFacturaDAO;
 import java.util.List;
 import objects.Direccion;
-import objects.Cliente;
+import objects.CliPro;
 import objects.Entidad;
 import objects.Factura;
 import objects.LineaFactura;
 import objects.Producto;
-import objects.Proveedor;
 import java.util.stream.Collectors;
 
 /**
@@ -38,24 +37,19 @@ public class DAOController {
 
     
     // ============================================================
-    //            ENTIDADES (Cliente, Proveedor, Empresa)
+    //            ENTIDADES (CliPro, Proveedor, Empresa)
     // ============================================================
     public Entidad crearEntidad(Entidad e) {
         return entidadDAO.crear(e);
     }
 
-    public Cliente crearCliente(Entidad e) {
+    public CliPro crearCliente(Entidad e) {
 
         Entidad creada = crearEntidad(e);
         rolDAO.insertarRol(creada.getIdEntidad(), "CLIENTE");
-        return (Cliente) entidadDAO.buscarPorId(creada.getIdEntidad());
+        return (CliPro) entidadDAO.buscarPorId(creada.getIdEntidad());
     }
 
-    public Proveedor crearProveedor(Entidad e) {
-        Entidad creada = crearEntidad(e);
-        rolDAO.insertarRol(creada.getIdEntidad(), "PROVEEDOR");
-        return (Proveedor) entidadDAO.buscarPorId(creada.getIdEntidad());
-    }
 
     public Entidad crearEmpresa(Entidad e) {
         return entidadDAO.crear(e);
@@ -77,16 +71,6 @@ public class DAOController {
 
     public List<Entidad> listarEntidades() {
         return entidadDAO.obtenerTodas();
-    }
-
-    // Clientes solo
-    public List<Entidad> listarClientes() {
-        return entidadDAO.listarClientes();
-    }
-
-    // Proveedores solo
-    public List<Entidad> listarProveedores() {
-        return entidadDAO.listarProveedores();
     }
 
     // Clientes + Proveedores

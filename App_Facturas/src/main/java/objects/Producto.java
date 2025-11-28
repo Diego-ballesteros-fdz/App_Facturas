@@ -15,7 +15,7 @@ public class Producto extends Entidad {
     private String descripcion;
     private double precio;
     private int stock;
-    private Proveedor proveedor;  // relación con ENTIDAD (proveedor)
+    private CliPro proveedor;  // relación con ENTIDAD (proveedor)
     private long idProveedor; //relacion con proveedor (solo id)
     
     
@@ -43,9 +43,13 @@ public class Producto extends Entidad {
 
     public void setStock(int stock) { this.stock = stock; }
 
-    public Proveedor getProveedor() { return proveedor; }
+    public CliPro getProveedor() {
+        return proveedor;
+    }
 
-    public void setProveedor(Proveedor proveedor) { this.proveedor = proveedor; }
+    public void setProveedor(CliPro proveedor) {
+        this.proveedor = proveedor;
+    }
 
     public long getIdProveedor() {
         return idProveedor;

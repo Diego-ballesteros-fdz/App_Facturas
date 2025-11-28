@@ -8,13 +8,15 @@ package objects;
  *
  * @author roque
  */
-public class Proveedor extends Entidad{
+public class CliPro extends Entidad{
     
+    private boolean isCliente;
+    private boolean isProveedor;
     
-    public Proveedor() {}
+    public CliPro() {}
 
     
-    public Proveedor(Entidad e) {
+    public CliPro(Entidad e,boolean cliente,boolean proveedor) {
         super();
         this.setIdEntidad(e.getIdEntidad());
         this.setNombre(e.getNombre());
@@ -22,12 +24,14 @@ public class Proveedor extends Entidad{
         this.setEmail(e.getEmail());
         this.setTelefono(e.getTelefono());
         this.setObservaciones(e.getObservaciones());
-        
+        isCliente=cliente;
+        isProveedor=proveedor;
     }
+    
 
     @Override
     public String toString() {
-       return "Proveedor: " + nombre + " (" + nif + ")";
+        return "Cliente: " + nombre + " (" + nif + ")";
     }
     
     

@@ -68,25 +68,6 @@ public class BuscarEntidadController {
         System.out.println("Filtro: " + filtroFinal);
 
         switch (tipo) {
-            
-
-            case "cliente":
-                listaResultados.getItems().setAll(
-                        dao.listarClientes().stream()
-                                .filter(c -> c.getNombre() != null
-                                && c.getNombre().toLowerCase().contains(filtroFinal))
-                                .collect(java.util.stream.Collectors.toList())
-                );
-                break;
-
-            case "proveedor":
-                listaResultados.getItems().setAll(
-                        dao.listarProveedores().stream()
-                                .filter(p -> p.getNombre() != null
-                                && p.getNombre().toLowerCase().contains(filtroFinal))
-                                .collect(java.util.stream.Collectors.toList())
-                );
-                break;
 
             case "CliPro":
                 System.out.println("idEmpres:"+idEmpresaActual);
