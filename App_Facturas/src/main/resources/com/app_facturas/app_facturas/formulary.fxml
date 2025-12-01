@@ -155,7 +155,7 @@
             <Label layoutX="315.0" layoutY="52.0" text="Productos" />
             <Pane layoutX="362.0" layoutY="90.0" prefHeight="351.0" prefWidth="323.0">
                <children>
-                  <ListView fx:id="provList" layoutX="62.0" layoutY="48.0" onMouseClicked="#prodSelection" prefHeight="262.0" prefWidth="200.0" />
+                  <ListView fx:id="provList" layoutX="62.0" layoutY="48.0" onMouseClicked="#provSelection" prefHeight="262.0" prefWidth="200.0" />
                   <Label layoutX="62.0" layoutY="14.0" text="Seleccione el proveedor:" />
                </children>
             </Pane>

@@ -7,6 +7,8 @@ package com.app_facturas.app_facturas;
 import connection.DAOController;
 import java.io.IOException;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -134,12 +136,13 @@ public class FormController {
     private Entidad entidad;
     @FXML
     private Label labelError;
-    
-    private DAOController dao=new DAOController();
+
+    private DAOController dao = new DAOController();
     @FXML
-    private ListView<?> provList;
+    private ListView<Entidad> provList;
 
     public void initialize() {
+        actualizarProvList();
         System.out.println("Tipo " + tipo);
         if (tipo != null) {
             switch (tipo) {
@@ -169,14 +172,14 @@ public class FormController {
                     EmpresaPane.setVisible(false);
                     factPane.setVisible(true);
                     nomEmp.setText(nombreEmpresa);
-                    break;  
+                    break;
                 case "Comp":
                     cliProvPane.setVisible(false);
                     productosPane.setVisible(false);
                     EmpresaPane.setVisible(false);
                     factPane.setVisible(true);
                     nomEmp.setText(nombreEmpresa);
-                    break;    
+                    break;
                 default:
                     System.out.println("Algo salio mal al iniciar el formulario");
                     break;
@@ -250,12 +253,6 @@ public class FormController {
         }
     }
 
-    @FXML
-    /**
-     * listener del click en productos en el listview
-     */
-    private void prodSelection(MouseEvent event) {
-    }
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
@@ -283,7 +280,7 @@ public class FormController {
      * boton de enviar
      */
     private void enviarAction(ActionEvent event) {
-       Entidad e= crearEntidad();
+        Entidad e = crearEntidad();
         System.out.println(e);
     }
 
@@ -291,22 +288,22 @@ public class FormController {
         Entidad e = null;
         validations.Error error = null;
         boolean sePuede = false;
-        String tipoDocumento="",
-                 nombre="",
-                 email="",
-                 telefono="",
-                 obser="",
-                 nombreVia="",
-                 numero="",
-                 ciudad="",
-                 provincia="",
-                 codigoPostal="",
-                 pais="";
+        String tipoDocumento = "",
+                nombre = "",
+                email = "",
+                telefono = "",
+                obser = "",
+                nombreVia = "",
+                numero = "",
+                ciudad = "",
+                provincia = "",
+                codigoPostal = "",
+                pais = "";
 
         switch (tipo) {
             case "Emp":
                 //creamos el obj empresa de los campos field
-                
+
                 //verificamos el tipo de documento
                 String tipoDoc = docType.getText();
 
@@ -321,9 +318,9 @@ public class FormController {
                         error = Validation.esCIF(DocumentoEmpField.getText());
                         break;
                     case "Tipo de documento":
-                        error=new validations.Error(true,"debe seleccionar un tipo de documento",Color.RED);
+                        error = new validations.Error(true, "debe seleccionar un tipo de documento", Color.RED);
                         break;
-                        
+
                 }
                 //si no ha habido fallos almacenamos la info
                 if (!mostrarMensaje(error)) {
@@ -343,101 +340,101 @@ public class FormController {
                     break;
                 }
                 //el email de la empresa
-                if(!emailEmpField.getText().equals("")){
-                error = Validation.esEmail(emailEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    email = emailEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!emailEmpField.getText().equals("")) {
+                    error = Validation.esEmail(emailEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        email = emailEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //el telefono de la empresa
-                if(!telefonoEmpField.getText().equals("")){
-                error = Validation.esTelefono(telefonoEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    telefono = telefonoEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!telefonoEmpField.getText().equals("")) {
+                    error = Validation.esTelefono(telefonoEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        telefono = telefonoEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //el observaciones de la empresa
                 obser = observacionesEmpField.getText();
 
                 //el nombre de via de la empresa
-                if(!viaEmpField.getText().equals("")){
-                error = Validation.esNombre(viaEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    nombreVia = viaEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!viaEmpField.getText().equals("")) {
+                    error = Validation.esNombre(viaEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        nombreVia = viaEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //el numero de la calle de la empresa
-                if(!numEmpField.getText().equals("")){
-                error = Validation.esEnteroPos(numEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    numero = numEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!numEmpField.getText().equals("")) {
+                    error = Validation.esEnteroPos(numEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        numero = numEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //la ciudad de la empresa
-                if(!ciudadEmpField.getText().equals("")){
-                error = Validation.esNombre(ciudadEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    ciudad = ciudadEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!ciudadEmpField.getText().equals("")) {
+                    error = Validation.esNombre(ciudadEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        ciudad = ciudadEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //la provincia de la empresa
-                if(!provEmpField.getText().equals("")){
-                error = Validation.esNombre(provEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    provincia = provEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!provEmpField.getText().equals("")) {
+                    error = Validation.esNombre(provEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        provincia = provEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //el codigopostal de la empresa
-                if(!codigoPostalEmpField.getText().equals("")){
-                error = Validation.esTexto(codigoPostalEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    codigoPostal = codigoPostalCPField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!codigoPostalEmpField.getText().equals("")) {
+                    error = Validation.esTexto(codigoPostalEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        codigoPostal = codigoPostalCPField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //el pais de la empresa
-                if(!paisEmpField.getText().equals("")){
-                error = Validation.esTexto(paisEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    pais = paisEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!paisEmpField.getText().equals("")) {
+                    error = Validation.esTexto(paisEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        pais = paisEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 if (sePuede) {
                     System.out.println("Creando Entidad para empresa");
                     Entidad em = new Entidad(nombre, tipoDocumento, email, telefono, obser);
-                    Direccion dir= new Direccion(em,nombreVia,numero,ciudad,provincia,codigoPostal,pais);
-                    Empresa empresa=new Empresa(em);
+                    Direccion dir = new Direccion(em, nombreVia, numero, ciudad, provincia, codigoPostal, pais);
+                    Empresa empresa = new Empresa(em);
                     System.out.println("obj Empresa creada");
                     return empresa;
                 }
@@ -459,9 +456,9 @@ public class FormController {
                         error = Validation.esCIF(DocumentoEmpField.getText());
                         break;
                     case "Tipo de documento":
-                        error=new validations.Error(true,"debe seleccionar un tipo de documento",Color.RED);
+                        error = new validations.Error(true, "debe seleccionar un tipo de documento", Color.RED);
                         break;
-                        
+
                 }
                 //si no ha habido fallos almacenamos la info
                 if (!mostrarMensaje(error)) {
@@ -481,113 +478,114 @@ public class FormController {
                     break;
                 }
                 //el email de la empresa
-                if(!emailEmpField.getText().equals("")){
-                error = Validation.esEmail(emailEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    email = emailEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!emailEmpField.getText().equals("")) {
+                    error = Validation.esEmail(emailEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        email = emailEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //el telefono de la empresa
-                if(!telefonoEmpField.getText().equals("")){
-                error = Validation.esTelefono(telefonoEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    telefono = telefonoEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!telefonoEmpField.getText().equals("")) {
+                    error = Validation.esTelefono(telefonoEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        telefono = telefonoEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //el observaciones de la empresa
                 obser = observacionesEmpField.getText();
 
                 //el nombre de via de la empresa
-                if(!viaEmpField.getText().equals("")){
-                error = Validation.esNombre(viaEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    nombreVia = viaEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!viaEmpField.getText().equals("")) {
+                    error = Validation.esNombre(viaEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        nombreVia = viaEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //el numero de la calle de la empresa
-                if(!numEmpField.getText().equals("")){
-                error = Validation.esEnteroPos(numEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    numero = numEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!numEmpField.getText().equals("")) {
+                    error = Validation.esEnteroPos(numEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        numero = numEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //la ciudad de la empresa
-                if(!ciudadEmpField.getText().equals("")){
-                error = Validation.esNombre(ciudadEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    ciudad = ciudadEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!ciudadEmpField.getText().equals("")) {
+                    error = Validation.esNombre(ciudadEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        ciudad = ciudadEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //la provincia de la empresa
-                if(!provEmpField.getText().equals("")){
-                error = Validation.esNombre(provEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    provincia = provEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!provEmpField.getText().equals("")) {
+                    error = Validation.esNombre(provEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        provincia = provEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //el codigopostal de la empresa
-                if(!codigoPostalEmpField.getText().equals("")){
-                error = Validation.esTexto(codigoPostalEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    codigoPostal = codigoPostalCPField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!codigoPostalEmpField.getText().equals("")) {
+                    error = Validation.esTexto(codigoPostalEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        codigoPostal = codigoPostalCPField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 //el pais de la empresa
-                if(!paisEmpField.getText().equals("")){
-                error = Validation.esTexto(paisEmpField.getText());
-                if (!mostrarMensaje(error)) {
-                    pais = paisEmpField.getText();
-                    sePuede = true;
-                } else {
-                    sePuede = false;
-                    break;
-                }
+                if (!paisEmpField.getText().equals("")) {
+                    error = Validation.esTexto(paisEmpField.getText());
+                    if (!mostrarMensaje(error)) {
+                        pais = paisEmpField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
                 }
                 if (sePuede) {
                     System.out.println("Creando Entidad para empresa");
                     Entidad em = new Entidad(nombre, tipoDocumento, email, telefono, obser);
-                    Direccion dir= new Direccion(em,nombreVia,numero,ciudad,provincia,codigoPostal,pais);
-                    CliPro CliPro=new CliPro(em, clienteCPCheck.isSelected() ,proveedorCPCheck.isSelected());
+                    Direccion dir = new Direccion(em, nombreVia, numero, ciudad, provincia, codigoPostal, pais);
+                    CliPro CliPro = new CliPro(em, clienteCPCheck.isSelected(), proveedorCPCheck.isSelected());
                     System.out.println("obj CliPro creada");
                     return CliPro;
                 }
-                
+
                 break;
             case "Prod":
-                //mostramos en el listview los proovedores para asociar dicho producto
-                System.out.println("idEmpres:"+App.empresaActualId);
-                List<Entidad> datos = dao.listarClientesYProveedores(App.empresaActualId);
-                //mostrar los dagtos en el listview provList
                 //creamos el obj producto
                 
+                //recojemos el prov en concreto al que va asociado
+                Entidad prov=provList.getSelectionModel().getSelectedItem();
+                
+                
+
                 break;
             case "Fac":
                 //creamos el obj factura
@@ -597,6 +595,21 @@ public class FormController {
                 break;
         }
         return e;
+    }
+    
+    private void actualizarProvList(){
+        //mostramos en el listview los proovedores para asociar dicho producto
+                System.out.println("idEmpres:" + App.empresaActualId);
+                List<Entidad> datos = dao.listarClientesYProveedores(App.empresaActualId);
+                //eliminamos los clientes de la lista
+                for(Entidad x : datos){
+                    if(x.isCliente()){
+                        datos.remove(x);
+                    }
+                }
+                //mostrar los dagtos en el listview provList
+                ObservableList<Entidad> observableList = FXCollections.observableArrayList(datos);
+                provList.setItems(observableList);
     }
 
     private boolean mostrarMensaje(validations.Error error) {
@@ -609,5 +622,10 @@ public class FormController {
             labelError.setText("");
         }
         return error.isError();
+    }
+
+    @FXML
+    private void provSelection(MouseEvent event) {
+        
     }
 }
