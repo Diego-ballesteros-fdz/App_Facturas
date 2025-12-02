@@ -51,8 +51,15 @@ public class SecondaryController implements Initializable {
     private MenuItem modifyProvCli;
     @FXML
     private MenuItem searchProvCli;
-
     @FXML
+    private MenuItem addP;
+    @FXML
+    private MenuItem deleteP;
+    @FXML
+    private MenuItem modifyP;
+    @FXML
+    private MenuItem searchP;
+
     private void buscarCliente() throws IOException {
         App.setRootWithParam("busqueda", "cliente", null);
     }

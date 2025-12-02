@@ -16,6 +16,18 @@ public class Producto extends Entidad {
     private double precio;
     private int stock;
     private CliPro proveedor;  // relación con ENTIDAD (proveedor)
+
+    public Producto(String nombre, String descripcion, double precio, int stock, CliPro proveedor) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.stock = stock;
+        this.proveedor = proveedor;
+    }
+    
+    public Producto(){
+        
+    }
     private long idProveedor; //relacion con proveedor (solo id)
     
     

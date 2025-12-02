@@ -13,19 +13,54 @@ import java.time.LocalDate;
 public class Factura extends Entidad {
     
     private long idFactura;
-    private LocalDate fecha;
+    private LocalDate fechaEmision;
+    private LocalDate fechaEntrega;
     private double total;
     private Entidad cliente; // relación real con ENTIDAD
+    private String tipo;
 
     
+    public Factura(LocalDate fechaEmision, LocalDate fechaEntrega, double total, Entidad cliente, String tipo) {
+        this.fechaEmision = fechaEmision;
+        this.fechaEntrega = fechaEntrega;
+        this.total = total;
+        this.cliente = cliente;
+        this.tipo = tipo;
+    }
     
+    public Factura(){
+        
+    }
+
      public long getIdFactura() { return idFactura; }
 
     public void setIdFactura(long idFactura) { this.idFactura = idFactura; }
 
-    public LocalDate getFecha() { return fecha; }
+    public LocalDate getFechaEmision() {
+        return fechaEmision;
+    }
 
-    public void setFecha(LocalDate fecha) { this.fecha = fecha; }
+    public void setFechaEmision(LocalDate fechaEmision) {
+        this.fechaEmision = fechaEmision;
+    }
+
+    public LocalDate getFechaEntrega() {
+        return fechaEntrega;
+    }
+
+    public void setFechaEntrega(LocalDate fechaEntrega) {
+        this.fechaEntrega = fechaEntrega;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    
 
     public double getTotal() { return total; }
 
@@ -39,7 +74,7 @@ public class Factura extends Entidad {
     @Override
     public String toString() {
         return "Factura #" + idFactura +
-               " | " + fecha +
+               " | " + fechaEntrega +
                " | Cliente: " + (cliente != null ? cliente.getNombre() : "N/A");
     }
 

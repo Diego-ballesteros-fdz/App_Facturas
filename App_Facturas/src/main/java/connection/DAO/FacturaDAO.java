@@ -28,7 +28,7 @@ public class FacturaDAO {
         try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            ps.setDate(1, Date.valueOf(f.getFecha()));
+            ps.setDate(1, Date.valueOf(f.getFechaEmision()));
             ps.setLong(2, f.getCliente().getIdEntidad());
             ps.setDouble(3, f.getTotal());
 
@@ -72,7 +72,7 @@ public class FacturaDAO {
             while (rs.next()) {
                 Factura f = new Factura();
                 f.setIdFactura(rs.getLong("idFactura"));
-                f.setFecha(rs.getDate("fecha").toLocalDate());
+                f.setFechaEmision(rs.getDate("fecha").toLocalDate());
                 f.setTotal(rs.getDouble("total"));
                 lista.add(f);
             }
@@ -98,7 +98,7 @@ public class FacturaDAO {
             while (rs.next()) {
                 Factura f = new Factura();
                 f.setIdFactura(rs.getLong("idFactura"));
-                f.setFecha(rs.getDate("fecha").toLocalDate());
+                f.setFechaEmision(rs.getDate("fecha").toLocalDate());
                 f.setTotal(rs.getDouble("total"));
                 lista.add(f);
             }

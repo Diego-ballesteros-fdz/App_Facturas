@@ -6,6 +6,7 @@ package com.app_facturas.app_facturas;
 
 import connection.DAOController;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,9 +17,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -28,6 +31,7 @@ import objects.CliPro;
 import objects.Direccion;
 import objects.Empresa;
 import objects.Entidad;
+import objects.Producto;
 import validations.Validation;
 
 /**
@@ -90,14 +94,6 @@ public class FormController {
     private TextField codigoPostalEmpField;
     @FXML
     private Pane productosPane;
-    @FXML
-    private TextField DocumentoEmpField11;
-    @FXML
-    private TextField NombreEmpField11;
-    @FXML
-    private TextField emailEmpField11;
-    @FXML
-    private TextField telefonoEmpField11;
 
     @FXML
     private Pane factPane;
@@ -105,10 +101,6 @@ public class FormController {
     private TextField NombreEmpField1;
     @FXML
     private TextField observacionesEmpField1;
-    @FXML
-    private TextField provEmpField1;
-    @FXML
-    private TextField paisEmpField1;
 
     private String tipo;
     private String accion;
@@ -140,9 +132,30 @@ public class FormController {
     private DAOController dao = new DAOController();
     @FXML
     private ListView<Entidad> provList;
+    @FXML
+    private TextField nombreProField;
+    @FXML
+    private TextField descripProField;
+    @FXML
+    private TextField precioProField;
+    @FXML
+    private TextField stockProField;
+    @FXML
+    private DatePicker fechaEmisionDate;
+    @FXML
+    private DatePicker fechaEntregaDate;
+    @FXML
+    private ListView<?> productosList;
+    @FXML
+    private Spinner<?> cantidadProFacField;
+    @FXML
+    private ListView<?> productosAddList;
+    @FXML
+    private SplitMenuButton splitMenuIVA;
 
     public void initialize() {
-        actualizarProvList();
+        
+        
         System.out.println("Tipo " + tipo);
         if (tipo != null) {
             switch (tipo) {
@@ -165,6 +178,7 @@ public class FormController {
                     EmpresaPane.setVisible(false);
                     factPane.setVisible(false);
                     nomEmpProd.setText(nombreEmpresa);
+                    actualizarProvList();
                     break;
                 case "Vent":
                     cliProvPane.setVisible(false);
@@ -172,6 +186,7 @@ public class FormController {
                     EmpresaPane.setVisible(false);
                     factPane.setVisible(true);
                     nomEmp.setText(nombreEmpresa);
+                    actualizarProd();
                     break;
                 case "Comp":
                     cliProvPane.setVisible(false);
@@ -179,6 +194,7 @@ public class FormController {
                     EmpresaPane.setVisible(false);
                     factPane.setVisible(true);
                     nomEmp.setText(nombreEmpresa);
+                    actualizarProd();
                     break;
                 default:
                     System.out.println("Algo salio mal al iniciar el formulario");
@@ -212,6 +228,10 @@ public class FormController {
             }
         }
 
+    }
+    
+    public void actualizarProd(){
+        
     }
 
     @FXML
@@ -253,7 +273,6 @@ public class FormController {
         }
     }
 
-
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
@@ -280,8 +299,7 @@ public class FormController {
      * boton de enviar
      */
     private void enviarAction(ActionEvent event) {
-        Entidad e = crearEntidad();
-        System.out.println(e);
+
     }
 
     public Entidad crearEntidad() {
@@ -298,7 +316,11 @@ public class FormController {
                 ciudad = "",
                 provincia = "",
                 codigoPostal = "",
-                pais = "";
+                pais = "",
+                nompro = "",
+                descpro = "",
+                preciopro = "",
+                Stockpro = "";
 
         switch (tipo) {
             case "Emp":
@@ -579,16 +601,70 @@ public class FormController {
 
                 break;
             case "Prod":
+                sePuede = false;
                 //creamos el obj producto
-                
-                //recojemos el prov en concreto al que va asociado
-                Entidad prov=provList.getSelectionModel().getSelectedItem();
-                
-                
 
+                //recojemos el prov en concreto al que va asociado
+                Entidad prov = provList.getSelectionModel().getSelectedItem();
+
+                //cogemos y comprobamos el dato nompro
+                if (!nombreProField.getText().equals("")) {
+                    error = Validation.esNombre(nombreProField.getText());
+                    if (!mostrarMensaje(error)) {
+                        nompro = nombreProField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
+                }
+                //cogemos y comprovamos el descpro
+                if (!descripProField.getText().equals("")) {
+                    error = Validation.esTexto(descripProField.getText());
+                    if (!mostrarMensaje(error)) {
+                        descpro = descripProField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
+                }
+                //cogemos y comprovamos el precio
+                if (!precioProField.getText().equals("")) {
+                    error = Validation.esDecimalPos(precioProField.getText());
+                    if (!mostrarMensaje(error)) {
+                        preciopro = precioProField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
+                }
+                //cogemos y validamos el stock
+                if (!stockProField.getText().equals("")) {
+                    error = Validation.esEnteroPos(stockProField.getText());
+                    if (!mostrarMensaje(error)) {
+                        Stockpro = stockProField.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
+                }
+                //creamos la entidad producto
+                if (sePuede) {
+                    System.out.println("Creando Entidad para producto");
+                    Entidad prod = new Producto(nompro, descpro, Double.parseDouble(preciopro), Integer.parseInt(Stockpro), (CliPro) prov);
+                    System.out.println("obj producto creada");
+                    return prod;
+                }
                 break;
-            case "Fac":
-                //creamos el obj factura
+            case "comp":
+                
+                
+                break;
+            case "vent":
+                //creamos el obj factura venta
                 break;
             default:
                 System.out.println("Algo salio mal al añadir");
@@ -596,20 +672,24 @@ public class FormController {
         }
         return e;
     }
-    
-    private void actualizarProvList(){
+
+    private void actualizarProvList() {
         //mostramos en el listview los proovedores para asociar dicho producto
-                System.out.println("idEmpres:" + App.empresaActualId);
-                List<Entidad> datos = dao.listarClientesYProveedores(App.empresaActualId);
-                //eliminamos los clientes de la lista
-                for(Entidad x : datos){
-                    if(x.isCliente()){
-                        datos.remove(x);
-                    }
-                }
-                //mostrar los dagtos en el listview provList
-                ObservableList<Entidad> observableList = FXCollections.observableArrayList(datos);
-                provList.setItems(observableList);
+        System.out.println("idEmpres:" + App.empresaActualId);
+        List<Entidad> datos = dao.listarClientesYProveedores(App.empresaActualId);
+
+        ArrayList<Entidad> mostrar = new ArrayList<Entidad>();
+        //eliminamos los clientes de la lista
+        for (Entidad x : datos) {
+            if (x.isCliente() && x.isProveedor()) {
+                mostrar.add(x);
+            } else if (x.isProveedor()) {
+                mostrar.add(x);
+            }
+        }
+        //mostrar los dagtos en el listview provList
+        ObservableList<Entidad> observableList = FXCollections.observableArrayList(mostrar);
+        provList.setItems(observableList);
     }
 
     private boolean mostrarMensaje(validations.Error error) {
@@ -625,7 +705,26 @@ public class FormController {
     }
 
     @FXML
-    private void provSelection(MouseEvent event) {
-        
+    private void establecerIVA(ActionEvent event) {
+        for (MenuItem item : splitMenuIVA.getItems()) {
+
+        item.setOnAction(evento -> {
+            // Cambiar el texto del SplitMenuButton por el nombre del item seleccionado
+            splitMenuIVA.setText(item.getText());
+        });
     }
+    }
+
+    @FXML
+    private void añadirProd(ActionEvent event) {
+    }
+
+    @FXML
+    private void quitarProd(ActionEvent event) {
+    }
+
+    @FXML
+    private void provSelection(MouseEvent event) {
+    }
+
 }
