@@ -145,17 +145,24 @@ public class FormController {
     @FXML
     private DatePicker fechaEntregaDate;
     @FXML
-    private ListView<?> productosList;
+    private ListView<Entidad> productosList;
     @FXML
-    private Spinner<?> cantidadProFacField;
+    private Spinner<Entidad> cantidadProFacField;
     @FXML
-    private ListView<?> productosAddList;
+    private ListView<Entidad> productosAddList;
     @FXML
     private SplitMenuButton splitMenuIVA;
+    @FXML
+    private MenuItem primero;
+    @FXML
+    private MenuItem segundo;
+    @FXML
+    private MenuItem tercero;
+    
+    private ArrayList<Entidad> productosAñadidos=new ArrayList<Entidad>();
 
     public void initialize() {
-        
-        
+
         System.out.println("Tipo " + tipo);
         if (tipo != null) {
             switch (tipo) {
@@ -229,8 +236,8 @@ public class FormController {
         }
 
     }
-    
-    public void actualizarProd(){
+
+    public void actualizarProd() {
         
     }
 
@@ -660,8 +667,7 @@ public class FormController {
                 }
                 break;
             case "comp":
-                
-                
+
                 break;
             case "vent":
                 //creamos el obj factura venta
@@ -705,26 +711,32 @@ public class FormController {
     }
 
     @FXML
-    private void establecerIVA(ActionEvent event) {
-        for (MenuItem item : splitMenuIVA.getItems()) {
-
-        item.setOnAction(evento -> {
-            // Cambiar el texto del SplitMenuButton por el nombre del item seleccionado
-            splitMenuIVA.setText(item.getText());
-        });
-    }
+    private void establecerIVA() {
+         javafx.event.EventHandler<javafx.event.ActionEvent> accionCambio = e -> {
+            MenuItem itemPulsado = (MenuItem) e.getSource();
+            splitMenuIVA.setText(itemPulsado.getText());
+            
+        };
+        //Asigno la acción a los 3 documentos
+        primero.setOnAction(accionCambio);
+        segundo.setOnAction(accionCambio);
+        tercero.setOnAction(accionCambio);
     }
 
     @FXML
     private void añadirProd(ActionEvent event) {
+       Entidad p= productosList.getSelectionModel().getSelectedItem();
+       
     }
 
     @FXML
     private void quitarProd(ActionEvent event) {
+        
     }
 
     @FXML
     private void provSelection(MouseEvent event) {
+        
     }
 
 }
