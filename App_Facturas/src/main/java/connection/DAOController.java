@@ -86,6 +86,20 @@ public class DAOController {
     public List<Entidad> listarSoloEmpresas() {
         return entidadDAO.listarSoloEmpresas();
     }
+    
+    public boolean modificarEntidad(Entidad e) {
+        return entidadDAO.modificar(e);
+    }
+    public void eliminarRoles(long idEntidad) {
+        rolDAO.eliminarRolesPorEntidad(idEntidad);
+    }
+    
+    public void agregarRolEntidad(long idEntidad, String rol) {
+        rolDAO.insertarRol(idEntidad, rol);
+    }
+
+
+
 
     
     // ============================================================

@@ -294,11 +294,60 @@ public class FormController {
     }
 
     @FXML
-    private void modificarAction(ActionEvent event) {
+private void modificarAction(ActionEvent event) {
+
+    Entidad obj = crearEntidad();  // crea la entidad con los nuevos datos
+
+    if (obj == null) return; // error en validaciones
+
+    switch (tipo) {
+
+        case "Emp":
+            dao.modificarEntidad(obj);
+            break;
+
+        case "CliPro":
+            // modificar datos base
+            dao.modificarEntidad(obj);
+
+            // actualizar roles
+            dao.eliminarRoles(obj.getIdEntidad());
+
+            CliPro cp = (CliPro) obj;
+
+            if (cp.isCliente()) dao.agregarRolEntidad(obj.getIdEntidad(), "CLIENTE");
+            if (cp.isProveedor()) dao.agregarRolEntidad(obj.getIdEntidad(), "PROVEEDOR");
+
+            break;
+
+        case "Prod":
+            // Producto ya viene con los campos y proveedor
+            Producto p = (Producto) obj;
+            dao.crearProducto(p); // si tuvieras “modificarProducto”, úsalo
+            break;
+    }
+
+        volverAtras();
     }
 
     @FXML
     private void eliminarAction(ActionEvent event) {
+
+        if (entidad == null) return;
+
+        switch (tipo) {
+
+            case "Emp":
+            case "CliPro":
+                dao.eliminarEntidad(entidad.getIdEntidad());
+                break;
+
+            case "Prod":
+                dao.eliminarProducto(entidad.getIdEntidad());
+                break;
+        }
+
+        volverAtras();
     }
 
     @FXML
@@ -306,7 +355,33 @@ public class FormController {
      * boton de enviar
      */
     private void enviarAction(ActionEvent event) {
+        
+        Entidad obj = crearEntidad();
 
+        if (obj == null) return;
+
+        switch (tipo) {
+
+            case "Emp":
+                dao.crearEmpresa(obj);
+                break;
+
+            case "CliPro":
+                Entidad creada = dao.crearEntidad(obj);
+
+                CliPro cp = (CliPro) obj;
+
+                if (cp.isCliente()) dao.agregarRolEntidad(creada.getIdEntidad(), "CLIENTE");
+                if (cp.isProveedor()) dao.agregarRolEntidad(creada.getIdEntidad(), "PROVEEDOR");
+
+                break;
+
+            case "Prod":
+                dao.crearProducto((Producto)obj);
+                break;
+        }
+
+        volverAtras();
     }
 
     public Entidad crearEntidad() {
@@ -737,6 +812,17 @@ public class FormController {
     @FXML
     private void provSelection(MouseEvent event) {
         
+    }
+    
+    private void volverAtras() {
+        try {
+            if (tipo.equals("Emp"))
+                App.setRoot("primary");
+            else
+                App.setRoot("secondary");
+        } catch (IOException ex) {
+            System.out.println("❌ Error al volver: " + ex.getMessage());
+        }
     }
 
 }
