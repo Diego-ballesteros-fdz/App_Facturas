@@ -5,6 +5,8 @@
 package objects;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+
 
 /**
  *
@@ -14,22 +16,38 @@ public class Factura extends Entidad {
     
     private long idFactura;
     private LocalDate fechaEmision;
-    private LocalDate fechaEntrega;
     private double total;
     private Entidad cliente; // relación real con ENTIDAD
     private String tipo;
 
     
-    public Factura(LocalDate fechaEmision, LocalDate fechaEntrega, double total, Entidad cliente, String tipo) {
+    public Factura(LocalDate fechaEmision,String tipo, String nombre,ArrayList<Integer> lista,ArrayList<Entidad> listaProd) {
         this.fechaEmision = fechaEmision;
-        this.fechaEntrega = fechaEntrega;
-        this.total = total;
-        this.cliente = cliente;
-        this.tipo = tipo;
+        this.cliente = encontrarCliente(nombre);
+        this.tipo = tipo;      
+        this.total=calcularTotal(lista,listaProd);
+        
     }
     
     public Factura(){
         
+    }
+    
+    public Entidad encontrarCliente(String nombre){
+        Entidad entidad=null;
+        return entidad;
+    }
+    
+    public double calcularTotal(ArrayList<Integer> lista,ArrayList<Entidad> listaProd){
+        double total=0;
+        
+        for(Entidad x: listaProd){
+            Producto p=(Producto)x;
+            for(int y:lista){
+                total=total+(p.getPrecio()*y);
+            }
+        }
+        return total;
     }
 
      public long getIdFactura() { return idFactura; }
@@ -42,14 +60,6 @@ public class Factura extends Entidad {
 
     public void setFechaEmision(LocalDate fechaEmision) {
         this.fechaEmision = fechaEmision;
-    }
-
-    public LocalDate getFechaEntrega() {
-        return fechaEntrega;
-    }
-
-    public void setFechaEntrega(LocalDate fechaEntrega) {
-        this.fechaEntrega = fechaEntrega;
     }
 
     public String getTipo() {
@@ -74,7 +84,7 @@ public class Factura extends Entidad {
     @Override
     public String toString() {
         return "Factura #" + idFactura +
-               " | " + fechaEntrega +
+               " | " + fechaEmision +
                " | Cliente: " + (cliente != null ? cliente.getNombre() : "N/A");
     }
 

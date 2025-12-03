@@ -6,16 +6,16 @@ package com.app_facturas.app_facturas;
 
 import connection.DAOController;
 import java.io.IOException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -31,6 +31,7 @@ import objects.CliPro;
 import objects.Direccion;
 import objects.Empresa;
 import objects.Entidad;
+import objects.Factura;
 import objects.Producto;
 import validations.Validation;
 
@@ -143,11 +144,7 @@ public class FormController {
     @FXML
     private DatePicker fechaEmisionDate;
     @FXML
-    private DatePicker fechaEntregaDate;
-    @FXML
     private ListView<Entidad> productosList;
-    @FXML
-    private Spinner<Entidad> cantidadProFacField;
     @FXML
     private ListView<Entidad> productosAddList;
     @FXML
@@ -158,8 +155,19 @@ public class FormController {
     private MenuItem segundo;
     @FXML
     private MenuItem tercero;
-    
-    private ArrayList<Entidad> productosAñadidos=new ArrayList<Entidad>();
+
+    private ArrayList<Entidad> productosAñadidos = new ArrayList<Entidad>();
+    private ArrayList<Integer> productosCantidad = new ArrayList<Integer>();
+    @FXML
+    private SplitMenuButton doctype2;
+    @FXML
+    private TextField cantProductFact;
+    @FXML
+    private MenuItem nifType2;
+    @FXML
+    private MenuItem nieType2;
+    @FXML
+    private MenuItem cifType2;
 
     public void initialize() {
 
@@ -193,7 +201,11 @@ public class FormController {
                     EmpresaPane.setVisible(false);
                     factPane.setVisible(true);
                     nomEmp.setText(nombreEmpresa);
-                    actualizarProd();
+                    Platform.runLater(() -> {
+                        System.out.println("RunLater ejecutado");
+                        actualizarListProd();
+                    });
+
                     break;
                 case "Comp":
                     cliProvPane.setVisible(false);
@@ -201,7 +213,11 @@ public class FormController {
                     EmpresaPane.setVisible(false);
                     factPane.setVisible(true);
                     nomEmp.setText(nombreEmpresa);
-                    actualizarProd();
+                    Platform.runLater(() -> {
+                        System.out.println("RunLater ejecutado");
+                        actualizarListProd();
+                    });
+
                     break;
                 default:
                     System.out.println("Algo salio mal al iniciar el formulario");
@@ -234,15 +250,15 @@ public class FormController {
 
             }
         }
+        System.out.println("Controlador cargado: " + this);
+        System.out.println("productosList es: " + productosList);
 
-    }
-
-    public void actualizarProd() {
-        
     }
 
     @FXML
     public void establecerTipoDoc() {
+        
+  
         //Cambiamos el texto del SplitMenuButton en función del tipo de documento seleccionado (NIF, NIE o CIF)
         javafx.event.EventHandler<javafx.event.ActionEvent> accionCambio = e -> {
             MenuItem itemPulsado = (MenuItem) e.getSource();
@@ -253,6 +269,22 @@ public class FormController {
         nifType.setOnAction(accionCambio);
         nieType.setOnAction(accionCambio);
         cifType.setOnAction(accionCambio);
+    }
+    
+    @FXML
+    public void establecerTipoDoc2() {
+        
+  
+        //Cambiamos el texto del SplitMenuButton en función del tipo de documento seleccionado (NIF, NIE o CIF)
+        javafx.event.EventHandler<javafx.event.ActionEvent> accionCambio = e -> {
+            MenuItem itemPulsado = (MenuItem) e.getSource();
+            doctype2.setText(itemPulsado.getText());
+            System.out.println("Se asigna el tipo");
+        };
+        //Asigno la acción a los 3 documentos
+        nifType2.setOnAction(accionCambio);
+        nieType2.setOnAction(accionCambio);
+        cifType2.setOnAction(accionCambio);
     }
 
     @FXML
@@ -294,38 +326,43 @@ public class FormController {
     }
 
     @FXML
-private void modificarAction(ActionEvent event) {
+    private void modificarAction(ActionEvent event) {
 
-    Entidad obj = crearEntidad();  // crea la entidad con los nuevos datos
+        Entidad obj = crearEntidad();  // crea la entidad con los nuevos datos
 
-    if (obj == null) return; // error en validaciones
+        if (obj == null) {
+            return; // error en validaciones
+        }
+        switch (tipo) {
 
-    switch (tipo) {
+            case "Emp":
+                dao.modificarEntidad(obj);
+                break;
 
-        case "Emp":
-            dao.modificarEntidad(obj);
-            break;
+            case "CliPro":
+                // modificar datos base
+                dao.modificarEntidad(obj);
 
-        case "CliPro":
-            // modificar datos base
-            dao.modificarEntidad(obj);
+                // actualizar roles
+                dao.eliminarRoles(obj.getIdEntidad());
 
-            // actualizar roles
-            dao.eliminarRoles(obj.getIdEntidad());
+                CliPro cp = (CliPro) obj;
 
-            CliPro cp = (CliPro) obj;
+                if (cp.isCliente()) {
+                    dao.agregarRolEntidad(obj.getIdEntidad(), "CLIENTE");
+                }
+                if (cp.isProveedor()) {
+                    dao.agregarRolEntidad(obj.getIdEntidad(), "PROVEEDOR");
+                }
 
-            if (cp.isCliente()) dao.agregarRolEntidad(obj.getIdEntidad(), "CLIENTE");
-            if (cp.isProveedor()) dao.agregarRolEntidad(obj.getIdEntidad(), "PROVEEDOR");
+                break;
 
-            break;
-
-        case "Prod":
-            // Producto ya viene con los campos y proveedor
-            Producto p = (Producto) obj;
-            dao.crearProducto(p); // si tuvieras “modificarProducto”, úsalo
-            break;
-    }
+            case "Prod":
+                // Producto ya viene con los campos y proveedor
+                Producto p = (Producto) obj;
+                dao.crearProducto(p); // si tuvieras “modificarProducto”, úsalo
+                break;
+        }
 
         volverAtras();
     }
@@ -333,7 +370,9 @@ private void modificarAction(ActionEvent event) {
     @FXML
     private void eliminarAction(ActionEvent event) {
 
-        if (entidad == null) return;
+        if (entidad == null) {
+            return;
+        }
 
         switch (tipo) {
 
@@ -355,33 +394,38 @@ private void modificarAction(ActionEvent event) {
      * boton de enviar
      */
     private void enviarAction(ActionEvent event) {
-        
+
         Entidad obj = crearEntidad();
 
-        if (obj == null) return;
+        if (obj != null) {
+            switch (tipo) {
 
-        switch (tipo) {
+                case "Emp":
+                    dao.crearEmpresa(obj);
+                    break;
 
-            case "Emp":
-                dao.crearEmpresa(obj);
-                break;
+                case "CliPro":
+                    Entidad creada = dao.crearEntidad(obj);
 
-            case "CliPro":
-                Entidad creada = dao.crearEntidad(obj);
+                    CliPro cp = (CliPro) obj;
 
-                CliPro cp = (CliPro) obj;
+                    if (cp.isCliente()) {
+                        dao.agregarRolEntidad(creada.getIdEntidad(), "CLIENTE");
+                    }
+                    if (cp.isProveedor()) {
+                        dao.agregarRolEntidad(creada.getIdEntidad(), "PROVEEDOR");
+                    }
 
-                if (cp.isCliente()) dao.agregarRolEntidad(creada.getIdEntidad(), "CLIENTE");
-                if (cp.isProveedor()) dao.agregarRolEntidad(creada.getIdEntidad(), "PROVEEDOR");
+                    break;
 
-                break;
+                case "Prod":
+                    dao.crearProducto((Producto) obj);
+                    break;
+            }
+            volverAtras();
+        } else {
 
-            case "Prod":
-                dao.crearProducto((Producto)obj);
-                break;
         }
-
-        volverAtras();
     }
 
     public Entidad crearEntidad() {
@@ -402,11 +446,15 @@ private void modificarAction(ActionEvent event) {
                 nompro = "",
                 descpro = "",
                 preciopro = "",
-                Stockpro = "";
+                Stockpro = "",
+                nombreFiscFact = "",
+                observFact = "",
+                iva = "";
+        LocalDate fecha = null;
 
         switch (tipo) {
             case "Emp":
-                //creamos el obj empresa de los campos field
+                sePuede = false;
 
                 //verificamos el tipo de documento
                 String tipoDoc = docType.getText();
@@ -547,45 +595,45 @@ private void modificarAction(ActionEvent event) {
             case "CliPro":
                 //creamos el obj clipro de los campos field
                 //verificamos el tipo de documento
-                tipoDoc = docType.getText();
+                tipoDoc = doctype2.getText();
 
                 switch (tipoDoc) {
                     case "N.I.F":
-                        error = Validation.esNIF(DocumentoEmpField.getText());
+                        error = Validation.esNIF(DocumentoCPField.getText());
                         break;
                     case "N.I.E":
-                        error = Validation.esNIE(DocumentoEmpField.getText());
+                        error = Validation.esNIE(DocumentoCPField.getText());
                         break;
                     case "C.I.F":
-                        error = Validation.esCIF(DocumentoEmpField.getText());
+                        error = Validation.esCIF(DocumentoCPField.getText());
                         break;
-                    case "Tipo de documento":
+                    case "Documento":
                         error = new validations.Error(true, "debe seleccionar un tipo de documento", Color.RED);
                         break;
 
                 }
                 //si no ha habido fallos almacenamos la info
                 if (!mostrarMensaje(error)) {
-                    tipoDocumento = DocumentoEmpField.getText();
+                    tipoDocumento = DocumentoCPField.getText();
                     sePuede = true;
                 } else {
                     sePuede = false;
                     break;
                 }
                 //el nombre de la empresa
-                error = Validation.esNombre(NombreEmpField.getText());
+                error = Validation.esNombre(NombreCPField.getText());
                 if (!mostrarMensaje(error)) {
-                    nombre = NombreEmpField.getText();
+                    nombre = NombreCPField.getText();
                     sePuede = true;
                 } else {
                     sePuede = false;
                     break;
                 }
                 //el email de la empresa
-                if (!emailEmpField.getText().equals("")) {
-                    error = Validation.esEmail(emailEmpField.getText());
+                if (!emailCPField.getText().equals("")) {
+                    error = Validation.esEmail(emailCPField.getText());
                     if (!mostrarMensaje(error)) {
-                        email = emailEmpField.getText();
+                        email = emailCPField.getText();
                         sePuede = true;
                     } else {
                         sePuede = false;
@@ -593,10 +641,10 @@ private void modificarAction(ActionEvent event) {
                     }
                 }
                 //el telefono de la empresa
-                if (!telefonoEmpField.getText().equals("")) {
-                    error = Validation.esTelefono(telefonoEmpField.getText());
+                if (!telefonoCPField.getText().equals("")) {
+                    error = Validation.esTelefono(telefonoCPField.getText());
                     if (!mostrarMensaje(error)) {
-                        telefono = telefonoEmpField.getText();
+                        telefono = telefonoCPField.getText();
                         sePuede = true;
                     } else {
                         sePuede = false;
@@ -604,13 +652,13 @@ private void modificarAction(ActionEvent event) {
                     }
                 }
                 //el observaciones de la empresa
-                obser = observacionesEmpField.getText();
+                obser = observacionesCPField.getText();
 
                 //el nombre de via de la empresa
-                if (!viaEmpField.getText().equals("")) {
-                    error = Validation.esNombre(viaEmpField.getText());
+                if (!viaCPField.getText().equals("")) {
+                    error = Validation.esNombre(viaCPField.getText());
                     if (!mostrarMensaje(error)) {
-                        nombreVia = viaEmpField.getText();
+                        nombreVia = viaCPField.getText();
                         sePuede = true;
                     } else {
                         sePuede = false;
@@ -618,10 +666,10 @@ private void modificarAction(ActionEvent event) {
                     }
                 }
                 //el numero de la calle de la empresa
-                if (!numEmpField.getText().equals("")) {
-                    error = Validation.esEnteroPos(numEmpField.getText());
+                if (!numCPField.getText().equals("")) {
+                    error = Validation.esEnteroPos(numCPField.getText());
                     if (!mostrarMensaje(error)) {
-                        numero = numEmpField.getText();
+                        numero = numCPField.getText();
                         sePuede = true;
                     } else {
                         sePuede = false;
@@ -629,10 +677,10 @@ private void modificarAction(ActionEvent event) {
                     }
                 }
                 //la ciudad de la empresa
-                if (!ciudadEmpField.getText().equals("")) {
-                    error = Validation.esNombre(ciudadEmpField.getText());
+                if (!ciudadCPField.getText().equals("")) {
+                    error = Validation.esNombre(ciudadCPField.getText());
                     if (!mostrarMensaje(error)) {
-                        ciudad = ciudadEmpField.getText();
+                        ciudad = ciudadCPField.getText();
                         sePuede = true;
                     } else {
                         sePuede = false;
@@ -640,10 +688,10 @@ private void modificarAction(ActionEvent event) {
                     }
                 }
                 //la provincia de la empresa
-                if (!provEmpField.getText().equals("")) {
-                    error = Validation.esNombre(provEmpField.getText());
+                if (!provCPField.getText().equals("")) {
+                    error = Validation.esNombre(provCPField.getText());
                     if (!mostrarMensaje(error)) {
-                        provincia = provEmpField.getText();
+                        provincia = provCPField.getText();
                         sePuede = true;
                     } else {
                         sePuede = false;
@@ -651,8 +699,8 @@ private void modificarAction(ActionEvent event) {
                     }
                 }
                 //el codigopostal de la empresa
-                if (!codigoPostalEmpField.getText().equals("")) {
-                    error = Validation.esTexto(codigoPostalEmpField.getText());
+                if (!codigoPostalCPField.getText().equals("")) {
+                    error = Validation.esTexto(codigoPostalCPField.getText());
                     if (!mostrarMensaje(error)) {
                         codigoPostal = codigoPostalCPField.getText();
                         sePuede = true;
@@ -662,10 +710,10 @@ private void modificarAction(ActionEvent event) {
                     }
                 }
                 //el pais de la empresa
-                if (!paisEmpField.getText().equals("")) {
-                    error = Validation.esTexto(paisEmpField.getText());
+                if (!paisCPField.getText().equals("")) {
+                    error = Validation.esTexto(paisCPField.getText());
                     if (!mostrarMensaje(error)) {
-                        pais = paisEmpField.getText();
+                        pais = paisCPField.getText();
                         sePuede = true;
                     } else {
                         sePuede = false;
@@ -685,9 +733,6 @@ private void modificarAction(ActionEvent event) {
             case "Prod":
                 sePuede = false;
                 //creamos el obj producto
-
-                //recojemos el prov en concreto al que va asociado
-                Entidad prov = provList.getSelectionModel().getSelectedItem();
 
                 //cogemos y comprobamos el dato nompro
                 if (!nombreProField.getText().equals("")) {
@@ -735,17 +780,109 @@ private void modificarAction(ActionEvent event) {
                 }
                 //creamos la entidad producto
                 if (sePuede) {
-                    System.out.println("Creando Entidad para producto");
-                    Entidad prod = new Producto(nompro, descpro, Double.parseDouble(preciopro), Integer.parseInt(Stockpro), (CliPro) prov);
-                    System.out.println("obj producto creada");
-                    return prod;
+                    //recojemos el prov en concreto al que va asociado
+                    Entidad prov = provList.getSelectionModel().getSelectedItem();
+                    if (prov != null) {
+                        System.out.println("Creando Entidad para producto");
+                        Entidad prod = new Producto(nompro, descpro, Double.parseDouble(preciopro), Integer.parseInt(Stockpro), prov);
+                        System.out.println("obj producto creada");
+                        return prod;
+                    }
                 }
                 break;
-            case "comp":
+            case "Comp":
+                //cogemos y validamos el nombre fiscal
+                if (!NombreEmpField1.getText().equals("")) {
+                    error = Validation.esNombre(NombreEmpField1.getText());
+                    if (!mostrarMensaje(error)) {
+                        nombreFiscFact = NombreEmpField1.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
+                }
+                //ahora las observaciones
+                observFact = observacionesEmpField1.getText();
+                sePuede = true;
 
+                //ahora cogemos el iva
+                iva = splitMenuIVA.getText();
+                if (iva.equalsIgnoreCase("--Tipo I.V.A--")) {
+                    iva = "";
+                    labelError.setTextFill(Color.RED);
+                    labelError.setText("seleccione el tipo de I.V.A");
+                    break;
+                }
+                //ahora la fecha de emision
+                if (fechaEmisionDate.getValue() != null) {
+                    error = Validation.esFechaFutura(fechaEmisionDate.getValue());
+                    if (!mostrarMensaje(error)) {
+                        fecha = fechaEmisionDate.getValue();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
+                }
+                //creamos la entidad factura
+                if (sePuede) {
+
+                    System.out.println("Creando Entidad para factura");
+                    Entidad fact = new Factura(fecha, "comp", nombreFiscFact, productosCantidad, productosAñadidos);
+                    System.out.println("obj producto creada");
+                    return fact;
+
+                }
                 break;
-            case "vent":
-                //creamos el obj factura venta
+            case "Vent":
+                //cogemos y validamos el nombre fiscal
+                if (!NombreEmpField1.getText().equals("")) {
+                    error = Validation.esNombre(NombreEmpField1.getText());
+                    if (!mostrarMensaje(error)) {
+                        nombreFiscFact = NombreEmpField1.getText();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
+                }
+                //ahora las observaciones
+                error = Validation.esTexto(NombreEmpField1.getText());
+                if (!mostrarMensaje(error)) {
+                    observFact = observacionesEmpField1.getText();
+                    sePuede = true;
+                } else {
+                    sePuede = false;
+                    break;
+                }
+
+                //ahora cogemos el iva
+                iva = splitMenuIVA.getText();
+                if (iva.equalsIgnoreCase("--Tipo I.V.A--")) {
+                    iva = "";
+                    labelError.setTextFill(Color.RED);
+                    labelError.setText("seleccione el tipo de I.V.A");
+                    break;
+                }
+                //ahora la fecha de emision
+                if (fechaEmisionDate.getValue() != null) {
+                    error = Validation.esFechaFutura(fechaEmisionDate.getValue());
+                    if (!mostrarMensaje(error)) {
+                        fecha = fechaEmisionDate.getValue();
+                        sePuede = true;
+                    } else {
+                        sePuede = false;
+                        break;
+                    }
+                }
+                //creamos la entidad factura
+                if (sePuede) {
+                    System.out.println("Creando Entidad para factura");
+                    Entidad fact = new Factura(fecha, "vent", nombreFiscFact, productosCantidad, productosAñadidos);
+                    System.out.println("obj producto creada");
+                    return fact;
+                }
                 break;
             default:
                 System.out.println("Algo salio mal al añadir");
@@ -787,10 +924,10 @@ private void modificarAction(ActionEvent event) {
 
     @FXML
     private void establecerIVA() {
-         javafx.event.EventHandler<javafx.event.ActionEvent> accionCambio = e -> {
+        javafx.event.EventHandler<javafx.event.ActionEvent> accionCambio = e -> {
             MenuItem itemPulsado = (MenuItem) e.getSource();
             splitMenuIVA.setText(itemPulsado.getText());
-            
+
         };
         //Asigno la acción a los 3 documentos
         primero.setOnAction(accionCambio);
@@ -800,26 +937,59 @@ private void modificarAction(ActionEvent event) {
 
     @FXML
     private void añadirProd(ActionEvent event) {
-       Entidad p= productosList.getSelectionModel().getSelectedItem();
-       
+
+        int cantidad = 0;
+        validations.Error err = Validation.esEnteroPos(cantProductFact.getText());
+        if (!err.isError()) {
+            //es numero entero pos
+            cantidad = Integer.parseInt(cantProductFact.getText());
+            productosCantidad.add(cantidad);
+            //añadimos el prod
+            productosAñadidos.add(productosList.getSelectionModel().getSelectedItem());
+            //actualizamos
+            actualizarListAdd();
+        } else {
+            mostrarMensaje(err);
+        }
     }
 
     @FXML
     private void quitarProd(ActionEvent event) {
-        
+        productosAñadidos.remove(productosAddList.getSelectionModel().getSelectedItem());
+        productosCantidad.remove(productosAddList.getSelectionModel().getSelectedIndex());
+        actualizarListAdd();
+
     }
 
     @FXML
     private void provSelection(MouseEvent event) {
-        
+
     }
-    
+
+    public void actualizarListAdd() {
+        ObservableList<Entidad> observableLista = FXCollections.observableArrayList(productosAñadidos);
+        productosAddList.setItems(observableLista);
+    }
+
+    public void actualizarListProd() {
+        String filtro = "";
+        productosList.getItems().setAll(
+                dao.listarProductosPorEmpresa(Long.valueOf(App.empresaActualId)).stream()
+                        .filter(p -> p.getNombre().toLowerCase().contains(filtro))
+                        .collect(Collectors.toList())
+        );
+        System.out.println("Lista productos actualizada");
+        System.out.println("Productos del DAO: " + dao.listarProductosPorEmpresa(Long.valueOf(App.empresaActualId)).size());
+
+    }
+
     private void volverAtras() {
         try {
-            if (tipo.equals("Emp"))
+            if (tipo.equals("Emp")) {
                 App.setRoot("primary");
-            else
+            } else {
                 App.setRoot("secondary");
+            }
         } catch (IOException ex) {
             System.out.println("❌ Error al volver: " + ex.getMessage());
         }

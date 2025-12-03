@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import static javafx.application.Application.launch;
+import javafx.scene.image.Image;
 import objects.Entidad;
 
 /**
@@ -27,6 +28,7 @@ public class App extends Application {
         primaryStage = stage;
         scene = new Scene(loadFXML("primary"), 700, 500);
         stage.setScene(scene);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/app_facturas/app_facturas/logo.png")));
         stage.show();
     }
      public static void setRootWithParam(String fxml, String tipo, String accion) throws IOException {
@@ -77,6 +79,8 @@ public class App extends Application {
                 System.out.println("No se pudo pasar 'idEmpresaActual': " + e.getMessage());
             }
         }
+        
+         
 
         // ==========================================================
         // CAMBIAR LA ESCENA
