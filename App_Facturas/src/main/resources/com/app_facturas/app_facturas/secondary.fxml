@@ -6,6 +6,7 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -67,9 +68,12 @@
                            </children>
                         </AnchorPane>
                         
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="597.0" style="-fx-background-color: #f8fafc;">
+                      <AnchorPane fx:id="logoPane" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="597.0" style="-fx-background-color: #f8fafc;">
                            <children>
-                              <ImageView fx:id="logo" fitHeight="150.0" fitWidth="200.0" layoutX="198.0" layoutY="82.0" opacity="0.2" pickOnBounds="true" preserveRatio="true" />
+                              <ImageView fx:id="logo" fitHeight="150.0" fitWidth="200.0" layoutX="198.0" layoutY="65.0" nodeOrientation="INHERIT" opacity="0.3" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@logo.png" />
+                                 </image></ImageView>
                               <Button fx:id="boton" layoutX="23.0" layoutY="252.0" mnemonicParsing="false" onAction="#volver" styleClass="back-button" text="Volver" />
                            </children>
                         </AnchorPane>

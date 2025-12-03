@@ -1,0 +1,90 @@
+.root {
+    -fx-background-color: #eaeaea;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.label {
+    -fx-text-fill: #2C3E50;
+    -fx-font-size: 14px;
+}
+
+#lblTitulo {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3498DB;
+    -fx-alignment: CENTER;
+}
+
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: #BDC3C7;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 5;
+    -fx-text-fill: #333333;
+}
+
+.text-field:focused {
+    -fx-border-color: #3498DB;
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, rgba(52,152,219,0.3), 5, 0, 0, 0);
+}
+
+.list-view {
+    -fx-background-color: white;
+    -fx-border-color: #BDC3C7;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+
+.list-cell {
+    -fx-padding: 5 10 5 10;
+    -fx-text-fill: #2C3E50;
+}
+
+.list-cell:odd {
+    -fx-background-color: #FDFDFD;
+}
+.list-cell:even {
+    -fx-background-color: white;
+}
+
+.list-cell:filled:hover {
+    -fx-background-color: #EBF5FB;
+    -fx-cursor: hand;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: #3498DB;
+    -fx-text-fill: white;
+}
+
+#btnBuscar {
+    -fx-background-color: #3498DB; 
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-padding: 6 15 6 15;
+}
+
+#btnBuscar:hover {
+    -fx-background-color: #2980B9;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
+}
+
+#btnBuscar:pressed {
+    -fx-background-color: #1F618D;
+}
+
+#btnVolver {
+    -fx-background-color: #95A5A6;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+#btnVolver:hover {
+    -fx-background-color: #7F8C8D;
+}

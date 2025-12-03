@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="509.0" prefWidth="706.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app_facturas.app_facturas.FormController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="509.0" prefWidth="706.0" stylesheets="@styleFormulary.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app_facturas.app_facturas.FormController">
    <children>
       <Pane fx:id="cliProvPane" layoutX="1.0" layoutY="14.0" prefHeight="445.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="49.19999999999999" AnchorPane.topAnchor="14.0">
          <children>
@@ -47,7 +47,7 @@
                   <Label text="numero" GridPane.columnIndex="2" />
                   <Label text="ciudad" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Label text="provincia" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <SplitMenuButton mnemonicParsing="false" text="Tipo de documento">
+                  <SplitMenuButton mnemonicParsing="false" prefWidth="174.0" text="Documento">
                      <items>
                         <MenuItem mnemonicParsing="false" text="N.I.F" />
                         <MenuItem mnemonicParsing="false" text="N.I.E" />
@@ -77,7 +77,7 @@
             <Label fx:id="nomEmpCliProv" layoutX="343.0" layoutY="6.0" text="Label" />
          </children>
       </Pane>
-      <Pane fx:id="EmpresaPane" prefHeight="445.0" prefWidth="706.0" AnchorPane.bottomAnchor="63.39999999999998" AnchorPane.topAnchor="0.0">
+      <Pane fx:id="EmpresaPane" prefHeight="445.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="63.39999999999998" AnchorPane.topAnchor="0.0">
          <children>
             <GridPane hgap="15.0" layoutX="19.0" layoutY="69.0" prefHeight="376.0" prefWidth="675.0">
               <columnConstraints>
@@ -103,7 +103,7 @@
                   <Label text="numero" GridPane.columnIndex="2" />
                   <Label text="ciudad" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Label text="provincia" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <SplitMenuButton fx:id="docType" mnemonicParsing="false" onAction="#establecerTipoDoc" text="Tipo de documento">
+                  <SplitMenuButton fx:id="docType" mnemonicParsing="false" onAction="#establecerTipoDoc" text="Documento">
                     <items>
                       <MenuItem fx:id="nifType" mnemonicParsing="false" onAction="#establecerTipoDoc" text="N.I.F" />
                       <MenuItem fx:id="nieType" mnemonicParsing="false" onAction="#establecerTipoDoc" text="N.I.E" />
@@ -222,32 +222,32 @@
       </Pane>
       <Pane fx:id="buttonsPaneAñadir" layoutX="1.0" layoutY="449.0" prefHeight="54.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="5.79999999999999" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.1999999999999318" AnchorPane.topAnchor="449.0">
          <children>
-            <HBox layoutX="75.0" layoutY="14.0" prefHeight="26.0" prefWidth="557.0" spacing="200.0">
+            <HBox layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="657.0" spacing="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#volverAction" text="Volver" />
-                  <Button mnemonicParsing="false" onAction="#limpiarAction" text="Limpiar" />
-                  <Button mnemonicParsing="false" onAction="#enviarAction" text="Enviar" />
+                  <Button graphicTextGap="1.0" mnemonicParsing="false" onAction="#volverAction" prefHeight="23.0" prefWidth="90.0" text="Volver" />
+                  <Button graphicTextGap="1.0" mnemonicParsing="false" onAction="#limpiarAction" prefHeight="23.0" prefWidth="93.0" text="Limpiar" />
+                  <Button contentDisplay="CENTER" graphicTextGap="1.0" mnemonicParsing="false" onAction="#enviarAction" prefHeight="23.0" prefWidth="83.0" text="Enviar" />
                </children>
             </HBox>
          </children>
       </Pane>
       <Pane fx:id="buttonsPaneModificar" layoutX="1.0" layoutY="455.0" prefHeight="54.0" prefWidth="706.0" visible="false">
          <children>
-            <HBox layoutX="75.0" layoutY="14.0" prefHeight="26.0" prefWidth="557.0" spacing="440.0">
+            <HBox layoutX="43.0" layoutY="14.0" prefHeight="26.0" prefWidth="621.0" spacing="440.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#volverAction" text="Volver" />
-                  <Button mnemonicParsing="false" onAction="#modificarAction" text="modificar" />
+                  <Button mnemonicParsing="false" onAction="#volverAction" prefHeight="23.0" prefWidth="90.0" text="Volver" />
+                  <Button mnemonicParsing="false" onAction="#modificarAction" prefHeight="23.0" prefWidth="141.0" text="modificar" />
                </children>
             </HBox>
          </children>
       </Pane>
       <Pane fx:id="buttonsPaneEliminar" layoutY="453.0" prefHeight="54.0" prefWidth="706.0" visible="false">
          <children>
-            <HBox layoutX="75.0" layoutY="14.0" prefHeight="26.0" prefWidth="557.0" spacing="195.0">
+            <HBox layoutX="49.0" layoutY="14.0" prefHeight="26.0" prefWidth="608.0" spacing="195.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#volverAction" text="Volver" />
-                  <Button mnemonicParsing="false" onAction="#limpiarAction" text="Limpiar" />
-                  <Button mnemonicParsing="false" onAction="#eliminarAction" text="eliminar" />
+                  <Button mnemonicParsing="false" onAction="#volverAction" prefHeight="23.0" prefWidth="64.0" text="Volver" />
+                  <Button mnemonicParsing="false" onAction="#limpiarAction" prefHeight="23.0" prefWidth="74.0" text="Limpiar" />
+                  <Button mnemonicParsing="false" onAction="#eliminarAction" prefHeight="23.0" prefWidth="78.0" text="eliminar" />
                </children>
             </HBox>
          </children>

@@ -25,7 +25,7 @@
 }
 
 .top-menu-button > .label {
-    -fx-text-fill: #172554 !important; /* Texto oscuro */
+    -fx-text-fill: #172554; /* Texto oscuro */
     -fx-font-weight: 700;
     -fx-font-size: 14px;
     -fx-alignment: CENTER;
@@ -41,7 +41,7 @@
 }
 
 .top-menu-button:hover > .label {
-    -fx-text-fill: white !important; 
+    -fx-text-fill: white; 
 }
 
 .top-menu-button:hover > .arrow-button > .arrow {
