@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -25,6 +26,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import objects.CliPro;
@@ -223,6 +225,9 @@ public class FormController {
                     System.out.println("Algo salio mal al iniciar el formulario");
                     break;
             }
+            if(tipo!=null && entidad!=null && accion!=null){
+               mostrarDatos();
+            }
         }
         System.out.println("accion " + accion);
         if (accion != null) {
@@ -257,8 +262,7 @@ public class FormController {
 
     @FXML
     public void establecerTipoDoc() {
-        
-  
+
         //Cambiamos el texto del SplitMenuButton en función del tipo de documento seleccionado (NIF, NIE o CIF)
         javafx.event.EventHandler<javafx.event.ActionEvent> accionCambio = e -> {
             MenuItem itemPulsado = (MenuItem) e.getSource();
@@ -270,11 +274,10 @@ public class FormController {
         nieType.setOnAction(accionCambio);
         cifType.setOnAction(accionCambio);
     }
-    
+
     @FXML
     public void establecerTipoDoc2() {
-        
-  
+
         //Cambiamos el texto del SplitMenuButton en función del tipo de documento seleccionado (NIF, NIE o CIF)
         javafx.event.EventHandler<javafx.event.ActionEvent> accionCambio = e -> {
             MenuItem itemPulsado = (MenuItem) e.getSource();
@@ -318,11 +321,15 @@ public class FormController {
 
     public void setAccion(String accion) {
         this.accion = accion;
-        initialize();//actualizamos la vista
+        if(entidad==null){
+            initialize();//actualizamos la vista
+        }
+        
     }
 
     public void setEntidad(Entidad e) {
         entidad = e;
+        initialize();
     }
 
     @FXML
@@ -586,7 +593,7 @@ public class FormController {
                     System.out.println("Creando Entidad para empresa");
                     Entidad em = new Entidad(nombre, tipoDocumento, email, telefono, obser);
                     Direccion dir = new Direccion(em, nombreVia, numero, ciudad, provincia, codigoPostal, pais);
-                    Empresa empresa = new Empresa(em);
+                    Empresa empresa = new Empresa(em,dir);
                     System.out.println("obj Empresa creada");
                     return empresa;
                 }
@@ -889,6 +896,79 @@ public class FormController {
                 break;
         }
         return e;
+    }
+
+    public void bloquearTextFields(Pane root) {
+        for (Node node : root.getChildren()) {
+
+            if (node instanceof TextField) {
+                ((TextField) node).setEditable(false);
+            }
+
+            // Si el nodo es otro contenedor, lo recorremos también
+            if (node instanceof Pane) {
+                bloquearTextFields((Pane) node);
+            }
+        }
+    }
+
+    public void mostrarDatos() {
+        if (accion.equals("delete")) {
+            switch (tipo) {
+                case "Emp":
+                    bloquearTextFields(EmpresaPane);
+                    break;
+                case "CliPro":
+                    bloquearTextFields(cliProvPane);
+                    break;
+                case "Prod":
+                    bloquearTextFields(productosPane);
+                    break;
+                case "Vent":
+                    bloquearTextFields(factPane);
+                    break;
+                case "Comp":
+                    bloquearTextFields(factPane);
+                    break;
+                default:
+                    System.out.println("Algo salio mal al rellenar los datos");
+                    break;
+            }
+        }
+        if (tipo != null) {
+            switch (tipo) {
+                case "Emp":
+                    
+
+                    DocumentoEmpField.setText(entidad.getNif());
+                    NombreEmpField.setText(entidad.getNombre());
+                    emailEmpField.setText(entidad.getEmail());
+                    telefonoEmpField.setText(entidad.getTelefono());
+                    observacionesEmpField.setText(entidad.getObservaciones());
+                    //viaEmpField.setText(emp.getDir().getVia());
+                    //numEmpField.setText(String.valueOf(emp.getDir().getNumero()));
+                    //ciudadEmpField.setText(emp.getDir().getCiudad());
+                    //provEmpField.setText(emp.getDir().getProvincia());
+                   // paisEmpField.setText(emp.getDir().getPais());
+                    //codigoPostalEmpField.setText(emp.getDir().getCp());
+                    break;
+                case "CliPro":
+
+                    break;
+                case "Prod":
+
+                    break;
+                case "Vent":
+
+                    break;
+                case "Comp":
+
+                    break;
+                default:
+                    System.out.println("Algo salio mal al rellenar los datos");
+                    break;
+            }
+        }
     }
 
     private void actualizarProvList() {
