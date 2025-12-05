@@ -108,6 +108,7 @@ public class App extends Application {
         } catch (Exception e) {
             System.out.println("No se pudo pasar 'tipo': " + e.getMessage());
         }
+        
 
         // ==========================================================
         // 2️⃣ PASAR “accion” (si existe en el controller)
@@ -118,17 +119,20 @@ public class App extends Application {
                         .getMethod("setAccion", String.class)
                         .invoke(controller, accion);
             } catch (Exception e) {
-                System.out.println("No se pudo pasar 'accion': " + e.getMessage());
+                System.out.println("No se pudo pasar 'accion': " + e.getMessage()+accion);
+                e.printStackTrace();
             }
         }
         
         if (entidad != null) {
             try {
+                System.out.println(entidad);
                 controller.getClass()
                         .getMethod("setEntidad", Entidad.class)
                         .invoke(controller, entidad);
             } catch (Exception e) {
                 System.out.println("No se pudo pasar 'entidad': " + e.getMessage()+e);
+                e.printStackTrace();
             }
         }
 
