@@ -25,7 +25,10 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import objects.CliPro;
 import objects.Direccion;
@@ -43,6 +46,8 @@ public class FormController {
 
     @FXML
     private Pane cliProvPane;
+    @FXML 
+    private GridPane gridClientes;
     @FXML
     private TextField DocumentoCPField;
     @FXML
@@ -71,6 +76,8 @@ public class FormController {
     private CheckBox clienteCPCheck;
     @FXML
     private Pane EmpresaPane;
+    @FXML 
+    private GridPane gridEmpresa;
     @FXML
     private TextField DocumentoEmpField;
     @FXML
@@ -98,6 +105,8 @@ public class FormController {
 
     @FXML
     private Pane factPane;
+    @FXML 
+    private HBox hboxFacturas;
     @FXML
     private TextField NombreEmpField1;
     @FXML
@@ -170,7 +179,13 @@ public class FormController {
     private MenuItem cifType2;
 
     public void initialize() {
-
+        gridClientes.prefWidthProperty().bind(cliProvPane.widthProperty().subtract(40));
+        gridEmpresa.prefWidthProperty().bind(EmpresaPane.widthProperty().subtract(40));
+        hboxFacturas.prefWidthProperty().bind(factPane.widthProperty().subtract(30));
+        HBox.setHgrow(productosList, Priority.ALWAYS);
+        HBox.setHgrow(productosAddList, Priority.ALWAYS);
+        
+        
         System.out.println("Tipo " + tipo);
         if (tipo != null) {
             switch (tipo) {

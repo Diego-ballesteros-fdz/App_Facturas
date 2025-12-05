@@ -8,15 +8,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="primary" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylePrincipal.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app_facturas.app_facturas.PrimaryController">
+<AnchorPane fx:id="primary" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" stylesheets="@stylePrincipal.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app_facturas.app_facturas.PrimaryController">
    <children>
-      <SplitPane dividerPositions="0.2593582887700534" layoutX="188.0" layoutY="73.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.3061497326203208" layoutX="188.0" layoutY="73.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane fx:id="vboxPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <VBox fx:id="vbox" layoutX="-6.0" layoutY="83.0" prefHeight="74.0" prefWidth="170.0">
+                  <VBox fx:id="vbox" layoutX="-6.0" layoutY="83.0" prefHeight="398.4" prefWidth="180.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="75.0">
                      <children>
-                        <Button fx:id="createButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#crearEmpresa" text="Nueva Empresa" />
+                        <Button fx:id="createButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#crearEmpresa" prefWidth="222.0" text="Nueva Empresa" />
                         <Button fx:id="deleteButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#borrarEmpresa" text="Eliminar Empresa" />
                         <Button fx:id="modifyButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#modificarEmpresa" text="Modificar Empresa" />
                      </children>
@@ -25,8 +25,8 @@
             </AnchorPane>
           <AnchorPane fx:id="menuPane" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <SplitMenuButton fx:id="menuEmpresas" layoutX="101.0" layoutY="199.0" mnemonicParsing="false" text="Seleccione Una Empresa" />
-                  <Label layoutX="95.0" layoutY="111.0" text="Bienvenido">
+                  <SplitMenuButton fx:id="menuEmpresas" layoutX="90.0" layoutY="181.0" mnemonicParsing="false" text="Seleccione Una Empresa" />
+                  <Label layoutX="84.0" layoutY="109.0" text="Bienvenido">
                      <font>
                         <Font size="50.0" />
                      </font>
