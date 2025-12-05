@@ -26,7 +26,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
-        scene = new Scene(loadFXML("primary"), 700, 500);
+        scene = new Scene(loadFXML("primary"), 750, 525);
+        primaryStage.setMinWidth(700);
+        primaryStage.setMinHeight(500);
         stage.setScene(scene);
         stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/app_facturas/app_facturas/logo.png")));
         stage.show();
@@ -86,6 +88,8 @@ public class App extends Application {
         // CAMBIAR LA ESCENA
         // ==========================================================
         primaryStage.getScene().setRoot(root);
+        primaryStage.setMinWidth(root.minWidth(-1));
+        primaryStage.setMinHeight(root.minHeight(-1));
     }
     public static void setRootWithParam(String fxml, String tipo, String accion,Entidad entidad) throws IOException {
 

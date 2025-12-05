@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -16,12 +17,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="509.0" prefWidth="706.0" stylesheets="@styleFormulary.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app_facturas.app_facturas.FormController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="575.0" minWidth="800.0" prefHeight="440.0" prefWidth="706.0" stylesheets="@styleFormulary.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app_facturas.app_facturas.FormController">
    <children>
-      <Pane fx:id="cliProvPane" layoutX="1.0" layoutY="34.0" prefHeight="439.0" prefWidth="706.0" AnchorPane.bottomAnchor="36.0" AnchorPane.topAnchor="34.0">
+      <Pane fx:id="cliProvPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="439.0" prefWidth="706.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane hgap="15.0" layoutX="19.0" layoutY="69.0" prefHeight="351.0" prefWidth="668.0">
+            <GridPane fx:id="gridClientes" hgap="15.0" layoutX="19.0" layoutY="69.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="351.0" prefWidth="668.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="349.0" minWidth="10.0" prefWidth="149.80001220703124" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="10.0" prefWidth="181.19999999999996" />
@@ -72,13 +74,16 @@
                   <CheckBox fx:id="clienteCPCheck" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.rowIndex="6" />
                </children>
             </GridPane>
-            <Label layoutX="293.0" layoutY="45.0" text="Clientes y proveedores" />
+            <Label layoutX="293.0" layoutY="45.0" text="Clientes y proveedores">
+               <font>
+                  <Font size="24.0" />
+               </font></Label>
             <Label fx:id="nomEmpCliProv" layoutX="343.0" layoutY="6.0" text="Label" />
          </children>
       </Pane>
-      <Pane fx:id="EmpresaPane" layoutY="20.0" prefHeight="426.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="63.0" AnchorPane.topAnchor="20.0">
+      <Pane fx:id="EmpresaPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane hgap="15.0" layoutX="19.0" layoutY="69.0" prefHeight="376.0" prefWidth="675.0">
+            <GridPane fx:id="gridEmpresa" hgap="15.0" layoutX="19.0" layoutY="69.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="376.0" prefWidth="675.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="349.0" minWidth="10.0" prefWidth="149.80001220703124" />
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="10.0" prefWidth="181.19999999999996" />
@@ -127,9 +132,9 @@
             <Label layoutX="334.0" layoutY="28.0" text="Empresa" />
          </children>
       </Pane>
-      <Pane fx:id="productosPane" layoutX="10.0" layoutY="29.0" prefHeight="426.0" prefWidth="706.0" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="29.0">
+      <Pane fx:id="productosPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane hgap="15.0" layoutX="19.0" layoutY="69.0" prefHeight="376.0" prefWidth="323.0">
+            <GridPane hgap="15.0" layoutX="19.0" layoutY="69.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="376.0" prefWidth="323.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="349.0" minWidth="10.0" prefWidth="149.80001220703124" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="10.0" prefWidth="181.19999999999996" />
@@ -151,19 +156,19 @@
                   <Label text="Nombre del producto" />
                </children>
             </GridPane>
-            <Label layoutX="315.0" layoutY="52.0" text="Productos" />
-            <Pane layoutX="362.0" layoutY="90.0" prefHeight="351.0" prefWidth="323.0">
+            <Label layoutX="315.0" layoutY="52.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Productos" />
+            <Pane layoutX="362.0" layoutY="90.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="351.0" prefWidth="323.0">
                <children>
                   <ListView fx:id="provList" layoutX="62.0" layoutY="48.0" onMouseClicked="#provSelection" prefHeight="262.0" prefWidth="200.0" />
                   <Label layoutX="62.0" layoutY="14.0" text="Seleccione el proveedor:" />
                </children>
             </Pane>
-            <Label fx:id="nomEmpProd" layoutX="328.0" layoutY="6.0" text="Label" />
+            <Label fx:id="nomEmpProd" layoutX="328.0" layoutY="6.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" />
          </children>
       </Pane>
-      <Pane fx:id="factPane" layoutX="10.0" layoutY="23.0" prefHeight="432.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="-10.0" AnchorPane.topAnchor="23.0">
+      <Pane fx:id="factPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane hgap="15.0" layoutX="14.0" layoutY="55.0" prefHeight="155.0" prefWidth="675.0">
+            <GridPane hgap="15.0" layoutX="14.0" layoutY="55.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="155.0" prefWidth="675.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="349.0" minWidth="10.0" prefWidth="149.80001220703124" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="522.0" minWidth="10.0" prefWidth="181.19999999999996" />
@@ -194,12 +199,12 @@
                   <DatePicker fx:id="fechaEmisionDate" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                </children>
             </GridPane>
-            <Label layoutX="332.0" layoutY="23.0" text="Factura" />
-            <HBox layoutX="14.0" layoutY="231.0" spacing="50.0">
+            <Label layoutX="332.0" layoutY="23.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Factura" />
+            <HBox fx:id="hboxFacturas" layoutX="14.0" layoutY="231.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="50.0">
                <children>
                   <Label text="Productos" />
-                  <ListView fx:id="productosList" prefHeight="200.0" prefWidth="200.0" />
-                  <VBox prefHeight="177.0" prefWidth="56.0" spacing="40.0">
+                  <ListView fx:id="productosList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="177.0" prefWidth="56.0" spacing="40.0">
                      <children>
                         <Button mnemonicParsing="false" onAction="#añadirProd" prefHeight="25.0" prefWidth="62.0" text="Añadir" />
                         <Label text="Cantidad">
@@ -211,43 +216,46 @@
                         <Button mnemonicParsing="false" onAction="#quitarProd" prefHeight="25.0" prefWidth="59.0" text="Quitar" />
                      </children>
                   </VBox>
-                  <ListView fx:id="productosAddList" prefHeight="200.0" prefWidth="200.0" />
+                  <ListView fx:id="productosAddList" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
                </children>
             </HBox>
          </children>
       </Pane>
-      <Pane fx:id="buttonsPaneAñadir" layoutX="1.0" layoutY="449.0" prefHeight="54.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="5.79999999999999" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-1.1999999999999318" AnchorPane.topAnchor="449.0">
+      <Pane fx:id="buttonsPaneAñadir" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="54.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <HBox layoutX="25.0" layoutY="14.0" prefHeight="26.0" prefWidth="657.0" spacing="200.0">
+            <HBox layoutX="94.0" layoutY="14.0" spacing="200.0">
                <children>
-                  <Button graphicTextGap="1.0" mnemonicParsing="false" onAction="#volverAction" prefHeight="23.0" prefWidth="90.0" text="Volver" />
-                  <Button graphicTextGap="1.0" mnemonicParsing="false" onAction="#limpiarAction" prefHeight="23.0" prefWidth="93.0" text="Limpiar" />
-                  <Button contentDisplay="CENTER" graphicTextGap="1.0" mnemonicParsing="false" onAction="#enviarAction" prefHeight="23.0" prefWidth="83.0" text="Enviar" />
+                  <Button graphicTextGap="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#volverAction" prefHeight="23.0" prefWidth="90.0" text="Volver" HBox.hgrow="ALWAYS" />
+                  <Button graphicTextGap="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#limpiarAction" prefHeight="23.0" prefWidth="93.0" text="Limpiar" HBox.hgrow="ALWAYS" />
+                  <Button contentDisplay="CENTER" graphicTextGap="1.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#enviarAction" prefHeight="23.0" prefWidth="83.0" text="Enviar" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </children>
       </Pane>
-      <Pane fx:id="buttonsPaneModificar" layoutX="1.0" layoutY="455.0" prefHeight="54.0" prefWidth="706.0" visible="false">
+      <Pane fx:id="buttonsPaneModificar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <HBox layoutX="43.0" layoutY="14.0" prefHeight="26.0" prefWidth="621.0" spacing="440.0">
+            <HBox alignment="CENTER" layoutX="43.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="695.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#volverAction" prefHeight="23.0" prefWidth="90.0" text="Volver" />
-                  <Button mnemonicParsing="false" onAction="#modificarAction" prefHeight="23.0" prefWidth="141.0" text="modificar" />
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#volverAction" prefHeight="23.0" prefWidth="90.0" text="Volver" HBox.hgrow="ALWAYS" />
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#modificarAction" prefHeight="23.0" prefWidth="141.0" text="modificar" HBox.hgrow="ALWAYS" />
                </children>
+               <cursor>
+                  <Cursor fx:constant="H_RESIZE" />
+               </cursor>
             </HBox>
          </children>
       </Pane>
-      <Pane fx:id="buttonsPaneEliminar" layoutY="453.0" prefHeight="54.0" prefWidth="706.0" visible="false">
+      <Pane fx:id="buttonsPaneEliminar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="54.0" prefWidth="750.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
-            <HBox layoutX="49.0" layoutY="14.0" prefHeight="26.0" prefWidth="608.0" spacing="195.0">
+            <HBox layoutX="49.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="695.0" spacing="195.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#volverAction" prefHeight="23.0" prefWidth="64.0" text="Volver" />
-                  <Button mnemonicParsing="false" onAction="#limpiarAction" prefHeight="23.0" prefWidth="74.0" text="Limpiar" />
-                  <Button mnemonicParsing="false" onAction="#eliminarAction" prefHeight="23.0" prefWidth="78.0" text="eliminar" />
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#volverAction" prefHeight="23.0" prefWidth="64.0" text="Volver" HBox.hgrow="ALWAYS" />
+                  <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#limpiarAction" prefHeight="23.0" prefWidth="74.0" text="Limpiar" HBox.hgrow="ALWAYS" />
+                  <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#eliminarAction" prefHeight="23.0" prefWidth="78.0" text="eliminar" HBox.hgrow="ALWAYS" />
                </children>
             </HBox>
          </children>
       </Pane>
-      <Label fx:id="labelError" alignment="CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="19.0" prefHeight="17.0" prefWidth="490.0" AnchorPane.bottomAnchor="473.0" AnchorPane.leftAnchor="104.0" AnchorPane.rightAnchor="112.0" />
+      <Label fx:id="labelError" alignment="CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="19.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="490.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="84.6" />
    </children>
 </AnchorPane>
