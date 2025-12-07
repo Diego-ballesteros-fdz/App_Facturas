@@ -12,6 +12,7 @@ public class CliPro extends Entidad{
     
     private boolean isCliente;
     private boolean isProveedor;
+    private Direccion dir;
     
     public CliPro() {}
 
@@ -27,6 +28,32 @@ public class CliPro extends Entidad{
         isCliente=cliente;
         isProveedor=proveedor;
     }
+
+    public Direccion getDir() {
+        return dir;
+    }
+
+    public void setDir(Direccion dir) {
+        this.dir = dir;
+    }
+
+    public boolean isIsCliente() {
+        return isCliente;
+    }
+
+    public void setIsCliente(boolean isCliente) {
+        this.isCliente = isCliente;
+    }
+
+    public boolean isIsProveedor() {
+        return isProveedor;
+    }
+
+    public void setIsProveedor(boolean isProveedor) {
+        this.isProveedor = isProveedor;
+    }
+    
+    
     
 
     @Override

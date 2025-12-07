@@ -21,7 +21,7 @@
 
 <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="575.0" minWidth="800.0" prefHeight="440.0" prefWidth="706.0" stylesheets="@styleFormulary.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app_facturas.app_facturas.FormController">
    <children>
-      <Pane fx:id="cliProvPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="439.0" prefWidth="706.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane fx:id="cliProvPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="439.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <GridPane fx:id="gridClientes" hgap="15.0" layoutX="19.0" layoutY="69.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="351.0" prefWidth="668.0">
                <columnConstraints>
@@ -256,6 +256,6 @@
             </HBox>
          </children>
       </Pane>
-      <Label fx:id="labelError" alignment="CENTER" contentDisplay="CENTER" layoutX="104.0" layoutY="19.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="490.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="84.6" />
+      <Label fx:id="labelError" alignment="CENTER" contentDisplay="CENTER" layoutX="155.0" layoutY="466.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="490.0" AnchorPane.leftAnchor="155.0" AnchorPane.topAnchor="466.0" />
    </children>
 </AnchorPane>
