@@ -1031,11 +1031,152 @@ public class FormController {
                     }
                     break;
                 case "Vent":
-                  
+                    Factura f = (Factura) entidad; // casteo directo
+
+                    // Cliente / Nombre empresa asociado (muestra nombre si existe)
+                    if (f.getCliente() != null) {
+                        NombreEmpField1.setText(f.getCliente().getNombre());
+                        nomEmp.setText(f.getCliente().getNombre()); // etiqueta superior si quieres verla
+                    } else {
+                        NombreEmpField1.setText("");
+                        nomEmp.setText(nombreEmpresa != null ? nombreEmpresa : "");
+                    }
+
+                    // Observaciones (heredadas de Entidad o propias)
+                    // En tu Factura no hay getObservaciones(), pero Entidad sí (según tu diseño previo).
+                    try {
+                        Method mObs = f.getClass().getMethod("getObservaciones");
+                        Object obs = mObs.invoke(f);
+                        observacionesEmpField1.setText(obs != null ? obs.toString() : "");
+                    } catch (NoSuchMethodException ex) {
+                        // si Factura no define observaciones, intenta la heredada desde Entidad (si aplica)
+                        try {
+                            // si la clase padre (Entidad) tiene getObservaciones(), el método ya está disponible
+                            observacionesEmpField1.setText(f.getObservaciones() != null ? f.getObservaciones() : "");
+                        } catch (Exception ignore) {
+                            observacionesEmpField1.setText("");
+                        }
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        observacionesEmpField1.setText("");
+                    }
+
+                    // Fecha de emisión
+                    if (f.getFechaEmision() != null) {
+                        fechaEmisionDate.setValue(f.getFechaEmision());
+                    } else {
+                        fechaEmisionDate.setValue(null);
+                    }
+
+                    // Tipo: tu Factura tiene getTipo() (puede ser tipo de factura o IVA según tu uso)
+                    if (f.getTipo() != null && !f.getTipo().isBlank()) {
+                        // si getTipo devuelve algo como "21" o "21%" o "21 %", lo normalizamos
+                        String raw = f.getTipo().trim();
+                        if (raw.endsWith("%")) {
+                            raw = raw.substring(0, raw.length() - 1).trim();
+                        }
+                        // intenta igualarlo a los MenuItem del splitMenuIVA
+                        if (raw.equals("21") || raw.equals("21%")) {
+                            splitMenuIVA.setText("21%");
+                        } else if (raw.equals("10") || raw.equals("10%")) {
+                            splitMenuIVA.setText("10%");
+                        } else if (raw.equals("4") || raw.equals("4%")) {
+                            splitMenuIVA.setText("4%");
+                        } else {
+                            splitMenuIVA.setText(raw); // muestra lo que venga
+                        }
+                    } else {
+                        splitMenuIVA.setText("--Tipo I.V.A--");
+                    }
+
+                    // Total e IdFactura
+                    // No tienes TextField explicitado en el FXML para total/id: si los añades, sustituir aquí los nombres.
+                    // Intentamos poner nomEmp (etiqueta) y/o un TextField si existe por reflexión
+                    try {
+                        Method mTotal = f.getClass().getMethod("getTotal");
+                        Object tot = mTotal.invoke(f);
+                        // si existe un TextField llamado (por ejemplo) txtTotal, lo pondríamos; como no existe, lo ignoramos
+                        // pero podemos mostrarlo en labelError temporalmente o en la etiqueta nomEmpProd si prefieres:
+                        // labelError.setText("Total: " + String.format("%.2f", (Double) tot));
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignore) {
+                    }
+
+                    // Productos de la factura (intento detectar getters comunes mediante reflexión)
+                    try {
+                        // intentamos getProductos() o getListaProductos()
+                        Method mProd = null;
+                        try {
+                            mProd = f.getClass().getMethod("getProductos");
+                        } catch (NoSuchMethodException ex1) {
+                            try {
+                                mProd = f.getClass().getMethod("getListaProductos");
+                            } catch (NoSuchMethodException ex2) {
+                                mProd = null;
+                            }
+                        }
+
+                        if (mProd != null) {
+                            Object productosObj = mProd.invoke(f);
+                            if (productosObj instanceof java.util.Collection<?>) {
+                                Collection<?> col = (Collection<?>) productosObj;
+                                productosAddList.getItems().clear();
+                                // tus ListView son ListView<Entidad>, así que añadimos solo si los elementos son Entidad
+                                for (Object o : col) {
+                                    if (o instanceof Entidad) {
+                                        productosAddList.getItems().add((Entidad) o);
+                                    }
+                                }
+                            }
+                        } else {
+                            // no hay getter estándar: limpiamos por seguridad
+                            productosAddList.getItems().clear();
+                        }
+
+                        // Intentamos obtener cantidades asociadas (getCantidades, getListaCantidades, getCantidadSeleccionada)
+                        Integer cantidad = null;
+                        try {
+                            Method mCant = null;
+                            try {
+                                mCant = f.getClass().getMethod("getCantidadSeleccionada");
+                            } catch (NoSuchMethodException ex1) {
+                                try {
+                                    mCant = f.getClass().getMethod("getCantidades");
+                                } catch (NoSuchMethodException ex2) {
+                                    try {
+                                        mCant = f.getClass().getMethod("getListaCantidades");
+                                    } catch (NoSuchMethodException ex3) {
+                                        mCant = null;
+                                    }
+                                }
+                            }
+                            if (mCant != null) {
+                                Object cobj = mCant.invoke(f);
+                                if (cobj instanceof Number) {
+                                    cantidad = ((Number) cobj).intValue();
+                                } else if (cobj instanceof java.util.List && !((java.util.List<?>) cobj).isEmpty()) {
+                                    Object first = ((java.util.List<?>) cobj).get(0);
+                                    if (first instanceof Number) {
+                                        cantidad = ((Number) first).intValue();
+                                    }
+                                }
+                            }
+                        } catch (Exception ignored) {
+                        }
+
+                        if (cantidad != null) {
+                            cantProductFact.setText(String.valueOf(cantidad));
+                        } else {
+                            cantProductFact.setText("");
+                        }
+
+                    } catch (Exception e) {
+                        // en caso de error con reflexión, limpiamos o dejamos como estaba
+                        productosAddList.getItems().clear();
+                        cantProductFact.setText("");
+                    }
 
                     break;
                 case "Comp":
-                    Factura f = (Factura) entidad; // casteo directo
+                     f = (Factura) entidad; // casteo directo
 
                     // Cliente / Nombre empresa asociado (muestra nombre si existe)
                     if (f.getCliente() != null) {

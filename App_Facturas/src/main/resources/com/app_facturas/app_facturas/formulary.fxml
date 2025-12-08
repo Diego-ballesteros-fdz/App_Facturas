@@ -232,7 +232,7 @@
             </HBox>
          </children>
       </Pane>
-      <Pane fx:id="buttonsPaneModificar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <Pane fx:id="buttonsPaneModificar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <HBox alignment="CENTER" layoutX="43.0" layoutY="14.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="26.0" prefWidth="695.0" spacing="20.0">
                <children>

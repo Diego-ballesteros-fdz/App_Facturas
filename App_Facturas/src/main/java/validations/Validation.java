@@ -149,7 +149,7 @@ public class Validation {
         if (er.isError()) {
             return er;
         } else {
-            String regex = "^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$";
+            String regex = "^[A-Za-zÁÉÍÓÚáéíóúÑñ .]+$";
             if (t.matches(regex)) {
                 return new Error(false, "", Color.GREEN);
             } else {
