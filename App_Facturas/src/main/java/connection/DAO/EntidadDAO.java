@@ -112,13 +112,7 @@ public class EntidadDAO {
     public List<Entidad> listarSoloEmpresas() {
     List<Entidad> lista = new ArrayList<>();
 
-    String sql = """
-        SELECT e.*
-        FROM ENTIDAD e
-        LEFT JOIN ROLES_ENTIDAD r ON e.idEntidad = r.idEntidad
-        WHERE r.idEntidad IS NULL
-        ORDER BY e.idEntidad;
-    """;
+    String sql = "SELECT e.* FROM ENTIDAD e LEFT JOIN ROLES_ENTIDAD r ON e.idEntidad = r.idEntidad WHERE r.idEntidad IS NULL ORDER BY e.idEntidad";
 
     try (Connection con = ConexionBD.get();
          PreparedStatement ps = con.prepareStatement(sql);
