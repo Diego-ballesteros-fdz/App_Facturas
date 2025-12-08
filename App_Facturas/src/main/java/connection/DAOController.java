@@ -97,7 +97,14 @@ public class DAOController {
     public void agregarRolEntidad(long idEntidad, String rol) {
         rolDAO.insertarRol(idEntidad, rol);
     }
+    
+    // ============================================================
+    //                     EMPRESA RELACION
+    // ============================================================
 
+  public boolean agregarRelacionEmpresa(long idPadre, long idHija, String tipo) {
+        return empresaRelacionDAO.insertarRelacion(idPadre, idHija, tipo);
+    }
 
 
 

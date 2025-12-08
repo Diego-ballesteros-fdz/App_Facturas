@@ -36,4 +36,23 @@ public class EmpresaRelacionDAO {
 
         return lista;
     }
+    
+    public boolean insertarRelacion(long idPadre, long idHija, String tipo) {
+        String sql = "INSERT INTO EMPRESA_RELACION (idPadre, idHija, tipoRelacion) VALUES (?, ?, ?)";
+
+        try (Connection con = ConexionBD.get();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setLong(1, idPadre);
+            ps.setLong(2, idHija);
+            ps.setString(3, tipo);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception ex) {
+            System.out.println("❌ Error insertando relación empresa-cliente: " + ex.getMessage());
+            return false;
+        }
+    }
+
 }

@@ -52,9 +52,6 @@ public class CliPro extends Entidad{
     public void setIsProveedor(boolean isProveedor) {
         this.isProveedor = isProveedor;
     }
-    
-    
-    
 
     @Override
     public String toString() {

@@ -428,18 +428,40 @@ public class FormController {
                     break;
 
                 case "CliPro":
-                    Entidad creada = dao.crearEntidad(obj);
 
-                    CliPro cp = (CliPro) obj;
+                    // ENTIDAD BASE
+                    Entidad base = new Entidad(
+                        NombreCPField.getText(),
+                        DocumentoCPField.getText(),
+                        emailCPField.getText(),
+                        telefonoCPField.getText(),
+                        observacionesCPField.getText()
+                    );
 
-                    if (cp.isCliente()) {
-                        dao.agregarRolEntidad(creada.getIdEntidad(), "CLIENTE");
-                    }
-                    if (cp.isProveedor()) {
-                        dao.agregarRolEntidad(creada.getIdEntidad(), "PROVEEDOR");
-                    }
+                    base = dao.crearEntidad(base);       // genera ID en BD
+
+                    // CLI/PRO
+                    CliPro cp = new CliPro(base, clienteCPCheck.isSelected(), proveedorCPCheck.isSelected());
+
+                    // ROLES
+                    if (cp.isIsCliente()) dao.agregarRol(base.getIdEntidad(), "CLIENTE");
+                    if (cp.isIsProveedor()) dao.agregarRol(base.getIdEntidad(), "PROVEEDOR");
+
+                    // DIRECCIÓN
+                    Direccion dir = crearDireccionCliPro(base);
+                    dao.agregarDireccion(dir);
+
+                    // RELACIÓN CON EMPRESA ACTUAL
+                    long idEmpresa = App.empresaActualId;
+
+                    if (cp.isIsCliente())
+                        dao.agregarRelacionEmpresa(idEmpresa, base.getIdEntidad(), "CLIENTE");
+
+                    if (cp.isIsProveedor())
+                        dao.agregarRelacionEmpresa(idEmpresa, base.getIdEntidad(), "PROVEEDOR");
 
                     break;
+
 
                 case "Prod":
                     dao.crearProducto((Producto) obj);
@@ -1266,5 +1288,32 @@ public class FormController {
             System.out.println("❌ Error al volver: " + ex.getMessage());
         }
     }
+    
+   private Direccion crearDireccionCliPro(Entidad e) {
+        Direccion d = new Direccion();
+        d.setEntidad(e);
+        d.setVia(viaCPField.getText());
+        d.setNumero(numCPField.getText());
+        d.setCiudad(ciudadCPField.getText());
+        d.setProvincia(provCPField.getText());
+        d.setCp(codigoPostalCPField.getText());
+        d.setPais(paisCPField.getText());
+        return d;
+    }
+   
+   private Direccion crearDireccionEmpresa(Entidad e) {
+        Direccion d = new Direccion();
+        d.setEntidad(e);
+        d.setVia(viaEmpField.getText());
+        d.setNumero(numEmpField.getText());
+        d.setCiudad(ciudadEmpField.getText());
+        d.setProvincia(provEmpField.getText());
+        d.setCp(codigoPostalEmpField.getText());
+        d.setPais(paisEmpField.getText());
+        return d;
+    }
+
+
+
 
 }
