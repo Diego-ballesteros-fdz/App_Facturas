@@ -166,7 +166,7 @@
             <Label fx:id="nomEmpProd" layoutX="328.0" layoutY="6.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" />
          </children>
       </Pane>
-      <Pane fx:id="factPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="706.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane fx:id="factPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="706.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <GridPane hgap="15.0" layoutX="14.0" layoutY="55.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="155.0" prefWidth="675.0">
                <columnConstraints>
@@ -189,11 +189,11 @@
                   <TextField fx:id="NombreEmpField1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="observacionesEmpField1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label fx:id="nomEmp" text="Nombre empresa" GridPane.columnIndex="1" />
-                  <SplitMenuButton fx:id="splitMenuIVA" mnemonicParsing="false" onAction="#establecerIVA" text="--Tipo I.V.A--" GridPane.columnIndex="3">
+                  <SplitMenuButton fx:id="splitMenuIVA" mnemonicParsing="false" text="--Tipo I.V.A--" GridPane.columnIndex="3">
                     <items>
-                      <MenuItem fx:id="primero" mnemonicParsing="false" text="4%" />
-                      <MenuItem fx:id="segundo" mnemonicParsing="false" text="10%" />
-                        <MenuItem fx:id="tercero" mnemonicParsing="false" text="21%" />
+                      <MenuItem fx:id="primero" mnemonicParsing="false" onAction="#establecerIVA" text="4%" />
+                      <MenuItem fx:id="segundo" mnemonicParsing="false" onAction="#establecerIVA" text="10%" />
+                        <MenuItem fx:id="tercero" mnemonicParsing="false" onAction="#establecerIVA" text="21%" />
                     </items>
                   </SplitMenuButton>
                   <DatePicker fx:id="fechaEmisionDate" GridPane.columnIndex="3" GridPane.rowIndex="1" />
