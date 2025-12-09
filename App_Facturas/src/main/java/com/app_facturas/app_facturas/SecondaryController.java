@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Vector;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +31,7 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
+import objects.ListadoImprimirFacturas;
 
 
 public class SecondaryController implements Initializable {
@@ -183,19 +185,63 @@ public class SecondaryController implements Initializable {
     
     @FXML
     private void imprimirFactura(ActionEvent event) {
-        int idFacturaSeleccionada = 1; 
+        int idFacturaSeleccionada; 
 
         Connection con = null;
 
         try {
-            // 1. CONEXIÓN
+            //CONEXIÓN
             con = ConexionBD.get(); // Asegúrate de que este método existe en tu clase ConexionBD
             if (con == null) {
                 javax.swing.JOptionPane.showMessageDialog(null, "Error: No hay conexión con la base de datos.");
                 return;
             }
+            
+            
+            Vector<ListadoImprimirFacturas> listaFacturas = new Vector<>();
+            String sql = "SELECT f.idFactura, f.fecha, e.nombre " +
+                         "FROM FACTURA f " +
+                         "INNER JOIN ENTIDAD e ON f.idEntidad = e.idEntidad " +
+                         "ORDER BY f.idFactura DESC"; // Las más recientes primero
 
-            // 2. CARGAR ARCHIVO .JRXML
+            java.sql.Statement st = con.createStatement();
+            java.sql.ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                int id = rs.getInt("idFactura");
+                java.sql.Date fecha = rs.getDate("fecha");
+                String cliente = rs.getString("nombre");
+
+                String texto = "Factura Nº " + id + " - " + cliente + " (" + fecha + ")";
+                listaFacturas.add(new ListadoImprimirFacturas(id, texto));
+            }
+            rs.close();
+
+            if (listaFacturas.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(null, "No hay facturas registradas.");
+                return;
+            }
+
+            javax.swing.JComboBox<ListadoImprimirFacturas> comboBox = new javax.swing.JComboBox<>(listaFacturas);
+
+            int confirmacion = javax.swing.JOptionPane.showConfirmDialog(
+                null, 
+                comboBox, 
+                "Seleccione la factura a imprimir", 
+                javax.swing.JOptionPane.OK_CANCEL_OPTION, 
+                javax.swing.JOptionPane.QUESTION_MESSAGE
+            );
+
+            if (confirmacion != javax.swing.JOptionPane.OK_OPTION) {
+                return; 
+            }
+
+            // OBTENEMOS EL ID SELECCIONADO
+            ListadoImprimirFacturas seleccion = (ListadoImprimirFacturas) comboBox.getSelectedItem();
+            idFacturaSeleccionada = seleccion.getId();
+            
+
+            //CARGAR ARCHIVO .JRXML
             String rutaArchivo = "/reports/Factura.jrxml";
             InputStream reporteStream = SecondaryController.class.getResourceAsStream(rutaArchivo);
 
@@ -204,33 +250,31 @@ public class SecondaryController implements Initializable {
                 return;
             }
 
-            // 3. COMPILAR EL REPORTE
+            //COMPILAR EL REPORTE
             System.out.println("Compilando reporte...");
             JasperReport reporteCompilado = JasperCompileManager.compileReport(reporteStream);
 
-            // 4. PARÁMETROS
+            //PARÁMETROS
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("idFactura", idFacturaSeleccionada); 
 
-            // 5. LLENAR EL REPORTE (Crear el objeto de impresión)
+            //LLENAR EL REPORTE (Crear el objeto de impresión)
             System.out.println("Llenando datos...");
             JasperPrint print = JasperFillManager.fillReport(reporteCompilado, parametros, con);
 
-            // 6. EXPORTAR A PDF (Creando archivo temporal)
-            // Si prefieres que se guarde siempre en el mismo sitio, cambia createTempFile por: new File("Factura.pdf");
+            //EXPORTAR A PDF
             File pdfFile = File.createTempFile("Factura_Final_", ".pdf");
             
             JasperExportManager.exportReportToPdfFile(print, pdfFile.getAbsolutePath());
             System.out.println("PDF Creado en: " + pdfFile.getAbsolutePath());
 
-            // --- AQUI ESTÁ EL CAMBIO QUE PEDISTE ---
-            // 7. MOSTRAR MENSAJE EN JOPTIONPANE
+            //MOSTRAR MENSAJE EN JOPTIONPANE
             javax.swing.JOptionPane.showMessageDialog(null, 
                 "¡Factura generada correctamente!\n\nRuta: " + pdfFile.getAbsolutePath(), 
                 "Éxito", 
                 javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
-            // 8. ABRIR EL ARCHIVO AUTOMÁTICAMENTE
+            //ABRIR EL ARCHIVO AUTOMÁTICAMENTE
             if (Desktop.isDesktopSupported()) {
                 Desktop.getDesktop().open(pdfFile);
             }
