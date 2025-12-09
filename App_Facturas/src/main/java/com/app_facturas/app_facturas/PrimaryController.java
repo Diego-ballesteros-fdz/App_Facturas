@@ -52,8 +52,8 @@ public class PrimaryController implements Initializable {
         // SOLO empresas NO asociadas
         String sql =
             "SELECT idEntidad, nombre " +
-            "FROM entidad " +
-            "WHERE idEntidad NOT IN (SELECT idEntidad FROM roles_entidad)";
+            "FROM ENTIDAD " +
+            "WHERE idEntidad NOT IN (SELECT idEntidad FROM ROLES_ENTIDAD)";
 
         try (Connection con = new ConexionBD().get();
              PreparedStatement pst = con.prepareStatement(sql);

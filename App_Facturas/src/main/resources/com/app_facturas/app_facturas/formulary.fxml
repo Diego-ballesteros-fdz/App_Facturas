@@ -186,7 +186,6 @@
                   <Label text="Nombre empresa" />
                   <Label text="I.V.A" GridPane.columnIndex="2" />
                   <Label text="fecha emision" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <TextField fx:id="NombreEmpField1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <TextField fx:id="observacionesEmpField1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label fx:id="nomEmp" text="Nombre empresa" GridPane.columnIndex="1" />
                   <SplitMenuButton fx:id="splitMenuIVA" mnemonicParsing="false" text="--Tipo I.V.A--" GridPane.columnIndex="3">
@@ -197,6 +196,12 @@
                     </items>
                   </SplitMenuButton>
                   <DatePicker fx:id="fechaEmisionDate" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <SplitMenuButton fx:id="NombreEmpFactSplit" mnemonicParsing="false" text="Seleccione Empresa" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                      <MenuItem mnemonicParsing="false" text="Action 2" />
+                    </items>
+                  </SplitMenuButton>
                </children>
             </GridPane>
             <Label layoutX="332.0" layoutY="23.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Factura" />

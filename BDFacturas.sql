@@ -1,9 +1,9 @@
 -- ===========================================================
 -- REINICIAR BASE DE DATOS
 -- ===========================================================
-DROP DATABASE IF EXISTS GESFAC;
-CREATE DATABASE GESFAC;
-USE GESFAC;
+DROP DATABASE IF EXISTS gesfac;
+CREATE DATABASE gesfac;
+USE gesfac;
 
 -- ===========================================================
 -- TABLAS PRINCIPALES

@@ -17,7 +17,7 @@ public class CliPro extends Entidad{
     public CliPro() {}
 
     
-    public CliPro(Entidad e,boolean cliente,boolean proveedor) {
+    public CliPro(Entidad e,boolean cliente,boolean proveedor,Direccion dir) {
         super();
         this.setIdEntidad(e.getIdEntidad());
         this.setNombre(e.getNombre());
@@ -27,6 +27,7 @@ public class CliPro extends Entidad{
         this.setObservaciones(e.getObservaciones());
         isCliente=cliente;
         isProveedor=proveedor;
+        this.dir=dir;
     }
 
     public Direccion getDir() {

@@ -4,11 +4,16 @@
  */
 package com.app_facturas.app_facturas;
 
+import connection.ConexionBD;
 import connection.DAOController;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -112,7 +117,6 @@ public class FormController {
     private Pane factPane;
     @FXML
     private HBox hboxFacturas;
-    @FXML
     private TextField NombreEmpField1;
     @FXML
     private TextField observacionesEmpField1;
@@ -182,6 +186,8 @@ public class FormController {
     private MenuItem nieType2;
     @FXML
     private MenuItem cifType2;
+    @FXML
+    private SplitMenuButton NombreEmpFactSplit;
 
     public void initialize() {
         gridClientes.prefWidthProperty().bind(cliProvPane.widthProperty().subtract(40));
@@ -220,6 +226,7 @@ public class FormController {
                     EmpresaPane.setVisible(false);
                     factPane.setVisible(true);
                     nomEmp.setText(nombreEmpresa);
+                    generarEmpresas();
                     Platform.runLater(() -> {
                         System.out.println("RunLater ejecutado");
                         actualizarListProd();
@@ -232,6 +239,7 @@ public class FormController {
                     EmpresaPane.setVisible(false);
                     factPane.setVisible(true);
                     nomEmp.setText(nombreEmpresa);
+                    generarEmpresas();
                     Platform.runLater(() -> {
                         System.out.println("RunLater ejecutado");
                         actualizarListProd();
@@ -424,52 +432,49 @@ public class FormController {
             switch (tipo) {
 
                 case "Emp":
-                    dao.crearEmpresa(obj);
+                    Empresa emp = (Empresa) obj;
+                    dao.crearEmpresa(emp);
                     break;
 
                 case "CliPro":
 
-                    // ENTIDAD BASE
-                    Entidad base = new Entidad(
-                            NombreCPField.getText(),
-                            DocumentoCPField.getText(),
-                            emailCPField.getText(),
-                            telefonoCPField.getText(),
-                            observacionesCPField.getText()
-                    );
-
-                    base = dao.crearEntidad(base);       // genera ID en BD
-
-                    // CLI/PRO
-                    CliPro cp = new CliPro(base, clienteCPCheck.isSelected(), proveedorCPCheck.isSelected());
+                    CliPro cp = (CliPro) obj;
 
                     // ROLES
                     if (cp.isIsCliente()) {
-                        dao.agregarRol(base.getIdEntidad(), "CLIENTE");
+                        dao.agregarRol(cp.getIdEntidad(), "CLIENTE");
                     }
                     if (cp.isIsProveedor()) {
-                        dao.agregarRol(base.getIdEntidad(), "PROVEEDOR");
+                        dao.agregarRol(cp.getIdEntidad(), "PROVEEDOR");
                     }
 
                     // DIRECCIÓN
-                    Direccion dir = crearDireccionCliPro(base);
-                    dao.agregarDireccion(dir);
+                    dao.agregarDireccion(cp.getDir());
 
                     // RELACIÓN CON EMPRESA ACTUAL
                     long idEmpresa = App.empresaActualId;
 
                     if (cp.isIsCliente()) {
-                        dao.agregarRelacionEmpresa(idEmpresa, base.getIdEntidad(), "CLIENTE");
+                        dao.agregarRelacionEmpresa(idEmpresa, cp.getIdEntidad(), "CLIENTE");
                     }
 
                     if (cp.isIsProveedor()) {
-                        dao.agregarRelacionEmpresa(idEmpresa, base.getIdEntidad(), "PROVEEDOR");
+                        dao.agregarRelacionEmpresa(idEmpresa, cp.getIdEntidad(), "PROVEEDOR");
                     }
 
                     break;
 
                 case "Prod":
                     dao.crearProducto((Producto) obj);
+                    break;
+
+                case "Comp":
+                    Factura fac = (Factura) obj;
+                    dao.crearFactura(fac);
+                    break;
+                case "Vent":
+                    fac = (Factura) obj;
+                    dao.crearFactura(fac);
                     break;
             }
             volverAtras();
@@ -525,7 +530,7 @@ public class FormController {
 
                 }
                 //si no ha habido fallos almacenamos la info
-                if (!mostrarMensaje(error,DocumentoEmpField)) {
+                if (!mostrarMensaje(error, DocumentoEmpField)) {
                     tipoDocumento = DocumentoEmpField.getText();
                     sePuede = true;
                 } else {
@@ -534,7 +539,7 @@ public class FormController {
                 }
                 //el nombre de la empresa
                 error = Validation.esNombre(NombreEmpField.getText());
-                if (!mostrarMensaje(error,NombreEmpField)) {
+                if (!mostrarMensaje(error, NombreEmpField)) {
                     nombre = NombreEmpField.getText();
                     sePuede = true;
                 } else {
@@ -544,7 +549,7 @@ public class FormController {
                 //el email de la empresa
                 if (!emailEmpField.getText().equals("")) {
                     error = Validation.esEmail(emailEmpField.getText());
-                    if (!mostrarMensaje(error,emailEmpField)) {
+                    if (!mostrarMensaje(error, emailEmpField)) {
                         email = emailEmpField.getText();
                         sePuede = true;
                     } else {
@@ -555,7 +560,7 @@ public class FormController {
                 //el telefono de la empresa
                 if (!telefonoEmpField.getText().equals("")) {
                     error = Validation.esTelefono(telefonoEmpField.getText());
-                    if (!mostrarMensaje(error,telefonoEmpField)) {
+                    if (!mostrarMensaje(error, telefonoEmpField)) {
                         telefono = telefonoEmpField.getText();
                         sePuede = true;
                     } else {
@@ -569,7 +574,7 @@ public class FormController {
                 //el nombre de via de la empresa
                 if (!viaEmpField.getText().equals("")) {
                     error = Validation.esNombre(viaEmpField.getText());
-                    if (!mostrarMensaje(error,viaEmpField)) {
+                    if (!mostrarMensaje(error, viaEmpField)) {
                         nombreVia = viaEmpField.getText();
                         sePuede = true;
                     } else {
@@ -580,7 +585,7 @@ public class FormController {
                 //el numero de la calle de la empresa
                 if (!numEmpField.getText().equals("")) {
                     error = Validation.esEnteroPos(numEmpField.getText());
-                    if (!mostrarMensaje(error,numEmpField)) {
+                    if (!mostrarMensaje(error, numEmpField)) {
                         numero = numEmpField.getText();
                         sePuede = true;
                     } else {
@@ -591,7 +596,7 @@ public class FormController {
                 //la ciudad de la empresa
                 if (!ciudadEmpField.getText().equals("")) {
                     error = Validation.esNombre(ciudadEmpField.getText());
-                    if (!mostrarMensaje(error,ciudadEmpField)) {
+                    if (!mostrarMensaje(error, ciudadEmpField)) {
                         ciudad = ciudadEmpField.getText();
                         sePuede = true;
                     } else {
@@ -602,7 +607,7 @@ public class FormController {
                 //la provincia de la empresa
                 if (!provEmpField.getText().equals("")) {
                     error = Validation.esNombre(provEmpField.getText());
-                    if (!mostrarMensaje(error,provEmpField)) {
+                    if (!mostrarMensaje(error, provEmpField)) {
                         provincia = provEmpField.getText();
                         sePuede = true;
                     } else {
@@ -613,7 +618,7 @@ public class FormController {
                 //el codigopostal de la empresa
                 if (!codigoPostalEmpField.getText().equals("")) {
                     error = Validation.esTexto(codigoPostalEmpField.getText());
-                    if (!mostrarMensaje(error,codigoPostalCPField)) {
+                    if (!mostrarMensaje(error, codigoPostalCPField)) {
                         codigoPostal = codigoPostalCPField.getText();
                         sePuede = true;
                     } else {
@@ -624,7 +629,7 @@ public class FormController {
                 //el pais de la empresa
                 if (!paisEmpField.getText().equals("")) {
                     error = Validation.esTexto(paisEmpField.getText());
-                    if (!mostrarMensaje(error,paisEmpField)) {
+                    if (!mostrarMensaje(error, paisEmpField)) {
                         pais = paisEmpField.getText();
                         sePuede = true;
                     } else {
@@ -663,7 +668,7 @@ public class FormController {
 
                 }
                 //si no ha habido fallos almacenamos la info
-                if (!mostrarMensaje(error,DocumentoCPField)) {
+                if (!mostrarMensaje(error, DocumentoCPField)) {
                     tipoDocumento = DocumentoCPField.getText();
                     sePuede = true;
                 } else {
@@ -672,7 +677,7 @@ public class FormController {
                 }
                 //el nombre de la empresa
                 error = Validation.esNombre(NombreCPField.getText());
-                if (!mostrarMensaje(error,NombreCPField)) {
+                if (!mostrarMensaje(error, NombreCPField)) {
                     nombre = NombreCPField.getText();
                     sePuede = true;
                 } else {
@@ -682,7 +687,7 @@ public class FormController {
                 //el email de la empresa
                 if (!emailCPField.getText().equals("")) {
                     error = Validation.esEmail(emailCPField.getText());
-                    if (!mostrarMensaje(error,emailCPField)) {
+                    if (!mostrarMensaje(error, emailCPField)) {
                         email = emailCPField.getText();
                         sePuede = true;
                     } else {
@@ -693,7 +698,7 @@ public class FormController {
                 //el telefono de la empresa
                 if (!telefonoCPField.getText().equals("")) {
                     error = Validation.esTelefono(telefonoCPField.getText());
-                    if (!mostrarMensaje(error,telefonoCPField)) {
+                    if (!mostrarMensaje(error, telefonoCPField)) {
                         telefono = telefonoCPField.getText();
                         sePuede = true;
                     } else {
@@ -707,7 +712,7 @@ public class FormController {
                 //el nombre de via de la empresa
                 if (!viaCPField.getText().equals("")) {
                     error = Validation.esNombre(viaCPField.getText());
-                    if (!mostrarMensaje(error,viaCPField)) {
+                    if (!mostrarMensaje(error, viaCPField)) {
                         nombreVia = viaCPField.getText();
                         sePuede = true;
                     } else {
@@ -718,7 +723,7 @@ public class FormController {
                 //el numero de la calle de la empresa
                 if (!numCPField.getText().equals("")) {
                     error = Validation.esEnteroPos(numCPField.getText());
-                    if (!mostrarMensaje(error,numCPField)) {
+                    if (!mostrarMensaje(error, numCPField)) {
                         numero = numCPField.getText();
                         sePuede = true;
                     } else {
@@ -729,7 +734,7 @@ public class FormController {
                 //la ciudad de la empresa
                 if (!ciudadCPField.getText().equals("")) {
                     error = Validation.esNombre(ciudadCPField.getText());
-                    if (!mostrarMensaje(error,ciudadCPField)) {
+                    if (!mostrarMensaje(error, ciudadCPField)) {
                         ciudad = ciudadCPField.getText();
                         sePuede = true;
                     } else {
@@ -740,7 +745,7 @@ public class FormController {
                 //la provincia de la empresa
                 if (!provCPField.getText().equals("")) {
                     error = Validation.esNombre(provCPField.getText());
-                    if (!mostrarMensaje(error,provCPField)) {
+                    if (!mostrarMensaje(error, provCPField)) {
                         provincia = provCPField.getText();
                         sePuede = true;
                     } else {
@@ -751,7 +756,7 @@ public class FormController {
                 //el codigopostal de la empresa
                 if (!codigoPostalCPField.getText().equals("")) {
                     error = Validation.esTexto(codigoPostalCPField.getText());
-                    if (!mostrarMensaje(error,codigoPostalCPField)) {
+                    if (!mostrarMensaje(error, codigoPostalCPField)) {
                         codigoPostal = codigoPostalCPField.getText();
                         sePuede = true;
                     } else {
@@ -762,7 +767,7 @@ public class FormController {
                 //el pais de la empresa
                 if (!paisCPField.getText().equals("")) {
                     error = Validation.esTexto(paisCPField.getText());
-                    if (!mostrarMensaje(error,paisCPField)) {
+                    if (!mostrarMensaje(error, paisCPField)) {
                         pais = paisCPField.getText();
                         sePuede = true;
                     } else {
@@ -774,7 +779,7 @@ public class FormController {
                     System.out.println("Creando Entidad para empresa");
                     Entidad em = new Entidad(nombre, tipoDocumento, email, telefono, obser);
                     Direccion dir = new Direccion(em, nombreVia, numero, ciudad, provincia, codigoPostal, pais);
-                    CliPro CliPro = new CliPro(em, clienteCPCheck.isSelected(), proveedorCPCheck.isSelected());
+                    CliPro CliPro = new CliPro(em, clienteCPCheck.isSelected(), proveedorCPCheck.isSelected(), dir);
                     System.out.println("obj CliPro creada");
                     return CliPro;
                 }
@@ -787,7 +792,7 @@ public class FormController {
                 //cogemos y comprobamos el dato nompro
                 if (!nombreProField.getText().equals("")) {
                     error = Validation.esNombre(nombreProField.getText());
-                    if (!mostrarMensaje(error,nombreProField)) {
+                    if (!mostrarMensaje(error, nombreProField)) {
                         nompro = nombreProField.getText();
                         sePuede = true;
                     } else {
@@ -798,7 +803,7 @@ public class FormController {
                 //cogemos y comprovamos el descpro
                 if (!descripProField.getText().equals("")) {
                     error = Validation.esTexto(descripProField.getText());
-                    if (!mostrarMensaje(error,descripProField)) {
+                    if (!mostrarMensaje(error, descripProField)) {
                         descpro = descripProField.getText();
                         sePuede = true;
                     } else {
@@ -809,7 +814,7 @@ public class FormController {
                 //cogemos y comprovamos el precio
                 if (!precioProField.getText().equals("")) {
                     error = Validation.esDecimalPos(precioProField.getText());
-                    if (!mostrarMensaje(error,precioProField)) {
+                    if (!mostrarMensaje(error, precioProField)) {
                         preciopro = precioProField.getText();
                         sePuede = true;
                     } else {
@@ -820,7 +825,7 @@ public class FormController {
                 //cogemos y validamos el stock
                 if (!stockProField.getText().equals("")) {
                     error = Validation.esEnteroPos(stockProField.getText());
-                    if (!mostrarMensaje(error,stockProField)) {
+                    if (!mostrarMensaje(error, stockProField)) {
                         Stockpro = stockProField.getText();
                         sePuede = true;
                     } else {
@@ -844,7 +849,7 @@ public class FormController {
                 //cogemos y validamos el nombre fiscal
                 if (!NombreEmpField1.getText().equals("")) {
                     error = Validation.esNombre(NombreEmpField1.getText());
-                    if (!mostrarMensaje(error,NombreEmpField1)) {
+                    if (!mostrarMensaje(error, NombreEmpField1)) {
                         nombreFiscFact = NombreEmpField1.getText();
                         sePuede = true;
                     } else {
@@ -889,7 +894,7 @@ public class FormController {
                 //cogemos y validamos el nombre fiscal
                 if (!NombreEmpField1.getText().equals("")) {
                     error = Validation.esNombre(NombreEmpField1.getText());
-                    if (!mostrarMensaje(error,NombreEmpField1)) {
+                    if (!mostrarMensaje(error, NombreEmpField1)) {
                         nombreFiscFact = NombreEmpField1.getText();
                         sePuede = true;
                     } else {
@@ -899,7 +904,7 @@ public class FormController {
                 }
                 //ahora las observaciones
                 error = Validation.esTexto(observacionesEmpField1.getText());
-                if (!mostrarMensaje(error,observacionesEmpField1)) {
+                if (!mostrarMensaje(error, observacionesEmpField1)) {
                     observFact = observacionesEmpField1.getText();
                     sePuede = true;
                 } else {
@@ -1476,6 +1481,54 @@ public class FormController {
         d.setCp(codigoPostalEmpField.getText());
         d.setPais(paisEmpField.getText());
         return d;
+    }
+
+    
+    private void generarEmpresas() {
+
+        NombreEmpFactSplit.getItems().clear();
+        
+        CliPro cp=null;
+
+        // SOLO empresas NO asociadas
+        String sql = "SELECT "
+                + "e.idEntidad, "
+                + "e.nombre, "
+                + "e.nif, "
+                + "r.rol, "
+                + "er.tipoRelacion "
+                + "FROM EMPRESA_RELACION er "
+                + "JOIN ENTIDAD e ON e.idEntidad = er.idHija "
+                + "LEFT JOIN ROLES_ENTIDAD r ON r.idEntidad = e.idEntidad "
+                + "WHERE er.idPadre = "+App.empresaActualId
+                + "AND r.rol IN ('CLIENTE', 'PROVEEDOR');";
+
+        try (Connection con = new ConexionBD().get(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
+
+            while (rs.next()) {
+
+                int id = rs.getInt("idEntidad");
+                String nombre = rs.getString("nombre");
+                
+
+                MenuItem item = new MenuItem(nombre);
+                
+                
+                item.setOnAction(evento -> {
+                    //creamos el cp selecionado, para poder almacenarlo
+                });
+
+                NombreEmpFactSplit.getItems().add(item);
+            }
+
+            rs.close();
+            pst.close();
+            con.close();
+
+        } catch (SQLException e) {
+            System.err.println("Error SQL: " + e.getMessage());
+        }
+
     }
 
 }
