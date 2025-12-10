@@ -4,6 +4,7 @@
  */
 package objects;
 
+import connection.DAOController;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -34,8 +35,11 @@ public class Factura extends Entidad {
     }
     
     public Entidad encontrarCliente(String nombre){
-        Entidad entidad=null;
-        return entidad;
+        DAOController dao=new DAOController();
+        //dividimos el nombre para quedarnos con el id
+        String[] partes = nombre.split("-");
+        Entidad e=dao.buscarEntidadPorId(Long.valueOf(partes[0]));
+        return e;
     }
     
     public double calcularTotal(ArrayList<Integer> lista,ArrayList<Entidad> listaProd){

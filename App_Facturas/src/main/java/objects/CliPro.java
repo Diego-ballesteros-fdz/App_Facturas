@@ -29,6 +29,12 @@ public class CliPro extends Entidad{
         isProveedor=proveedor;
         this.dir=dir;
     }
+    public CliPro(long id) {
+        super();
+        this.setIdEntidad(id);
+
+    }
+    
 
     public Direccion getDir() {
         return dir;

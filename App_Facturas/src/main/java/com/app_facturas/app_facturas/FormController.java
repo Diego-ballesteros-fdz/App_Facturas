@@ -504,7 +504,8 @@ public class FormController {
                 Stockpro = "",
                 nombreFiscFact = "",
                 observFact = "",
-                iva = "";
+                iva = "",
+                id="";
         LocalDate fecha = null;
 
         switch (tipo) {
@@ -847,15 +848,15 @@ public class FormController {
                 break;
             case "Comp":
                 //cogemos y validamos el nombre fiscal
-                if (!NombreEmpField1.getText().equals("")) {
-                    error = Validation.esNombre(NombreEmpField1.getText());
-                    if (!mostrarMensaje(error, NombreEmpField1)) {
-                        nombreFiscFact = NombreEmpField1.getText();
-                        sePuede = true;
-                    } else {
-                        sePuede = false;
-                        break;
-                    }
+                if (!NombreEmpFactSplit.getText().equals("Seleccione Empresa")) {
+
+                    nombreFiscFact = NombreEmpFactSplit.getText();
+                    sePuede = true;
+
+                } else {
+                    mostrarMensaje(new validations.Error(true, "debe seleccionar un nombre de empresa.", Color.RED));
+                    sePuede = false;
+                    break;
                 }
                 //ahora las observaciones
                 observFact = observacionesEmpField1.getText();
@@ -879,6 +880,10 @@ public class FormController {
                         sePuede = false;
                         break;
                     }
+                } else {
+                    mostrarMensaje(new validations.Error(true, "debe rellenar el campo de la fecha", Color.RED));
+                    sePuede = false;
+                    break;
                 }
                 //creamos la entidad factura
                 if (sePuede) {
@@ -892,15 +897,16 @@ public class FormController {
                 break;
             case "Vent":
                 //cogemos y validamos el nombre fiscal
-                if (!NombreEmpField1.getText().equals("")) {
-                    error = Validation.esNombre(NombreEmpField1.getText());
-                    if (!mostrarMensaje(error, NombreEmpField1)) {
-                        nombreFiscFact = NombreEmpField1.getText();
-                        sePuede = true;
-                    } else {
-                        sePuede = false;
-                        break;
-                    }
+                if (!NombreEmpFactSplit.getText().equals("Seleccione Empresa")) {
+
+                    nombreFiscFact = NombreEmpFactSplit.getText();
+                    
+                    sePuede = true;
+
+                } else {
+                    mostrarMensaje(new validations.Error(true, "debe seleccionar un nombre de empresa.", Color.RED));
+                    sePuede = false;
+                    break;
                 }
                 //ahora las observaciones
                 error = Validation.esTexto(observacionesEmpField1.getText());
@@ -930,6 +936,10 @@ public class FormController {
                         sePuede = false;
                         break;
                     }
+                } else {
+                    mostrarMensaje(new validations.Error(true, "debe rellenar el campo de la fecha", Color.RED));
+                    sePuede = false;
+                    break;
                 }
                 //creamos la entidad factura
                 if (sePuede) {
@@ -1483,12 +1493,11 @@ public class FormController {
         return d;
     }
 
-    
     private void generarEmpresas() {
 
         NombreEmpFactSplit.getItems().clear();
-        
-        CliPro cp=null;
+
+        CliPro cp = null;
 
         // SOLO empresas NO asociadas
         String sql = "SELECT "
@@ -1500,8 +1509,8 @@ public class FormController {
                 + "FROM EMPRESA_RELACION er "
                 + "JOIN ENTIDAD e ON e.idEntidad = er.idHija "
                 + "LEFT JOIN ROLES_ENTIDAD r ON r.idEntidad = e.idEntidad "
-                + "WHERE er.idPadre = "+App.empresaActualId
-                + "AND r.rol IN ('CLIENTE', 'PROVEEDOR');";
+                + "WHERE er.idPadre = " + App.empresaActualId
+                + " AND r.rol IN ('CLIENTE', 'PROVEEDOR');";
 
         try (Connection con = new ConexionBD().get(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
@@ -1509,13 +1518,12 @@ public class FormController {
 
                 int id = rs.getInt("idEntidad");
                 String nombre = rs.getString("nombre");
-                
 
                 MenuItem item = new MenuItem(nombre);
-                
-                
+                cp = new CliPro(id);
+
                 item.setOnAction(evento -> {
-                    //creamos el cp selecionado, para poder almacenarlo
+                    NombreEmpFactSplit.setText(id+"-"+nombre);
                 });
 
                 NombreEmpFactSplit.getItems().add(item);
@@ -1529,6 +1537,11 @@ public class FormController {
             System.err.println("Error SQL: " + e.getMessage());
         }
 
+    }
+
+    @FXML
+    private void provSelectionAction(ActionEvent event) {
+        generarEmpresas();
     }
 
 }

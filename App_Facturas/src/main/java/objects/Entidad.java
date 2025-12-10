@@ -27,6 +27,11 @@ public class Entidad {
         this.telefono = telefono;
         this.observaciones = observaciones;
     }
+    public Entidad( long id,String nombre, String nif) {
+        this.nombre = nombre;
+        this.nif = nif;
+ 
+    }
     
     
 

@@ -196,7 +196,7 @@
                     </items>
                   </SplitMenuButton>
                   <DatePicker fx:id="fechaEmisionDate" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <SplitMenuButton fx:id="NombreEmpFactSplit" mnemonicParsing="false" text="Seleccione Empresa" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <SplitMenuButton fx:id="NombreEmpFactSplit" mnemonicParsing="false" onAction="#provSelectionAction" text="Seleccione Empresa" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <items>
                       <MenuItem mnemonicParsing="false" text="Action 1" />
                       <MenuItem mnemonicParsing="false" text="Action 2" />
