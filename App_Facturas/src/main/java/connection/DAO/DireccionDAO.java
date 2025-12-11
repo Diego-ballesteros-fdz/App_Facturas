@@ -4,6 +4,7 @@
  */
 package connection.DAO;
 
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import connection.ConexionBD;
 import objects.Direccion;
 import objects.Entidad;
@@ -36,6 +37,7 @@ public class DireccionDAO {
                 return false;
             }
 
+            System.out.println("IdEntidad para añadir dir: "+obtenerId(d.getEntidad()));
             ps.setLong(1, d.getEntidad().getIdEntidad());
             ps.setString(2, d.getVia());
             ps.setString(3, d.getNumero());
@@ -49,6 +51,23 @@ public class DireccionDAO {
         } catch (SQLException e) {
             System.out.println("❌ Error insertando dirección: " + e.getMessage());
             return false;
+        }
+    }
+    
+    public long obtenerId(Entidad e){
+        String sql="SELECT idEntidad" +
+                    "FROM ENTIDAD" +
+                    "WHERE nombre = ?;";
+        try (Connection con = ConexionBD.get();
+             PreparedStatement ps = con.prepareStatement(sql)){
+
+            ps.setString(1, e.getNombre());
+            
+            ResultSet r= ps.executeQuery(sql);
+            return r.getLong("idEntidad");
+        }catch (SQLException ex) {
+            System.out.println("❌ Error insertando dirección: " + ex.getMessage());
+            return -1;
         }
     }
 

@@ -188,6 +188,7 @@ public class FormController {
     private MenuItem cifType2;
     @FXML
     private SplitMenuButton NombreEmpFactSplit;
+    
 
     public void initialize() {
         gridClientes.prefWidthProperty().bind(cliProvPane.widthProperty().subtract(40));
@@ -434,6 +435,7 @@ public class FormController {
                 case "Emp":
                     Empresa emp = (Empresa) obj;
                     dao.crearEmpresa(emp);
+                    dao.agregarDireccion(emp.getDir());
                     break;
 
                 case "CliPro":
@@ -1002,14 +1004,18 @@ public class FormController {
                     emailEmpField.setText(entidad.getEmail());
                     telefonoEmpField.setText(entidad.getTelefono());
                     observacionesEmpField.setText(entidad.getObservaciones());
-                    /*
-                    viaEmpField.setText(entidad.getDir().getVia());
-                    numEmpField.setText(String.valueOf(entidad.getDir().getNumero()));
-                    ciudadEmpField.setText(entidad.getDir().getCiudad());
-                    provEmpField.setText(entidad.getDir().getProvincia());
-                    paisEmpField.setText(entidad.getDir().getPais());
-                    codigoPostalEmpField.setText(emp.getDir().getCp());
-                     */
+                    
+                    List<Direccion> dir=dao.obtenerDireccionesDeEntidad(entidad.getIdEntidad());
+                    if(!dir.isEmpty()){
+                    Direccion d=dir.get(0);
+                    viaEmpField.setText(d.getVia());
+                    numEmpField.setText(String.valueOf(d.getNumero()));
+                    ciudadEmpField.setText(d.getCiudad());
+                    provEmpField.setText(d.getProvincia());
+                    paisEmpField.setText(d.getPais());
+                    codigoPostalEmpField.setText(d.getCp());
+                    }
+                     
                     break;
                 case "CliPro":
                     Entidad cp = entidad; // casteo directo
@@ -1469,29 +1475,6 @@ public class FormController {
         }
     }
 
-    private Direccion crearDireccionCliPro(Entidad e) {
-        Direccion d = new Direccion();
-        d.setEntidad(e);
-        d.setVia(viaCPField.getText());
-        d.setNumero(numCPField.getText());
-        d.setCiudad(ciudadCPField.getText());
-        d.setProvincia(provCPField.getText());
-        d.setCp(codigoPostalCPField.getText());
-        d.setPais(paisCPField.getText());
-        return d;
-    }
-
-    private Direccion crearDireccionEmpresa(Entidad e) {
-        Direccion d = new Direccion();
-        d.setEntidad(e);
-        d.setVia(viaEmpField.getText());
-        d.setNumero(numEmpField.getText());
-        d.setCiudad(ciudadEmpField.getText());
-        d.setProvincia(provEmpField.getText());
-        d.setCp(codigoPostalEmpField.getText());
-        d.setPais(paisEmpField.getText());
-        return d;
-    }
 
     private void generarEmpresas() {
 
