@@ -1027,19 +1027,26 @@ public class FormController {
                     telefonoCPField.setText(cp.getTelefono());
                     observacionesCPField.setText(cp.getObservaciones());
 
-                    /*
+                    dir=dao.obtenerDireccionesDeEntidad(entidad.getIdEntidad());
+                    System.out.println(entidad.getIdEntidad());
+                    System.out.println(dir);
+                    if(!dir.isEmpty()){
+                    Direccion d=dir.get(0);
                     // datos de dirección (si existen los getters en Entidad)
-                    viaCPField.setText(cp.getDir().getVia());
-                    numCPField.setText(String.valueOf(cp.getDir().getNumero()));
-                    ciudadCPField.setText(cp.getDir().getCiudad());
-                    provCPField.setText(cp.getDir().getProvincia());
-                    paisCPField.setText(cp.getDir().getPais());
-                    codigoPostalCPField.setText(cp.getDir().getCp());
-
+                    viaCPField.setText(d.getVia());
+                    numCPField.setText(String.valueOf(d.getNumero()));
+                    ciudadCPField.setText(d.getCiudad());
+                    provCPField.setText(d.getProvincia());
+                    paisCPField.setText(d.getPais());
+                    codigoPostalCPField.setText(d.getCp());
+                    }
+                    
+                    if (entidad instanceof CliPro) {
+                    cp=(CliPro) entidad;
                     // marcar checkboxes Cliente / Proveedor
-                    proveedorCPCheck.setSelected(cp.isIsProveedor());
-                    clienteCPCheck.setSelected(cp.isIsCliente());
-                     */
+                    proveedorCPCheck.setSelected(cp.isProveedor());
+                    clienteCPCheck.setSelected(cp.isCliente());
+                    }
                     break;
 
                 case "Prod":
