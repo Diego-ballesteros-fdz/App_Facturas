@@ -42,7 +42,7 @@ public class EntidadDAO {
             while (rs.next()) {
                 Entidad e = mapear(rs);
                 e.setRoles(rolDAO.obtenerRolesPorEntidad(e));
-                lista.add(e);   // IMPORTANTE
+                lista.add(convertirSegunRol(e));   // IMPORTANTE
             }
 
         } catch (SQLException ex) {
@@ -70,7 +70,7 @@ public class EntidadDAO {
             while (rs.next()) {
                 Entidad e = mapear(rs);
                 e.setRoles(rolDAO.obtenerRolesPorEntidad(e));
-                lista.add(e);   // IMPORTANTE
+                lista.add(convertirSegunRol(e));   // IMPORTANTE
             }
 
         } catch (SQLException ex) {
@@ -99,7 +99,7 @@ public class EntidadDAO {
             while (rs.next()) {
                 Entidad e = mapear(rs);
                 e.setRoles(rolDAO.obtenerRolesPorEntidad(e));
-                lista.add(e);  // SIEMPRE ENTIDAD
+                lista.add(convertirSegunRol(e));  // SIEMPRE ENTIDAD
             }
 
         } catch (SQLException ex) {
@@ -305,11 +305,12 @@ public class EntidadDAO {
         boolean cli = e.isCliente();
         boolean prov = e.isProveedor();
 
-        // Si tiene AMBOS roles → devolver Entidad normal
-        if (cli && prov) return e;
+        // Si es cliente o proveedor → CliPro
+        if (cli || prov) {
+            return new CliPro(e, cli, prov, null);
+        }
 
-
-        // Sin rol → entidad base
+        // Si no tiene roles → Empresa
         return e;
     }
     
@@ -332,7 +333,8 @@ public class EntidadDAO {
             while (rs.next()) {
                 Entidad e = mapear(rs);
                 e.setRoles(rolDAO.obtenerRolesPorEntidad(e));
-                lista.add(e);
+                lista.add(convertirSegunRol(e));
+
             }
 
         } catch (SQLException ex) {

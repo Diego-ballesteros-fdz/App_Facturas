@@ -1018,7 +1018,7 @@ public class FormController {
                      
                     break;
                 case "CliPro":
-                    Entidad cp = entidad; // casteo directo
+                    CliPro cp = (CliPro)entidad; // casteo directo
 
                     // datos heredados de Entidad
                     DocumentoCPField.setText(cp.getNif());
