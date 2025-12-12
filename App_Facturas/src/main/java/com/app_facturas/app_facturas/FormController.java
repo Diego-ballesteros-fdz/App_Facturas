@@ -433,43 +433,35 @@ public class FormController {
         if (obj != null) {
             boolean exito = true;
             switch (tipo) {
+                case "Emp":
+                    
+                    Empresa emp = (Empresa) obj;
+                    //dao.crearEmpresa(emp);
+                    //dao.agregarDireccion(emp.getDir());
+                    if(dao.insertarEmpresa(emp)){
+                        System.out.println("Empresa creada");
+                        volverAtras();
+                    }else{
+                        System.out.println("Algo salio mal al crear empresa");
+                        validations.Error er=new validations.Error(true,"No se pudo añadir la empresa",Color.RED);
+                        mostrarMensaje(er);
+                    }
+                    break;
 
-                                          
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+                case "CliPro":
+
+                    CliPro cp = (CliPro) obj;
+
+                    if(dao.insertarCliPro(cp,App.empresaActualId)){
+                        System.out.println("CliPro añadido");
+                        volverAtras();
+                    }else{
+                        validations.Error er=new validations.Error(true,"No se pudo añadir el Cliente/Proveedor",Color.RED);
+                        mostrarMensaje(er);
+                        
+                    }
+
+                    break;
 
                 case "Prod":
                     Factura prod = (Factura) obj;
@@ -545,7 +537,7 @@ public class FormController {
                     dao.crearFactura(fac);
                     break;
             }
-            volverAtras();
+            
         } else {
 
         }
@@ -1064,7 +1056,7 @@ public class FormController {
         if (tipo != null) {
             switch (tipo) {
                 case "Emp":
-
+                    
                     DocumentoEmpField.setText(entidad.getNif());
                     NombreEmpField.setText(entidad.getNombre());
                     emailEmpField.setText(entidad.getEmail());

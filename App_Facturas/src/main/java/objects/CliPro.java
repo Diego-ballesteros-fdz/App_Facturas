@@ -13,18 +13,22 @@ public class CliPro extends Entidad{
     private boolean isCliente;
     private boolean isProveedor;
     private Direccion dir;
+    private Entidad entidad;
+
+    public Entidad getEntidad() {
+        return entidad;
+    }
+
+    public void setEntidad(Entidad entidad) {
+        this.entidad = entidad;
+    }
     
     public CliPro() {}
 
     
     public CliPro(Entidad e,boolean cliente,boolean proveedor,Direccion dir) {
         super();
-        this.setIdEntidad(e.getIdEntidad());
-        this.setNombre(e.getNombre());
-        this.setNif(e.getNif());
-        this.setEmail(e.getEmail());
-        this.setTelefono(e.getTelefono());
-        this.setObservaciones(e.getObservaciones());
+        this.entidad=e;
         isCliente=cliente;
         isProveedor=proveedor;
         this.dir=dir;
