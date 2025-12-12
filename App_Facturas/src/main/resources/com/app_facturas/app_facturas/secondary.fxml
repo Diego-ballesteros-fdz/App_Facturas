@@ -43,16 +43,12 @@
                                       <items>
                                         <MenuItem fx:id="add" mnemonicParsing="false" onAction="#añadirVent" text="Añadir" />
                                         <MenuItem fx:id="delete" mnemonicParsing="false" onAction="#eliminarVent" text="Eliminar" />
-                                        <MenuItem fx:id="modify" mnemonicParsing="false" onAction="#modificarVent" text="Modificar" />
-                                        <MenuItem fx:id="search" mnemonicParsing="false" onAction="#buscarVent" text="Buscar" />
                                       </items>
                                     </MenuButton>
                                     <MenuButton fx:id="comprasOptions" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="top-menu-button" text="Compras">
                                        <items>
                                           <MenuItem fx:id="add" mnemonicParsing="false" onAction="#añadirComp" text="Añadir" />
                                           <MenuItem fx:id="delete" mnemonicParsing="false" onAction="#eliminarComp" text="Eliminar" />
-                                          <MenuItem fx:id="modify" mnemonicParsing="false" onAction="#modificarComp" text="Modificar" />
-                                          <MenuItem fx:id="search" mnemonicParsing="false" onAction="#buscarComp" text="Buscar" />
                                        </items>
                                     </MenuButton>
                                     

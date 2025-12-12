@@ -434,39 +434,42 @@ public class FormController {
             boolean exito = true;
             switch (tipo) {
 
-                case "Emp":
-                    Empresa emp = (Empresa) obj;
-                    dao.crearEmpresa(emp);
-                    dao.agregarDireccion(emp.getDir());
-                    break;
-
-                case "CliPro":
-
-                    CliPro cp = (CliPro) obj;
-
-                    // ROLES
-                    if (cp.isIsCliente()) {
-                        dao.agregarRol(cp.getIdEntidad(), "CLIENTE");
-                    }
-                    if (cp.isIsProveedor()) {
-                        dao.agregarRol(cp.getIdEntidad(), "PROVEEDOR");
-                    }
-
-                    // DIRECCIÓN
-                    dao.agregarDireccion(cp.getDir());
-
-                    // RELACIÓN CON EMPRESA ACTUAL
-                    long idEmpresa = App.empresaActualId;
-
-                    if (cp.isIsCliente()) {
-                        dao.agregarRelacionEmpresa(idEmpresa, cp.getIdEntidad(), "CLIENTE");
-                    }
-
-                    if (cp.isIsProveedor()) {
-                        dao.agregarRelacionEmpresa(idEmpresa, cp.getIdEntidad(), "PROVEEDOR");
-                    }
-
-                    break;
+                                          
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
 
                 case "Prod":
                     Factura prod = (Factura) obj;
