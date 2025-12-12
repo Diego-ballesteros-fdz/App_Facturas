@@ -23,6 +23,11 @@ public class FacturaDAO {
     
      public Factura crear(Factura f) {
 
+        if (f.getCliente() == null){
+            System.out.println("No existe cliente para este factura");
+             return null;
+        }
+         
         String sql = "INSERT INTO FACTURA (fecha, idEntidad, total) VALUES (?, ?, ?)";
 
         try (Connection con = ConexionBD.get();

@@ -170,8 +170,8 @@ public class Validation {
         if (ld == null) {
             return new Error(true, "El valor introducido es nulo", Color.RED);
         } else {
-            if (!ld.isAfter(LocalDate.now())) {
-                return new Error(true, "La fecha debe ser posterior a hoy", Color.RED);
+            if (ld.isBefore(LocalDate.now())) {
+                return new Error(true, "La fecha debe igual o posterior a hoy", Color.RED);
             } else {
                 return new Error(false, "", Color.GREEN);
             }
@@ -189,8 +189,8 @@ public class Validation {
         if (ld == null) {
             return new Error(true, "El valor introducido es nulo", Color.RED);
         } else {
-            if (!ld.isAfter(LocalDate.now())) {
-                return new Error(true, "La fecha debe ser anterior a hoy", Color.RED);
+            if (ld.isAfter(LocalDate.now())) {
+                return new Error(true, "La fecha debe ser igual o anterior a hoy", Color.RED);
             } else {
                 return new Error(false, "", Color.GREEN);
             }

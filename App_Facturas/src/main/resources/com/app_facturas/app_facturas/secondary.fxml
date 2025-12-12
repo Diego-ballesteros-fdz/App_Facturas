@@ -81,7 +81,7 @@
                                  </children>
                               </StackPane>
                               <Button fx:id="boton" layoutX="33.0" layoutY="236.0" mnemonicParsing="false" onAction="#volver" styleClass="back-button" text="Volver" AnchorPane.bottomAnchor="21.600000000000023" AnchorPane.leftAnchor="33.0" />
-                              <Button fx:id="buttonFactura" mnemonicParsing="false" onAction="#imprimirFactura" text="Generar Factura" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="33.0" />
+                              <Button fx:id="buttonFactura" mnemonicParsing="false" onAction="#imprimirFactura" styleClass="back-button" text="Generar Factura" AnchorPane.bottomAnchor="21.0" AnchorPane.rightAnchor="33.0" />
                            </children>
                         </AnchorPane>
                     </items>

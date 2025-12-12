@@ -11,6 +11,7 @@ import connection.DAO.ProductoDAO;
 import connection.DAO.DireccionDAO;
 import connection.DAO.EmpresaRelacionDAO;
 import connection.DAO.LineaFacturaDAO;
+import java.util.HashSet;
 import java.util.List;
 import objects.Direccion;
 import objects.CliPro;
@@ -165,6 +166,28 @@ public class DAOController {
         return facturaDAO.eliminar(idFactura);
     }
 
+    
+    
+        
+    public boolean registrarFactura(Factura f, List<LineaFactura> lineas){
+        Factura facturaGuardada = facturaDAO.crear(f);
+        if (facturaGuardada == null || facturaGuardada.getIdFactura() == 0) {
+            System.out.println("ERROR: La factura no ha podido añadirse");
+            return false;
+        }
+        boolean esCorrecto = true;
+        for (LineaFactura lf : lineas) {
+            
+            lf.setFactura(facturaGuardada);
+            boolean insertado = lineaFacturaDAO.insertar(lf);
+            
+            if (!insertado) {
+                esCorrecto = false;
+                System.out.println("No se pudo guardar alguna línea de la factura");
+            }
+        }
+        return esCorrecto;
+    }
     // ============================================================
     //                     LINEAS DE FACTURA
     // ============================================================

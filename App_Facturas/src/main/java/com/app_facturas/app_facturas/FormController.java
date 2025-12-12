@@ -45,6 +45,7 @@ import objects.Direccion;
 import objects.Empresa;
 import objects.Entidad;
 import objects.Factura;
+import objects.LineaFactura;
 import objects.Producto;
 import validations.Validation;
 
@@ -430,6 +431,7 @@ public class FormController {
         Entidad obj = crearEntidad();
 
         if (obj != null) {
+            boolean exito = true;
             switch (tipo) {
 
                 case "Emp":
@@ -467,13 +469,74 @@ public class FormController {
                     break;
 
                 case "Prod":
-                    dao.crearProducto((Producto) obj);
+                    Factura prod = (Factura) obj;
+
+                    if (productosAñadidos.isEmpty()) {
+                        mostrarMensaje(new validations.Error(true, "No se puede guardar una factura sin productos", Color.RED));
+                        return;
+                    }
+
+                    List<LineaFactura> lineasParaGuardarProd = new ArrayList<>();
+
+                    for (int i = 0; i < productosAñadidos.size(); i++) {
+                        LineaFactura lf = new LineaFactura();
+                        
+                        Producto p = (Producto) productosAñadidos.get(i);
+                        Integer cantidad = productosCantidad.get(i);
+
+                        lf.setProducto(p);
+                        lf.setCantidad(cantidad);
+                        lf.setPrecioUnitario(p.getPrecio()); 
+
+                        lineasParaGuardarProd.add(lf);
+                    }
+
+                    if (dao.registrarFactura(prod, lineasParaGuardarProd)) {
+                        System.out.println("Factura guardada correctamente con sus líneas.");
+                    } else {
+                        System.out.println("Error al guardar la factura completa.");
+                        exito = false; 
+                    }
+                    
+                    //dao.crearProducto((Producto) obj);
+                    
                     break;
 
                 case "Comp":
                     Factura fac = (Factura) obj;
-                    dao.crearFactura(fac);
+
+                    if (productosAñadidos.isEmpty()) {
+                        mostrarMensaje(new validations.Error(true, "No se puede guardar una factura sin productos", Color.RED));
+                        return;
+                    }
+
+                    List<LineaFactura> lineasParaGuardar = new ArrayList<>();
+
+                    for (int i = 0; i < productosAñadidos.size(); i++) {
+                        LineaFactura lf = new LineaFactura();
+                        
+                        Producto p = (Producto) productosAñadidos.get(i);
+                        Integer cantidad = productosCantidad.get(i);
+
+                        lf.setProducto(p);
+                        lf.setCantidad(cantidad);
+                        lf.setPrecioUnitario(p.getPrecio()); 
+
+                        lineasParaGuardar.add(lf);
+                    }
+
+                    if (dao.registrarFactura(fac, lineasParaGuardar)) {
+                        System.out.println("Factura guardada correctamente con sus líneas.");
+                    } else {
+                        System.out.println("Error al guardar la factura completa.");
+                        exito = false; 
+                    }
+                    
+                    
+                    //dao.crearFactura(fac);
+                    
                     break;
+                    
                 case "Vent":
                     fac = (Factura) obj;
                     dao.crearFactura(fac);
