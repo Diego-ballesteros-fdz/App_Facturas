@@ -26,7 +26,7 @@ public class ProductoDAO {
     public Producto crear(Producto p) {
 
         String sql = "INSERT INTO PRODUCTO (nombre, descripcion, precio, stock, idProveedor) "
-                   + "VALUES (?, ?, ?, ?, ?)";
+                   + "VALUES (?, ?, ?, ?, (SELECT idEntidad FROM ENTIDAD WHERE nombre = ?))";
 
         try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -35,7 +35,8 @@ public class ProductoDAO {
             ps.setString(2, p.getDescripcion());
             ps.setDouble(3, p.getPrecio());
             ps.setInt(4, p.getStock());
-            ps.setLong(5, p.getProveedor().getIdEntidad());
+            ps.setString(5,p.getProveedor().getNombre());
+            
 
             ps.executeUpdate();
 

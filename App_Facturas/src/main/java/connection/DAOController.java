@@ -33,7 +33,7 @@ import objects.Empresa;
 public class DAOController {
 
     // DAOs del sistema
-    private EntidadDAO entidadDAO = new EntidadDAO();
+    private EntidadDAO entidadDAO = new EntidadDAO(this);
     private RolDAO rolDAO = new RolDAO();
     private DireccionDAO direccionDAO = new DireccionDAO();
     private ProductoDAO productoDAO = new ProductoDAO();
@@ -61,129 +61,174 @@ public class DAOController {
 
     public boolean insertarEmpresa(Empresa em) {
         boolean creadaE = false, creadaD = false;
-        //añadir la entidad empresa
-        String sql = "INSERT INTO ENTIDAD (nombre, nif, email, telefono, observaciones) VALUES (?, ?, ?, ?, ?)";
-        try (Connection con = ConexionBD.get(); PreparedStatement ps = con.prepareStatement(sql)) {
+        try {
+            Connection con = ConexionBD.get();
+            //añadir la entidad empresa
+            String sql = "INSERT INTO ENTIDAD (nombre, nif, email, telefono, observaciones) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement ps = con.prepareStatement(sql);) {
+                con.setAutoCommit(false);
 
-            ps.setString(1, em.getNombre());
-            ps.setString(2, em.getNif());
-            ps.setString(3, em.getEmail());
-            ps.setString(4, em.getTelefono());
-            ps.setString(5, em.getObservaciones());
+                ps.setString(1, em.getNombre());
+                ps.setString(2, em.getNif());
+                ps.setString(3, em.getEmail());
+                ps.setString(4, em.getTelefono());
+                ps.setString(5, em.getObservaciones());
 
-            ps.executeUpdate();
-            ps.close();
+                ps.executeUpdate();
+                ps.close();
 
-            creadaE = true;
+                creadaE = true;
 
+            } catch (SQLException e) {
+                System.out.println("fallo al añadir empresa: " + e.getMessage());
+                creadaE = false;
+            }
+            //añadir la relacion con direccion
+            sql = "INSERT INTO DIRECCION (idEntidad, via, numero, ciudad, provincia, cp, pais) VALUES ((SELECT idEntidad FROM ENTIDAD WHERE nombre = ?), ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                con.setAutoCommit(false);
+                ps.setString(1, em.getNombre());
+                ps.setString(2, em.getDir().getVia());
+                ps.setString(3, em.getDir().getNumero());
+                ps.setString(4, em.getDir().getCiudad());
+                ps.setString(5, em.getDir().getProvincia());
+                ps.setString(6, em.getDir().getCp());
+                ps.setString(7, em.getDir().getPais());
+                ps.executeUpdate();
+                con.commit();
+                ps.close();
+                creadaD = true;
+            } catch (SQLException e) {
+                System.out.println("Problema al añadir empresa: " + e.getMessage());
+                creadaD = false;
+            }
+            if (creadaE && creadaD) {
+                try {
+                    con.commit();
+                    con.setAutoCommit(true);
+                } catch (SQLException e) {
+
+                }
+                return true;
+            } else {
+                con.rollback();
+                return false;
+            }
         } catch (SQLException e) {
-            System.out.println("fallo al añadir empresa: " + e.getMessage());
-            creadaE = false;
+
         }
-        //añadir la relacion con direccion
-        sql = "INSERT INTO DIRECCION (idEntidad, via, numero, ciudad, provincia, cp, pais) VALUES ((SELECT idEntidad FROM ENTIDAD WHERE nombre = ?), ?, ?, ?, ?, ?, ?)";
-        try (Connection con = ConexionBD.get(); PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, em.getNombre());
-            ps.setString(2, em.getDir().getVia());
-            ps.setString(3, em.getDir().getNumero());
-            ps.setString(4, em.getDir().getCiudad());
-            ps.setString(5, em.getDir().getProvincia());
-            ps.setString(6, em.getDir().getCp());
-            ps.setString(7, em.getDir().getPais());
-            ps.executeUpdate();
-            ps.close();
-            creadaD = true;
+        return false;
+    }
+
+    public boolean insertarEmpresaCP(Empresa em) {
+        boolean creadaE = false, creadaD = false;
+        try {
+            Connection con = ConexionBD.get();
+            con.setAutoCommit(false);
+            //añadir la entidad empresa
+            String sql = "INSERT INTO ENTIDAD (nombre, nif, email, telefono, observaciones) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement ps = con.prepareStatement(sql);) {
+                con.setAutoCommit(false);
+
+                ps.setString(1, em.getNombre());
+                ps.setString(2, em.getNif());
+                ps.setString(3, em.getEmail());
+                ps.setString(4, em.getTelefono());
+                ps.setString(5, em.getObservaciones());
+
+                ps.executeUpdate();
+                ps.close();
+
+                creadaE = true;
+
+            } catch (SQLException e) {
+                System.out.println("fallo al añadir empresa: " + e.getMessage());
+                creadaE = false;
+            }
+            //añadir la relacion con direccion
+            sql = "INSERT INTO DIRECCION (idEntidad, via, numero, ciudad, provincia, cp, pais) VALUES ((SELECT idEntidad FROM ENTIDAD WHERE nombre = ?), ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement ps = con.prepareStatement(sql)) {
+                con.setAutoCommit(false);
+                ps.setString(1, em.getNombre());
+                ps.setString(2, em.getDir().getVia());
+                ps.setString(3, em.getDir().getNumero());
+                ps.setString(4, em.getDir().getCiudad());
+                ps.setString(5, em.getDir().getProvincia());
+                ps.setString(6, em.getDir().getCp());
+                ps.setString(7, em.getDir().getPais());
+                ps.executeUpdate();
+                con.commit();
+                ps.close();
+                creadaD = true;
+            } catch (SQLException e) {
+                System.out.println("Problema al añadir empresa: " + e.getMessage());
+                creadaD = false;
+            }
+            if (creadaE && creadaD) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (SQLException e) {
-            System.out.println("Problema al añadir empresa: " + e.getMessage());
-            creadaD = false;
+
         }
-        if (creadaE && creadaD) {
+        return false;
+    }
+
+    public boolean insertarCliPro(CliPro cp, long idPadre) {
+        try (Connection con = ConexionBD.get()) {
+
+            con.setAutoCommit(false); // INICIO TRANSACCIÓN
+
+            Empresa em = new Empresa(cp.getEntidad(), cp.getDir());
+
+            // 1. Insertar entidad + dirección
+            insertarEmpresaCP(em);
+
+            // 2. Insertar roles
+            insertarRoles(con, cp, em.getNombre());
+
+            // 3. Insertar relación empresa
+            insertarRelacion(con, idPadre, em.getNombre());
+
+            // TODO OK
+            con.commit();
+            con.setAutoCommit(true);
             return true;
-        } else {
+
+        } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
 
-    public boolean insertarCliPro(CliPro cp, long idPadre) {
-        boolean creadaR = false, creadaRe = false;
-        //añadir Entidad
-        //añadir direccion
-        Empresa em = new Empresa(cp.getEntidad(), cp.getDir());
-        if (insertarEmpresa(em)) {
-            //añadrid relacion Rol
-            if (cp.isCliente() && cp.isProveedor()) {
-                //ambos
-                String sql = "INSERT INTO ROLES_ENTIDAD (idEntidad, rol) VALUES ((SELECT idEntidad FROM ENTIDAD WHERE nombre = ?), ?)";
-                try (Connection con = ConexionBD.get(); PreparedStatement ps = con.prepareStatement(sql)) {
-                    ps.setString(1, em.getNombre());
-                    ps.setString(2, "CLIENTE");
-                    creadaR = true;
-                } catch (SQLException e) {
-                    System.out.println("Error añ insertar Rol: " + e.getMessage());
-                    creadaR = false;
-                }
-                try (Connection con = ConexionBD.get(); PreparedStatement ps = con.prepareStatement(sql)) {
-                    ps.setString(1, em.getNombre());
-                    ps.setString(2, "PROVEEDOR");
-                    ps.executeUpdate();
-                    creadaR = true;
-                } catch (SQLException e) {
-                    System.out.println("Error añ insertar Rol: " + e.getMessage());
-                    creadaR = false;
-                }
-            } else if (cp.isProveedor()) {
-                //solo prov
-                String sql = "INSERT INTO ROLES_ENTIDAD (idEntidad, rol) VALUES ((SELECT idEntidad FROM ENTIDAD WHERE nombre = ?), ?)";
-                try (Connection con = ConexionBD.get(); PreparedStatement ps = con.prepareStatement(sql)) {
-                    ps.setString(1, em.getNombre());
-                    ps.setString(2, "PROVEEDOR");
-                    ps.executeUpdate();
-                    creadaR = true;
-                } catch (SQLException e) {
-                    System.out.println("Error añ insertar Rol: " + e.getMessage());
-                    creadaR = false;
-                }
+    public void insertarRelacion(Connection con, long idPadre, String nombreEntidad) throws SQLException {
+        String sql = "INSERT INTO EMPRESA_RELACION (idPadre, idHija, tipoRelacion) "
+                + "VALUES (?, (SELECT idEntidad FROM ENTIDAD WHERE nombre = ?), 'HOLAAA')";
 
-            } else {
-                //solo cliente
-                String sql = "INSERT INTO ROLES_ENTIDAD (idEntidad, rol) VALUES ((SELECT idEntidad FROM ENTIDAD WHERE nombre = ?), ?)";
-                try (Connection con = ConexionBD.get(); PreparedStatement ps = con.prepareStatement(sql)) {
-                    ps.setString(1, em.getNombre());
-                    ps.setString(2, "CLIENTE");
-                    ps.executeUpdate();
-                    creadaR = true;
-                } catch (SQLException e) {
-                    System.out.println("Error añ insertar Rol: " + e.getMessage());
-                    creadaR = false;
-                }
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setLong(1, idPadre);
+            ps.setString(2, nombreEntidad);
+            ps.executeUpdate();
+        }
+    }
 
-                //añadir EmpresaRealcion
-                sql = "INSERT INTO EMPRESA_RELACION (idPadre, idHija, tipoRelacion) VALUES (?,(SELECT idEntidad FROM ENTIDAD WHERE nombre = ?), ?)";
-                try (Connection con = ConexionBD.get(); PreparedStatement ps = con.prepareStatement(sql)) {
-                    ps.setLong(1, idPadre);
-                    System.out.println(cp.getEntidad().getNombre());
-                    ps.setString(2, cp.getEntidad().getNombre());
-                    ps.setString(3, "HOLAAA");
-                    ps.executeUpdate();
+    public void insertarRoles(Connection con, CliPro cp, String nombreEntidad) throws SQLException {
+        String sql = "INSERT INTO ROLES_ENTIDAD (idEntidad, rol) VALUES ((SELECT idEntidad FROM ENTIDAD WHERE nombre = ?), ?)";
 
-                    creadaRe = true;
-                } catch (SQLException e) {
-                    System.out.println("Error al añadir CliPro-Relacion: " + e.getMessage());
-                    creadaRe = false;
-                }
+        try (PreparedStatement ps = con.prepareStatement(sql)) {
+            if (cp.isIsCliente()) {
+                ps.setString(1, nombreEntidad);
+                ps.setString(2, "CLIENTE");
+                ps.executeUpdate();
             }
-        } else {
-            System.out.println("Algo salio mal en la insercion del CliPro como empresa");
-            return false;
-        }
 
-        if (creadaR && creadaRe) {
-            return true;
-        } else {
-            System.out.println("Algo salio mal al añadir CliPro");
-            return false;
+            if (cp.isIsProveedor()) {
+                ps.setString(1, nombreEntidad);
+                ps.setString(2, "PROVEEDOR");
+                ps.executeUpdate();
+            }
         }
-
     }
 
     public boolean agregarRol(long idEntidad, String rol) {
@@ -205,16 +250,16 @@ public class DAOController {
     }
 
     // Clientes + Proveedores
-    public List<Entidad> listarClientesYProveedores() {
+    public List<CliPro> listarClientesYProveedores() {
         return entidadDAO.listarClientesYProveedores();
     }
 
     //Busqueda solo por Id de Clientes y Provedores
-    public List<Entidad> listarClientesYProveedores(long idEmpresa) {
+    public List<CliPro> listarClientesYProveedores(long idEmpresa) {
         return entidadDAO.listarRelacionados(idEmpresa);
     }
 
-    public List<Entidad> listarSoloEmpresas() {
+    public List<Empresa> listarSoloEmpresas() {
         return entidadDAO.listarSoloEmpresas();
     }
 
@@ -291,10 +336,7 @@ public class DAOController {
         return facturaDAO.eliminar(idFactura);
     }
 
-    
-    
-        
-    public boolean registrarFactura(Factura f, List<LineaFactura> lineas){
+    public boolean registrarFactura(Factura f, List<LineaFactura> lineas) {
         Factura facturaGuardada = facturaDAO.crear(f);
         if (facturaGuardada == null || facturaGuardada.getIdFactura() == 0) {
             System.out.println("ERROR: La factura no ha podido añadirse");
@@ -302,10 +344,10 @@ public class DAOController {
         }
         boolean esCorrecto = true;
         for (LineaFactura lf : lineas) {
-            
+
             lf.setFactura(facturaGuardada);
             boolean insertado = lineaFacturaDAO.insertar(lf);
-            
+
             if (!insertado) {
                 esCorrecto = false;
                 System.out.println("No se pudo guardar alguna línea de la factura");
@@ -313,6 +355,7 @@ public class DAOController {
         }
         return esCorrecto;
     }
+
     // ============================================================
     //                     LINEAS DE FACTURA
     // ============================================================

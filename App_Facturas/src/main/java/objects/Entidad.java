@@ -27,6 +27,15 @@ public class Entidad {
         this.telefono = telefono;
         this.observaciones = observaciones;
     }
+    
+    public Entidad( Entidad e) {
+        this.nombre = e.getNombre();
+        this.nif = e.getNif();
+        this.email = e.getEmail();
+        this.telefono = e.getTelefono();
+        this.observaciones = e.getObservaciones();
+    }
+    
     public Entidad( long id,String nombre, String nif) {
         this.nombre = nombre;
         this.nif = nif;

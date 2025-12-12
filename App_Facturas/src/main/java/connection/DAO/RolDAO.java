@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import objects.CliPro;
 import objects.Entidad;
 import objects.Rol;
 
@@ -73,6 +74,35 @@ public class RolDAO {
 
         return roles;
     }
+    
+    public List<Rol> obtenerRolesPorEntidad(long e,CliPro cp) {
+
+        List<Rol> roles = new ArrayList<>();
+
+        String sql = "SELECT * FROM ROLES_ENTIDAD WHERE idEntidad = ?";
+
+        try (Connection con = ConexionBD.get();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setLong(1, e);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                Rol r = new Rol();
+                r.setIdRol(rs.getLong("idRol"));
+                r.setRol(rs.getString("rol"));
+                roles.add(r);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("❌ Error al obtener roles: " + ex.getMessage());
+        }
+
+        return roles;
+    }
+
 
     // =============================
     //   ELIMINAR TODOS LOS ROLES DE UNA ENTIDAD

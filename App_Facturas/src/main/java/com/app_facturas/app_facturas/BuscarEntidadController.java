@@ -6,12 +6,15 @@ package com.app_facturas.app_facturas;
 
 import connection.DAOController;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import objects.CliPro;
+import objects.Empresa;
 import objects.Entidad;
 import objects.Factura;
 import objects.Producto;
@@ -61,57 +64,43 @@ public class BuscarEntidadController {
         if (filtro == null) {
             filtro = "";
         }
-        filtro = filtro.trim().toLowerCase();
+        final String filtrofinal = filtro.trim().toLowerCase();
 
-        final String filtroFinal = filtro;  // 👈 necesario para lambdas en Java 11
-
-        System.out.println("Filtro: " + filtroFinal);
+        System.out.println("Filtro: " + filtro);
 
         switch (tipo) {
 
             case "CliPro":
-                System.out.println("idEmpres:"+idEmpresaActual);
-                List<Entidad> datos = dao.listarClientesYProveedores(idEmpresaActual);
-
-                listaResultados.getItems().setAll(
-                        datos.stream()
-                                .filter(e -> e.getNombre().toLowerCase().contains(filtroFinal))
-                                .toList()
-                );
+                System.out.println("idEmpres:" + idEmpresaActual);
+                List<CliPro> lista = new ArrayList<CliPro>();
+                lista = dao.listarClientesYProveedores(idEmpresaActual);
+                listaResultados.getItems().setAll(lista);
                 break;
 
             case "Prod":
                 listaResultados.getItems().setAll(
                         dao.listarProductosPorEmpresa(idEmpresaActual).stream()
-                                .filter(p -> p.getNombre().toLowerCase().contains(filtroFinal))
+                                .filter(p -> p.getNombre().toLowerCase().contains(filtrofinal))
                                 .toList()
                 );
                 break;
 
-            case "Fac":
-                listaResultados.getItems().setAll(
-                        dao.listarProductosPorProveedor(idEmpresaActual).stream()
-                                .filter(p -> p.getNombre().toLowerCase().contains(filtroFinal))
-                                .toList()
-                );
+            case "Emp":
+                System.out.println("idEmpres:" + idEmpresaActual);
+                List<Empresa> listaem = new ArrayList<Empresa>();
+                listaem = dao.listarSoloEmpresas();
+                listaResultados.getItems().setAll(listaem);
                 break;
                 
-            case "Emp":
-                listaResultados.getItems().setAll(
-                    dao.listarSoloEmpresas().stream()
-                        .filter(e -> e.getNombre().toLowerCase().contains(filtroFinal))
-                        .toList()
-                );
-                break;
 
         }
     }
 
     @FXML
     private void volver() throws IOException {
-           if(tipo.equals("Emp")){
+        if (tipo.equals("Emp")) {
             App.setRoot("primary");
-        }else{
+        } else {
             App.setRoot("secondary");
         }
     }

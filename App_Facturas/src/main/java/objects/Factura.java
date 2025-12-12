@@ -83,13 +83,12 @@ public class Factura extends Entidad {
     public Entidad getCliente() { return cliente; }
 
     public void setCliente(Entidad cliente) { this.cliente = cliente; }
-    
-    
+
     @Override
     public String toString() {
-        return "Factura #" + idFactura +
-               " | " + fechaEmision +
-               " | Cliente: " + (cliente != null ? cliente.getNombre() : "N/A");
+        return "Factura{" + "fechaEmision=" + fechaEmision + ", total=" + total + ", cliente=" + cliente + ", tipo=" + tipo + '}';
     }
+    
+   
 
 }

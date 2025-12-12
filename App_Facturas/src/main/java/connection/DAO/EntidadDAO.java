@@ -5,6 +5,7 @@
 package connection.DAO;
 
 import connection.ConexionBD;
+import connection.DAOController;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +14,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import objects.CliPro;
+import objects.Direccion;
+import objects.Empresa;
 import objects.Entidad;
 
 /**
@@ -22,6 +25,15 @@ import objects.Entidad;
 public class EntidadDAO {
     
     private RolDAO rolDAO = new RolDAO();
+    private DAOController dao;
+    
+    public EntidadDAO(){
+        
+    }
+    
+     public EntidadDAO(DAOController dao){
+        this.dao=dao;
+    }
     
     
      // ============================================================
@@ -55,8 +67,8 @@ public class EntidadDAO {
     // ============================================================
     //   LISTAR SOLO PROVEEDORES
     // ============================================================
-        public List<Entidad> listarProveedores() {
-        List<Entidad> lista = new ArrayList<>();
+        public List<CliPro> listarProveedores() {
+        List<CliPro> lista = new ArrayList<>();
 
         String sql =
             "SELECT e.* FROM ENTIDAD e " +
@@ -67,12 +79,17 @@ public class EntidadDAO {
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
+            while (rs.next()) {     
+                //creamos entidad
                 Entidad e = mapear(rs);
-                e.setRoles(rolDAO.obtenerRolesPorEntidad(e));
-                lista.add(convertirSegunRol(e));   // IMPORTANTE
+                //creamos la dir
+                List<Direccion> dir= dao.obtenerDireccionesDeEntidad(rs.getLong("idEntidad"));
+                //creamos el cp
+                CliPro cp=new CliPro(e,dir.get(0));
+                //setea,os roles a CliPro
+                cp.setRoles(rolDAO.obtenerRolesPorEntidad(rs.getLong("idEntidad"),cp));
+                lista.add(cp);
             }
-
         } catch (SQLException ex) {
             System.out.println("❌ Error al listar proveedores: " + ex.getMessage());
         }
@@ -83,8 +100,8 @@ public class EntidadDAO {
     // ============================================================
     //   LISTAR CLIENTES + PROVEEDORES
     // ============================================================
-    public List<Entidad> listarClientesYProveedores() {
-        List<Entidad> lista = new ArrayList<>();
+    public List<CliPro> listarClientesYProveedores() {
+        List<CliPro> lista = new ArrayList<>();
 
         String sql =
             "SELECT DISTINCT e.* " +
@@ -97,9 +114,17 @@ public class EntidadDAO {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
+                //creamos entidad
                 Entidad e = mapear(rs);
-                e.setRoles(rolDAO.obtenerRolesPorEntidad(e));
-                lista.add(convertirSegunRol(e));  // SIEMPRE ENTIDAD
+                //creamos la dir
+                List<Direccion> dir= dao.obtenerDireccionesDeEntidad(rs.getLong("idEntidad"));
+                System.out.println("direccion a añadir: "+dir.get(0));
+                //creamos el cp
+                CliPro cp=new CliPro(e,dir.get(0));
+                //setea los roles a CliPro
+                cp.setRoles(rolDAO.obtenerRolesPorEntidad(rs.getLong("idEntidad"),cp));
+                System.out.println("Cp añadido en ListarProvYCli: "+cp);
+                lista.add(cp);
             }
 
         } catch (SQLException ex) {
@@ -109,8 +134,8 @@ public class EntidadDAO {
         return lista;
     }
     
-    public List<Entidad> listarSoloEmpresas() {
-    List<Entidad> lista = new ArrayList<>();
+    public List<Empresa> listarSoloEmpresas() {
+    List<Empresa> lista = new ArrayList<>();
 
     String sql = "SELECT e.* FROM ENTIDAD e LEFT JOIN ROLES_ENTIDAD r ON e.idEntidad = r.idEntidad WHERE r.idEntidad IS NULL ORDER BY e.idEntidad";
 
@@ -119,7 +144,10 @@ public class EntidadDAO {
          ResultSet rs = ps.executeQuery()) {
 
         while (rs.next()) {
-            lista.add(mapearEntidad(rs));
+            Entidad e= mapear(rs);
+            List<Direccion> dir= dao.obtenerDireccionesDeEntidad(rs.getLong("idEntidad"));
+            Empresa em=new Empresa(e,dir.get(0));
+            lista.add(em);
         }
 
     } catch (Exception ex) {
@@ -222,11 +250,7 @@ public class EntidadDAO {
             if (rs.next()) {
                 Entidad e = mapear(rs);
 
-                // 🌟 Cargar roles
-                e.setRoles(rolDAO.obtenerRolesPorEntidad(e));
-
-                // 🌟 Convertir a CliPro / Proveedor / Empresa
-                return convertirSegunRol(e);
+                return e;
             }
 
         } catch (SQLException ex) {
@@ -275,9 +299,11 @@ public class EntidadDAO {
         e.setEmail(rs.getString("email"));
         e.setTelefono(rs.getString("telefono"));
         e.setObservaciones(rs.getString("observaciones"));
-
+        
+        System.out.println("Entidad creada en Mapear: "+e);
         return e;
     }
+    
     
     // ==================================
     //   MAPEAR SOLO ENTIDAD (SIN ROLES)
@@ -314,9 +340,9 @@ public class EntidadDAO {
         return e;
     }
     
-    public List<Entidad> listarRelacionados(long idEmpresa) {
+    public List<CliPro> listarRelacionados(long idEmpresa) {
 
-        List<Entidad> lista = new ArrayList<>();
+        List<CliPro> lista = new ArrayList<>();
 
         String sql =
             "SELECT e.* FROM EMPRESA_RELACION er " +
@@ -331,9 +357,17 @@ public class EntidadDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
+                 //creamos entidad
                 Entidad e = mapear(rs);
-                e.setRoles(rolDAO.obtenerRolesPorEntidad(e));
-                lista.add(convertirSegunRol(e));
+                //creamos la dir
+                List<Direccion> dir= dao.obtenerDireccionesDeEntidad(rs.getLong("idEntidad"));
+                //creamos el cp
+                CliPro cp=new CliPro(e,dir.get(0));
+                System.out.println("CliPro: "+cp);
+                //setea,os roles a CliPro
+                cp.setRoles(rolDAO.obtenerRolesPorEntidad(rs.getLong("idEntidad"),cp));
+                System.out.println("CliPro: "+cp);
+                lista.add(cp);
 
             }
 
