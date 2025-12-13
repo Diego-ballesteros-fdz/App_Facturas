@@ -51,7 +51,7 @@ public class DAOController {
     public CliPro crearCliente(Entidad e) {
 
         Entidad creada = crearEntidad(e);
-        rolDAO.insertarRol(creada.getIdEntidad(), "CLIENTE");
+        rolDAO.insertarRol(creada.getNombre(), "CLIENTE");
         return (CliPro) entidadDAO.buscarPorId(creada.getIdEntidad());
     }
 
@@ -231,14 +231,14 @@ public class DAOController {
         }
     }
 
-    public boolean agregarRol(long idEntidad, String rol) {
-        return rolDAO.insertarRol(idEntidad, rol);
+    public boolean agregarRol(String nombre, String rol) {
+        return rolDAO.insertarRol(nombre, rol);
     }
 
-    public boolean eliminarEntidad(long idEntidad) {
-        rolDAO.eliminarRolesPorEntidad(idEntidad); // primero roles
-        direccionDAO.eliminarDireccionesPorEntidad(idEntidad); // luego direcciones
-        return entidadDAO.eliminar(idEntidad); // por último entidad
+    public boolean eliminarEntidad(String nombre) {
+        rolDAO.eliminarRolesPorEntidad(nombre); // primero roles
+        direccionDAO.eliminarDireccionesPorEntidad(nombre); // luego direcciones
+        return entidadDAO.eliminar(nombre); // por último entidad
     }
 
     public Entidad buscarEntidadPorId(long id) {
@@ -267,12 +267,14 @@ public class DAOController {
         return entidadDAO.modificar(e);
     }
 
-    public void eliminarRoles(long idEntidad) {
-        rolDAO.eliminarRolesPorEntidad(idEntidad);
+    public void eliminarRoles(String nombre) {
+        if(!rolDAO.eliminarRolesPorEntidad(nombre)){
+            System.out.println("Algo salio mal al eliminar roles");
+        }
     }
 
-    public void agregarRolEntidad(long idEntidad, String rol) {
-        rolDAO.insertarRol(idEntidad, rol);
+    public void agregarRolEntidad(String nombre, String rol) {
+        rolDAO.insertarRol(nombre, rol);
     }
 
     // ============================================================
@@ -312,8 +314,8 @@ public class DAOController {
         return productoDAO.listarProductosPorEmpresa(idProveedor);
     }
 
-    public boolean eliminarProducto(long idProducto) {
-        return productoDAO.eliminar(idProducto);
+    public boolean eliminarProducto(String nombre) {
+        return productoDAO.eliminar(nombre);
     }
 
     // ============================================================

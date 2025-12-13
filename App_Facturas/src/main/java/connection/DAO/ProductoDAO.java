@@ -126,14 +126,14 @@ public class ProductoDAO {
 
 
 
-    public boolean eliminar(long idProducto) {
+    public boolean eliminar(String nombre) {
 
-        String sql = "DELETE FROM PRODUCTO WHERE idProducto = ?";
+        String sql = "DELETE FROM PRODUCTO WHERE nombre = ?";
 
         try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setLong(1, idProducto);
+            ps.setString(1, nombre);
             return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {

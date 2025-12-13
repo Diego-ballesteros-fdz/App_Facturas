@@ -24,14 +24,14 @@ public class RolDAO {
     // =============================
     //   INSERTAR ROL
     // =============================
-    public boolean insertarRol(long idEntidad, String rol) {
+    public boolean insertarRol(String nombre, String rol) {
 
-        String sql = "INSERT INTO ROLES_ENTIDAD (idEntidad, rol) VALUES (?, ?)";
+        String sql = "INSERT INTO ROLES_ENTIDAD (idEntidad, rol) VALUES ((SELECT idEntidad FROM ENTIDAD WHERE nombre= ?), ?)";
 
         try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setLong(1, idEntidad);
+            ps.setString(1, nombre);
             ps.setString(2, rol);
 
             return ps.executeUpdate() > 0;
@@ -107,14 +107,14 @@ public class RolDAO {
     // =============================
     //   ELIMINAR TODOS LOS ROLES DE UNA ENTIDAD
     // =============================
-    public boolean eliminarRolesPorEntidad(long idEntidad) {
-
-        String sql = "DELETE FROM ROLES_ENTIDAD WHERE idEntidad = ?";
+    public boolean eliminarRolesPorEntidad(String nombre) {
+        System.out.println(nombre);
+        String sql = "DELETE FROM ROLES_ENTIDAD WHERE idEntidad IN (SELECT idEntidad FROM ENTIDAD WHERE nombre=?)";
 
         try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setLong(1, idEntidad);
+            ps.setString(1, nombre);
             return ps.executeUpdate() > 0;
 
         } catch (SQLException ex) {

@@ -109,14 +109,14 @@ public class DireccionDAO {
     // ==========================================
     // ELIMINAR TODAS LAS DIRECCIONES DE UNA ENTIDAD
     // ==========================================
-    public boolean eliminarDireccionesPorEntidad(long idEntidad) {
+    public boolean eliminarDireccionesPorEntidad(String nombre) {
 
-        String sql = "DELETE FROM DIRECCION WHERE idEntidad = ?";
+        String sql = "DELETE FROM DIRECCION WHERE idEntidad = (SELECT idEntidad FROM ENTIDAD WHERE nombre = ?)";
 
         try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setLong(1, idEntidad);
+            ps.setString(1, nombre);
             ps.executeUpdate();
             return true;
 

@@ -194,7 +194,7 @@ public class EntidadDAO {
     public boolean modificar(Entidad e) {
 
         String sql = "UPDATE ENTIDAD SET nombre = ?, nif = ?, email = ?, "
-                + "telefono = ?, observaciones = ? WHERE idEntidad = ?";
+                + "telefono = ?, observaciones = ? WHERE nombre = ?";
 
         try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -204,7 +204,7 @@ public class EntidadDAO {
             ps.setString(3, e.getEmail());
             ps.setString(4, e.getTelefono());
             ps.setString(5, e.getObservaciones());
-            ps.setLong(6, e.getIdEntidad());
+            ps.setString(6, e.getNombre());
 
             return ps.executeUpdate() > 0;
 
@@ -217,14 +217,14 @@ public class EntidadDAO {
     // ==================================
     //   ELIMINAR ENTIDAD
     // ==================================
-    public boolean eliminar(long idEntidad) {
+    public boolean eliminar(String nombre) {
 
-        String sql = "DELETE FROM ENTIDAD WHERE idEntidad = ?";
+        String sql = "DELETE FROM ENTIDAD WHERE nombre = ?";
 
         try (Connection con = ConexionBD.get();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setLong(1, idEntidad);
+            ps.setString(1, nombre);
             return ps.executeUpdate() > 0;
 
         } catch (SQLException ex) {

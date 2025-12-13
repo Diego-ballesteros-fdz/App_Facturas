@@ -360,23 +360,25 @@ public class FormController {
         switch (tipo) {
 
             case "Emp":
+                
                 dao.modificarEntidad(obj);
                 break;
 
             case "CliPro":
                 // modificar datos base
                 dao.modificarEntidad(obj);
-
+                CliPro cp=(CliPro) obj;
+                
+                System.out.println(cp.getEntidad().getNombre());
                 // actualizar roles
-                dao.eliminarRoles(obj.getIdEntidad());
+                dao.eliminarRoles(cp.getEntidad().getNombre());
 
-                CliPro cp = (CliPro) obj;
 
-                if (cp.isCliente()) {
-                    dao.agregarRolEntidad(obj.getIdEntidad(), "CLIENTE");
+                if (cp.isIsCliente()) {
+                    dao.agregarRolEntidad(cp.getEntidad().getNombre(), "CLIENTE");
                 }
-                if (cp.isProveedor()) {
-                    dao.agregarRolEntidad(obj.getIdEntidad(), "PROVEEDOR");
+                if (cp.isIsProveedor()) {
+                    dao.agregarRolEntidad(cp.getEntidad().getNombre(), "PROVEEDOR");
                 }
 
                 break;
@@ -402,11 +404,11 @@ public class FormController {
 
             case "Emp":
             case "CliPro":
-                dao.eliminarEntidad(entidad.getIdEntidad());
+                dao.eliminarEntidad(entidad.getNombre());
                 break;
 
             case "Prod":
-                dao.eliminarProducto(entidad.getIdEntidad());
+                dao.eliminarProducto(entidad.getNombre());
                 break;
         }
 
@@ -492,6 +494,7 @@ public class FormController {
                         exito = false;
                     }
 
+                    volverAtras();
                     //dao.crearFactura(fac);
                     break;
 
@@ -526,6 +529,7 @@ public class FormController {
                         exito = false;
                     }
 
+                    volverAtras();
                     //dao.crearFactura(fac);
                     break;
             }
@@ -829,7 +833,6 @@ public class FormController {
                     }
                 }
                 if (sePuede) {
-                    System.out.println("Creando Entidad para empresa");
                     Entidad em = new Entidad(nombre, tipoDocumento, email, telefono, obser);
                     Direccion dir = new Direccion(em, nombreVia, numero, ciudad, provincia, codigoPostal, pais);
                     CliPro CliPro = new CliPro(em, clienteCPCheck.isSelected(), proveedorCPCheck.isSelected(), dir);
