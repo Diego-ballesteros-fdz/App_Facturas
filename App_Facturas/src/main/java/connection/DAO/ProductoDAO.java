@@ -15,6 +15,11 @@ import java.util.List;
 import objects.Producto;
 
 /**
+ * DAO encargado de la gestión de los productos en la base de datos.
+ * <p>
+ * Permite crear, listar, buscar y eliminar productos, así como obtener
+ * los productos asociados a un proveedor o a una empresa concreta.
+ * </p>
  *
  * @author roque
  */
@@ -23,6 +28,15 @@ public class ProductoDAO {
     private EmpresaRelacionDAO empresaRelacionDAO = new EmpresaRelacionDAO();
 
     
+    /**
+     * Inserta un nuevo producto en la base de datos.
+     * <p>
+     * El producto debe tener asociado un proveedor válido.
+     * </p>
+     *
+     * @param p Objeto {@link Producto} a crear.
+     * @return El producto con su {@code idProducto} asignado o {@code null} si ocurre un error.
+     */
     public Producto crear(Producto p) {
 
         String sql = "INSERT INTO PRODUCTO (nombre, descripcion, precio, stock, idProveedor) "
@@ -51,6 +65,11 @@ public class ProductoDAO {
         }
     }
 
+    /**
+     * Obtiene todos los productos existentes en la base de datos.
+     *
+     * @return Lista de {@link Producto}.
+     */
     public List<Producto> obtenerTodos() {
 
         List<Producto> lista = new ArrayList<>();
@@ -77,6 +96,12 @@ public class ProductoDAO {
         return lista;
     }
 
+    /**
+     * Obtiene todos los productos asociados a un proveedor concreto.
+     *
+     * @param idProveedor Identificador del proveedor.
+     * @return Lista de {@link Producto}.
+     */
     public List<Producto> obtenerPorProveedor(long idProveedor) {
         List<Producto> lista = new ArrayList<>();
 
@@ -99,6 +124,16 @@ public class ProductoDAO {
         return lista;
     }
     
+    /**
+     * Obtiene todos los productos asociados a una empresa.
+     * <p>
+     * Primero se obtienen los proveedores relacionados con la empresa
+     * y posteriormente los productos de cada proveedor.
+     * </p>
+     *
+     * @param idEmpresa Identificador de la empresa.
+     * @return Lista de {@link Producto}.
+     */
     public List<Producto> listarProductosPorEmpresa(long idEmpresa) {
 
         List<Producto> lista = new ArrayList<>();
@@ -124,8 +159,12 @@ public class ProductoDAO {
         return lista;
     }
 
-
-
+    /**
+     * Elimina un producto de la base de datos por su nombre.
+     *
+     * @param nombre Nombre del producto a eliminar.
+     * @return {@code true} si se elimina correctamente, {@code false} en caso contrario.
+     */
     public boolean eliminar(String nombre) {
 
         String sql = "DELETE FROM PRODUCTO WHERE nombre = ?";
@@ -142,10 +181,15 @@ public class ProductoDAO {
         }
     }
     
-    // ============================================================
-//   MAPEAR PRODUCTO DESDE RESULTSET
-// ============================================================
-private Producto mapear(ResultSet rs) throws SQLException {
+    /**
+     * Mapea un {@link ResultSet} a un objeto {@link Producto}.
+     *
+     * @param rs ResultSet con los datos del producto.
+     * @return Objeto {@link Producto}.
+     * @throws SQLException Si ocurre un error al leer el ResultSet.
+     */
+    private Producto mapear(ResultSet rs) throws SQLException {
+        
         Producto p = new Producto();
 
         p.setIdProducto(rs.getLong("idProducto"));
@@ -155,8 +199,7 @@ private Producto mapear(ResultSet rs) throws SQLException {
         p.setStock(rs.getInt("stock"));
         p.setIdProveedor(rs.getLong("idProveedor"));
 
-        return p;
+            return p;
     }
 
-    
 }

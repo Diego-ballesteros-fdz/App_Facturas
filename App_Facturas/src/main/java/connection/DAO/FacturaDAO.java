@@ -16,11 +16,25 @@ import java.util.List;
 import objects.Factura;
 
 /**
+ * DAO encargado de la gestión de Facturas en la base de datos.
+ * <p>
+ * Permite crear, eliminar y consultar facturas asociadas a entidades
+ * (clientes o proveedores).
+ * </p>
  *
  * @author roque
  */
 public class FacturaDAO {
     
+    /**
+     * Crea una nueva factura en la base de datos.
+     * <p>
+     * La factura debe tener asignado un cliente válido con un idEntidad existente.
+     * </p>
+     *
+     * @param f Objeto {@link Factura} a insertar.
+     * @return La factura con el id generado, o {@code null} si ocurre un error.
+     */
      public Factura crear(Factura f) {
 
         if (f.getCliente() == null){
@@ -49,7 +63,14 @@ public class FacturaDAO {
             return null;
         }
     }
+     
 
+     /**
+     * Elimina una factura de la base de datos por su identificador.
+     *
+     * @param idFactura Identificador de la factura.
+     * @return {@code true} si se eliminó correctamente, {@code false} en caso contrario.
+     */
     public boolean eliminar(long idFactura) {
 
         String sql = "DELETE FROM FACTURA WHERE idFactura = ?";
@@ -66,6 +87,11 @@ public class FacturaDAO {
         }
     }
 
+    /**
+     * Obtiene todas las facturas almacenadas en la base de datos.
+     *
+     * @return Lista de {@link Factura}.
+     */
     public List<Factura> obtenerTodas() {
         List<Factura> lista = new ArrayList<>();
         String sql = "SELECT * FROM FACTURA";
@@ -89,6 +115,13 @@ public class FacturaDAO {
         return lista;
     }
 
+    /**
+     * Obtiene todas las facturas asociadas a una entidad concreta
+     * (cliente o proveedor).
+     *
+     * @param idEntidad Identificador de la entidad.
+     * @return Lista de {@link Factura} asociadas a la entidad.
+     */
     public List<Factura> obtenerPorEntidad(long idEntidad) {
 
         List<Factura> lista = new ArrayList<>();

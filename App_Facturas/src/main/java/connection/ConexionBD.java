@@ -7,14 +7,58 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+
+/**
+ * Clase encargada de gestionar la conexión con la base de datos.
+ * <p>
+ * Esta clase carga automáticamente las credenciales de conexión desde
+ * el archivo {@code db.properties} situado en el classpath del proyecto
+ * y proporciona un método estático para obtener conexiones JDBC.
+ * </p>
+ *
+ * <p>
+ * El archivo {@code db.properties} debe contener las siguientes claves:
+ * </p>
+ * <ul>
+ *   <li>{@code db.url}</li>
+ *   <li>{@code db.user}</li>
+ *   <li>{@code db.password}</li>
+ * </ul>
+ *
+ * <p>
+ * Ejemplo de uso:
+ * </p>
+ * <pre>
+ * try (Connection con = ConexionBD.get()) {
+ *     // operaciones con la base de datos
+ * }
+ * </pre>
+ *
+ * @author roque
+ */
 public class ConexionBD {
 
+    /** Propiedades cargadas desde el archivo db.properties */
     private static final Properties PROPIEDADES = new Properties();
+
+    /** URL de conexión JDBC */
     private static String URL;
+
+    /** Usuario de la base de datos */
     private static String USER;
+
+    /** Contraseña de la base de datos */
     private static String PASS;
 
-    // Bloque estático para cargar las propiedades cuando se carga la clase
+      /**
+     * Bloque estático encargado de cargar las propiedades de conexión
+     * en el momento en que la clase es cargada por la JVM.
+     * <p>
+     * Si el archivo {@code db.properties} no se encuentra en el classpath
+     * o ocurre un error durante su lectura, la aplicación se detiene
+     * lanzando un {@link ExceptionInInitializerError}.
+     * </p>
+     */
     static {
         // El nombre del archivo debe coincidir con el que creaste
         try (InputStream input = ConexionBD.class.getClassLoader().getResourceAsStream( "db.properties")) {
@@ -45,12 +89,15 @@ public class ConexionBD {
         }
     }
 
-    /**
-     * Devuelve una nueva conexión a la base de datos utilizando las propiedades
-     * cargadas.
+     /**
+     * Obtiene una nueva conexión a la base de datos utilizando JDBC.
+     * <p>
+     * El método fuerza la carga del driver de MySQL para evitar problemas
+     * de inicialización en algunos entornos.
+     * </p>
      *
-     * @return Objeto Connection.
-     * @throws SQLException Si ocurre un error de conexión a la BD.
+     * @return una instancia válida de {@link Connection}
+     * @throws SQLException si ocurre un error al conectar con la base de datos
      */
     public static Connection get() throws SQLException {
         //cargamos el jdbc de manera manual para evitar errores.

@@ -15,15 +15,39 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
+ * DAO encargado de la gestión de direcciones asociadas a una entidad.
+ *
+ * <p>
+ * Cada dirección pertenece a una {@link Entidad} mediante la clave foránea
+ * {@code idEntidad}.
+ * </p>
+ *
+ * <p>
+ * Este DAO permite:
+ * </p>
+ * <ul>
+ *   <li>Insertar direcciones</li>
+ *   <li>Listar direcciones por entidad</li>
+ *   <li>Eliminar direcciones de una entidad</li>
+ * </ul>
  *
  * @author roque
  */
 public class DireccionDAO {
      
-    // ==========================================
-    // INSERTAR DIRECCIÓN
-    // ==========================================
+    /**
+     * Inserta una nueva dirección en la base de datos.
+     *
+     * <p>
+     * La {@link Direccion} debe tener una {@link Entidad} asociada
+     * con un {@code idEntidad} válido.
+     * </p>
+     *
+     * @param d Dirección a insertar
+     * @return {@code true} si se insertó correctamente
+     */
     public boolean insertar(Direccion d) {
 
         String sql = "INSERT INTO DIRECCION (idEntidad, via, numero, ciudad, provincia, cp, pais) "
@@ -54,6 +78,16 @@ public class DireccionDAO {
         }
     }
     
+    /**
+    * Obtiene el idEntidad de una entidad a partir de su nombre.
+    *
+    * <p><b>ATENCIÓN:</b> Este método no es recomendable si el nombre
+    * no es único. Es preferible trabajar siempre con {@code idEntidad}
+    * directamente.</p>
+    *
+    * @param e Entidad cuyo nombre se usará para buscar el ID
+    * @return idEntidad si existe, -1 si no se encuentra
+    */
     public long obtenerId(Entidad e){
         String sql="SELECT idEntidad" +
                     "FROM ENTIDAD" +
@@ -71,9 +105,12 @@ public class DireccionDAO {
         }
     }
 
-    // ==========================================
-    // OBTENER DIRECCIONES POR ENTIDAD
-    // ==========================================
+    /**
+     * Obtiene todas las direcciones asociadas a una entidad.
+     *
+     * @param idEntidad identificador de la entidad
+     * @return lista de direcciones
+     */
     public List<Direccion> obtenerPorEntidad(long idEntidad) {
 
         List<Direccion> lista = new ArrayList<>();
@@ -106,9 +143,12 @@ public class DireccionDAO {
         return lista;
     }
 
-    // ==========================================
-    // ELIMINAR TODAS LAS DIRECCIONES DE UNA ENTIDAD
-    // ==========================================
+    /**
+     * Elimina todas las direcciones asociadas a una entidad.
+     *
+     * @param idEntidad identificador de la entidad
+     * @return {@code true} si se eliminaron correctamente
+     */
     public boolean eliminarDireccionesPorEntidad(String nombre) {
 
         String sql = "DELETE FROM DIRECCION WHERE idEntidad = (SELECT idEntidad FROM ENTIDAD WHERE nombre = ?)";

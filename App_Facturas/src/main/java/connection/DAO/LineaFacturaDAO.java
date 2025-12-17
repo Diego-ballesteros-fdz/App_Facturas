@@ -14,11 +14,25 @@ import java.util.List;
 import objects.LineaFactura;
 
 /**
+ * DAO encargado de la gestión de las líneas de factura en la base de datos.
+ * <p>
+ * Cada línea representa un producto asociado a una factura con su cantidad
+ * y precio unitario.
+ * </p>
  *
  * @author roque
  */
 public class LineaFacturaDAO {
     
+     /**
+     * Inserta una nueva línea de factura en la base de datos.
+     * <p>
+     * La línea debe tener asociada una factura y un producto válidos.
+     * </p>
+     *
+     * @param lf Objeto {@link LineaFactura} a insertar.
+     * @return {@code true} si se inserta correctamente, {@code false} en caso contrario.
+     */
      public boolean insertar(LineaFactura lf) {
 
         String sql = "INSERT INTO LINEA_FACTURA (idFactura, idProducto, cantidad, precioUnitario) "
@@ -40,6 +54,12 @@ public class LineaFacturaDAO {
         }
     }
 
+     /**
+     * Obtiene todas las líneas asociadas a una factura concreta.
+     *
+     * @param idFactura Identificador de la factura.
+     * @return Lista de {@link LineaFactura}.
+     */ 
     public List<LineaFactura> obtenerPorFactura(long idFactura) {
 
         List<LineaFactura> lista = new ArrayList<>();
@@ -68,6 +88,12 @@ public class LineaFacturaDAO {
         return lista;
     }
 
+    /**
+     * Elimina todas las líneas asociadas a una factura.
+     *
+     * @param idFactura Identificador de la factura.
+     * @return {@code true} si se eliminan correctamente, {@code false} en caso contrario.
+     */
     public boolean eliminarPorFactura(long idFactura) {
 
         String sql = "DELETE FROM LINEA_FACTURA WHERE idFactura = ?";
