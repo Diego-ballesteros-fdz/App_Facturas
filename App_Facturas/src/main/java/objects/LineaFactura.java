@@ -1,47 +1,156 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package objects;
 
 /**
+ * Representa una línea de una factura.
+ * Una línea de factura relaciona una factura con un producto concreto,
+ * indicando la cantidad, el precio unitario y el subtotal correspondiente.
+ *
+ * Esta clase se utiliza para desglosar los productos incluidos
+ * dentro de una factura.
  *
  * @author roque
  */
 public class LineaFactura {
-    
+
+    /** Identificador único de la línea de factura */
     private long idLinea;
+
+    /** Factura a la que pertenece la línea */
     private Factura factura;
+
+    /** Producto asociado a la línea de factura */
     private Producto producto;
 
+    /** Cantidad del producto facturado */
     private int cantidad;
+
+    /** Precio unitario del producto en el momento de la facturación */
     private double precioUnitario;
+
+    /** Subtotal de la línea de factura */
     private double subtotal;
 
-    public LineaFactura() {}
+    // =======================
+    // CONSTRUCTORES
+    // =======================
 
-    public long getIdLinea() { return idLinea; }
+    /**
+     * Constructor por defecto.
+     * Crea una línea de factura sin inicializar sus atributos.
+     */
+    public LineaFactura() {
+    }
 
-    public void setIdLinea(long idLinea) { this.idLinea = idLinea; }
+    // =======================
+    // GETTERS Y SETTERS
+    // =======================
 
-    public Factura getFactura() { return factura; }
+    /**
+     * Devuelve el identificador de la línea de factura.
+     *
+     * @return el identificador de la línea
+     */
+    public long getIdLinea() {
+        return idLinea;
+    }
 
-    public void setFactura(Factura factura) { this.factura = factura; }
+    /**
+     * Establece el identificador de la línea de factura.
+     *
+     * @param idLinea identificador a asignar
+     */
+    public void setIdLinea(long idLinea) {
+        this.idLinea = idLinea;
+    }
 
-    public Producto getProducto() { return producto; }
+    /**
+     * Devuelve la factura asociada a la línea.
+     *
+     * @return la factura asociada
+     */
+    public Factura getFactura() {
+        return factura;
+    }
 
-    public void setProducto(Producto producto) { this.producto = producto; }
+    /**
+     * Establece la factura asociada a la línea.
+     *
+     * @param factura factura a asignar
+     */
+    public void setFactura(Factura factura) {
+        this.factura = factura;
+    }
 
-    public int getCantidad() { return cantidad; }
+    /**
+     * Devuelve el producto asociado a la línea de factura.
+     *
+     * @return el producto asociado
+     */
+    public Producto getProducto() {
+        return producto;
+    }
 
-    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
+    /**
+     * Establece el producto asociado a la línea de factura.
+     *
+     * @param producto producto a asignar
+     */
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
 
-    public double getPrecioUnitario() { return precioUnitario; }
+    /**
+     * Devuelve la cantidad del producto facturado.
+     *
+     * @return la cantidad
+     */
+    public int getCantidad() {
+        return cantidad;
+    }
 
-    public void setPrecioUnitario(double precioUnitario) { this.precioUnitario = precioUnitario; }
+    /**
+     * Establece la cantidad del producto facturado.
+     *
+     * @param cantidad cantidad a asignar
+     */
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
 
-    public double getSubtotal() { return subtotal; }
+    /**
+     * Devuelve el precio unitario del producto.
+     *
+     * @return el precio unitario
+     */
+    public double getPrecioUnitario() {
+        return precioUnitario;
+    }
 
-    public void setSubtotal(double subtotal) { this.subtotal = subtotal; }
-    
+    /**
+     * Establece el precio unitario del producto.
+     *
+     * @param precioUnitario precio unitario a asignar
+     */
+    public void setPrecioUnitario(double precioUnitario) {
+        this.precioUnitario = precioUnitario;
+    }
+
+    /**
+     * Devuelve el subtotal de la línea de factura.
+     *
+     * @return el subtotal
+     */
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    /**
+     * Establece el subtotal de la línea de factura.
+     *
+     * @param subtotal subtotal a asignar
+     */
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
 }

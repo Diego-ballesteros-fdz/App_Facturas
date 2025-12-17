@@ -1,285 +1,262 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package validations;
 
 import java.time.LocalDate;
 import javafx.scene.paint.Color;
 
 /**
- * Clase para la validación de los datos introducidos por el usuario
+ * Clase que proporciona métodos estáticos para validar datos introducidos por el usuario.
+ * Cada método devuelve un objeto {@link Error} que indica si hay error, un mensaje y un color asociado.
+ * 
+ * Las validaciones incluyen:
+ * 
+ *   -Campos vacíos o nulos
+ *   -Formato de texto simple
+ *   -Números decimales y enteros positivos
+ *   -Valores long
+ *   -Formato de email
+ *   -Formato de nombre válido (letras y espacios)
+ *   -Fechas (pasadas o futuras)
+ *   -Validación de NIF, NIE, CIF
+ *   -Validación de teléfono
  *
+ * 
  * @author diego
  */
 public class Validation {
 
+    /**
+     * Valida que un texto no sea nulo ni vacío.
+     * 
+     * @param t texto a validar
+     * @return Error con true si está vacío o nulo, false si es válido
+     */
     public static Error esVacio(String t) {
         if (t == null) {
             return new Error(true, "El valor introducido es nulo", Color.RED);
-        } else if (t == "") {
-            return new Error(true, "El valor introducido esta vacio", Color.RED);
+        } else if (t.isEmpty()) {
+            return new Error(true, "El valor introducido está vacío", Color.RED);
         } else {
             return new Error(false, "", Color.GREEN);
         }
     }
 
     /**
-     * validador de String
-     *
-     * @param t String recogido de los TextArea
-     * @return Error, inidcando true cuendo hay error y false cuando no lo hay,
-     * aparte de contener el mensaje del error en concreto
+     * Valida que un texto sea no nulo y no vacío (texto simple).
+     * 
+     * @param t texto a validar
+     * @return Error con true si está vacío o nulo, false si es válido
      */
     public static Error esTexto(String t) {
-        if (t == null) {
-            return new Error(true, "El valor introducido es nulo", Color.RED);
-        } else if (t == "") {
-            return new Error(true, "El valor introducido esta vacio", Color.RED);
-        } else {
-            return new Error(false, "", Color.GREEN);
-        }
+        return esVacio(t);
     }
 
     /**
-     * validador de decimal
-     *
-     * @param t String recogido de los TextArea
-     * @return Error, inidcando true cuendo hay error y false cuando no lo hay,
-     * aparte de contener el mensaje del error en concreto
+     * Valida que un texto sea un número decimal positivo.
+     * 
+     * @param t texto que representa el número decimal
+     * @return Error con true si no es decimal positivo, false si es válido
      */
     public static Error esDecimalPos(String t) {
         Error er = esVacio(t);
         if (er.isError()) {
             return er;
-        } else {
-            //verificamos si es un decimal realmente
-            try {
-                double num = Double.parseDouble(t);
-                if (num > 0) {
-                    return new Error(false, "", Color.GREEN);
-                } else {
-                    return new Error(true, "El valor es negativo", Color.RED);
-                }
-            } catch (Exception e) {
-                return new Error(true, "el valor no es decimal", Color.RED);
+        }
+        try {
+            double num = Double.parseDouble(t);
+            if (num > 0) {
+                return new Error(false, "", Color.GREEN);
+            } else {
+                return new Error(true, "El valor es negativo", Color.RED);
             }
+        } catch (NumberFormatException e) {
+            return new Error(true, "El valor no es decimal", Color.RED);
         }
     }
-    
+
     /**
-     * validador de decimal
-     *
-     * @param t String recogido de los TextArea
-     * @return Error, inidcando true cuendo hay error y false cuando no lo hay,
-     * aparte de contener el mensaje del error en concreto
+     * Valida que un texto sea un número entero positivo.
+     * 
+     * @param t texto que representa el número entero
+     * @return Error con true si no es entero positivo, false si es válido
      */
     public static Error esEnteroPos(String t) {
         Error er = esVacio(t);
         if (er.isError()) {
             return er;
-        } else {
-            //verificamos si es un decimal realmente
-            try {
-                int num = Integer.parseInt(t);
-                if (num > 0) {
-                    return new Error(false, "", Color.GREEN);
-                } else {
-                    return new Error(true, "El valor es negativo", Color.RED);
-                }
-            } catch (Exception e) {
-                return new Error(true, "el valor no es decimal", Color.RED);
+        }
+        try {
+            int num = Integer.parseInt(t);
+            if (num > 0) {
+                return new Error(false, "", Color.GREEN);
+            } else {
+                return new Error(true, "El valor es negativo", Color.RED);
             }
+        } catch (NumberFormatException e) {
+            return new Error(true, "El valor no es entero", Color.RED);
         }
     }
 
     /**
-     * validador de long
-     *
-     * @param t String recogido de los TextArea
-     * @return Error, inidcando true cuendo hay error y false cuando no lo hay,
-     * aparte de contener el mensaje del error en concreto
+     * Valida que un texto sea un número long válido.
+     * 
+     * @param t texto que representa el número long
+     * @return Error con true si no es un long válido, false si es válido
      */
     public static Error esLong(String t) {
         Error er = esVacio(t);
         if (er.isError()) {
             return er;
-        } else {
-            try {
-                long l = Long.parseLong(t);
-                return new Error(false, "", Color.GREEN);
-            } catch (Exception e) {
-                return new Error(true, "El valor introducido no es un long", Color.RED);
-            }
+        }
+        try {
+            Long.parseLong(t);
+            return new Error(false, "", Color.GREEN);
+        } catch (NumberFormatException e) {
+            return new Error(true, "El valor introducido no es un long válido", Color.RED);
         }
     }
 
     /**
-     * validador de email
-     *
-     * @param t String recogido de los TextArea
-     * @return Error, inidcando true cuendo hay error y false cuando no lo hay,
-     * aparte de contener el mensaje del error en concreto
+     * Valida que un texto tenga formato de email válido.
+     * 
+     * @param t texto con el email a validar
+     * @return Error con true si formato incorrecto, false si válido
      */
     public static Error esEmail(String t) {
-
         Error er = esVacio(t);
         if (er.isError()) {
             return er;
+        }
+        String regex = "^[\\w.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        if (t.matches(regex)) {
+            return new Error(false, "", Color.GREEN);
         } else {
-            String regex = "^[\\w.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-            if (t.matches(regex)) {
-                return new Error(false, "", Color.GREEN);
-            } else {
-                return new Error(true, "El valor introducido no es un Email", Color.RED);
-            }
+            return new Error(true, "El valor introducido no es un email válido", Color.RED);
         }
     }
 
     /**
-     * validador de Nombre
-     *
-     * @param t String recogido de los TextArea
-     * @return Error, inidcando true cuendo hay error y false cuando no lo hay,
-     * aparte de contener el mensaje del error en concreto
+     * Valida que un texto tenga formato válido de nombre (solo letras, espacios y acentos).
+     * 
+     * @param t texto con el nombre a validar
+     * @return Error con true si formato incorrecto, false si válido
      */
     public static Error esNombre(String t) {
-
         Error er = esVacio(t);
         if (er.isError()) {
             return er;
+        }
+        String regex = "^[A-Za-zÁÉÍÓÚáéíóúÑñ .]+$";
+        if (t.matches(regex)) {
+            return new Error(false, "", Color.GREEN);
         } else {
-            String regex = "^[A-Za-zÁÉÍÓÚáéíóúÑñ .]+$";
-            if (t.matches(regex)) {
-                return new Error(false, "", Color.GREEN);
-            } else {
-                return new Error(true, "El valor introducido no es un Nombre valido: "+t, Color.RED);
-            }
+            return new Error(true, "El valor introducido no es un nombre válido: " + t, Color.RED);
         }
     }
 
     /**
-     * validador de fechafutura
-     *
-     * @param ld LocalDate recogido de los DatePicker
-     * @return Error, inidcando true cuendo hay error y false cuando no lo hay,
-     * aparte de contener el mensaje del error en concreto
+     * Valida que una fecha sea igual o posterior a la fecha actual.
+     * 
+     * @param ld fecha a validar
+     * @return Error con true si es nula o anterior a hoy, false si válida
      */
     public static Error esFechaFutura(LocalDate ld) {
-
         if (ld == null) {
             return new Error(true, "El valor introducido es nulo", Color.RED);
-        } else {
-            if (ld.isBefore(LocalDate.now())) {
-                return new Error(true, "La fecha debe igual o posterior a hoy", Color.RED);
-            } else {
-                return new Error(false, "", Color.GREEN);
-            }
         }
-    }
-
-    /**
-     * validador de fechapasada
-     *
-     * @param ld LocalDate recogido de los DatePicker
-     * @return Error, inidcando true cuendo hay error y false cuando no lo hay,
-     * aparte de contener el mensaje del error en concreto
-     */
-    public static Error esFechaPasada(LocalDate ld) {
-        if (ld == null) {
-            return new Error(true, "El valor introducido es nulo", Color.RED);
-        } else {
-            if (ld.isAfter(LocalDate.now())) {
-                return new Error(true, "La fecha debe ser igual o anterior a hoy", Color.RED);
-            } else {
-                return new Error(false, "", Color.GREEN);
-            }
-        }
-    }
-
-    /**
-     * validador de Nif
-     *
-     * @param t String recogido de los TextArea
-     * @return Error, inidcando true cuendo hay error y false cuando no lo hay,
-     * aparte de contener el mensaje del error en concreto
-     */
-    public static Error esNIF(String t) {
-        Error er = esVacio(t);
-        if (er.isError()) {
-            return er;
-        } else {
-            t = t.toUpperCase();
-            if (!t.matches("\\d{8}[A-Z]")) {
-                return new Error(true, "Formato de NIF incorrecto", Color.RED);
-            }
+        if (ld.isBefore(LocalDate.now())) {
+            return new Error(true, "La fecha debe ser igual o posterior a hoy", Color.RED);
         }
         return new Error(false, "", Color.GREEN);
     }
 
     /**
-     * validador de Nie
-     *
-     * @param t String recogido de los TextArea
-     * @return Error, inidcando true cuendo hay error y false cuando no lo hay,
-     * aparte de contener el mensaje del error en concreto
+     * Valida que una fecha sea igual o anterior a la fecha actual.
+     * 
+     * @param ld fecha a validar
+     * @return Error con true si es nula o posterior a hoy, false si válida
+     */
+    public static Error esFechaPasada(LocalDate ld) {
+        if (ld == null) {
+            return new Error(true, "El valor introducido es nulo", Color.RED);
+        }
+        if (ld.isAfter(LocalDate.now())) {
+            return new Error(true, "La fecha debe ser igual o anterior a hoy", Color.RED);
+        }
+        return new Error(false, "", Color.GREEN);
+    }
+
+    /**
+     * Valida el formato de un NIF español (8 dígitos + letra).
+     * 
+     * @param t texto con el NIF a validar
+     * @return Error con true si formato incorrecto, false si válido
+     */
+    public static Error esNIF(String t) {
+        Error er = esVacio(t);
+        if (er.isError()) {
+            return er;
+        }
+        t = t.toUpperCase();
+        if (!t.matches("\\d{8}[A-Z]")) {
+            return new Error(true, "Formato de NIF incorrecto", Color.RED);
+        }
+        return new Error(false, "", Color.GREEN);
+    }
+
+    /**
+     * Valida el formato de un NIE español (X, Y o Z seguido de 7 dígitos y letra).
+     * 
+     * @param t texto con el NIE a validar
+     * @return Error con true si formato incorrecto, false si válido
      */
     public static Error esNIE(String t) {
         Error er = esVacio(t);
         if (er.isError()) {
             return er;
-        } else {
-            t = t.toUpperCase();
-            if (!t.matches("[XYZ]\\d{7}[A-Z]")) {
-                return new Error(true, "Formato de NIE incorrecto", Color.RED);
-            }
-            return new Error(false, "", Color.GREEN);
         }
+        t = t.toUpperCase();
+        if (!t.matches("[XYZ]\\d{7}[A-Z]")) {
+            return new Error(true, "Formato de NIE incorrecto", Color.RED);
+        }
+        return new Error(false, "", Color.GREEN);
     }
 
     /**
-     * validador de Cif
-     *
-     * @param t String recogido de los TextArea
-     * @return Error, inidcando true cuendo hay error y false cuando no lo hay,
-     * aparte de contener el mensaje del error en concreto
+     * Valida el formato de un CIF español (letra + 7 dígitos + letra/dígito).
+     * 
+     * @param t texto con el CIF a validar
+     * @return Error con true si formato incorrecto, false si válido
      */
     public static Error esCIF(String t) {
         Error er = esVacio(t);
         if (er.isError()) {
             return er;
-        } else {
-            t = t.toUpperCase();
-            if (!t.matches("[ABCDEFGHJNPQRSUVW]\\d{7}[0-9A-J]")) {
-                return new Error(true, "Formato de CIF incorrecto", Color.RED);
-            }
-            return new Error(false, "", Color.GREEN);
         }
+        t = t.toUpperCase();
+        if (!t.matches("[ABCDEFGHJNPQRSUVW]\\d{7}[0-9A-J]")) {
+            return new Error(true, "Formato de CIF incorrecto", Color.RED);
+        }
+        return new Error(false, "", Color.GREEN);
     }
 
     /**
-     * validador de Telefono
-     *
-     * @param t String recogido de los TextArea
-     * @return Error, inidcando true cuendo hay error y false cuando no lo hay,
-     * aparte de contener el mensaje del error en concreto
+     * Valida que un teléfono tenga al menos 9 dígitos y sólo caracteres válidos.
+     * 
+     * @param t texto con el teléfono a validar
+     * @return Error con true si formato incorrecto, false si válido
      */
     public static Error esTelefono(String t) {
         Error er = esVacio(t);
         if (er.isError()) {
             return er;
-        } else {
-
-            String digitos = t.replaceAll("[^0-9]", "");
-            if (digitos.length() < 9) {
-                return new Error(true, "El teléfono debe tener al menos 9 dígitos", Color.RED);
-            }
-
-            if (!t.matches("^[+\\d\\s\\-()]+$")) {
-                return new Error(true, "El teléfono contiene caracteres inválidos", Color.RED);
-            }
-            return new Error(false, "", Color.GREEN);
         }
-
+        String digitos = t.replaceAll("[^0-9]", "");
+        if (digitos.length() < 9) {
+            return new Error(true, "El teléfono debe tener al menos 9 dígitos", Color.RED);
+        }
+        if (!t.matches("^[+\\d\\s\\-()]+$")) {
+            return new Error(true, "El teléfono contiene caracteres inválidos", Color.RED);
+        }
+        return new Error(false, "", Color.GREEN);
     }
 }

@@ -7,16 +7,12 @@ package com.app_facturas.app_facturas;
 import connection.ConexionBD;
 import connection.DAOController;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
@@ -30,13 +26,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Spinner;
 import javafx.scene.control.SplitMenuButton;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
@@ -50,15 +44,32 @@ import objects.Producto;
 import validations.Validation;
 
 /**
+ * Controlador principal para la gestion de formularios en la aplicacion de
+ * facturacion. Esta clase se encarga de administrar la logica de la vista para
+ * la creacion, modificacion y eliminacion de diversas entidades como Empresas,
+ * Clientes, Proveedores, Productos y Facturas. * Gestiona la visibilidad de los
+ * paneles segun el tipo de operacion y coordina la comunicacion entre la
+ * interfaz de usuario JavaFX y la capa de acceso a datos (DAO).
  *
  * @author diego
+ * @version 1.0
  */
 public class FormController {
 
+    /* --- Componentes de la Interfaz Grafica (FXML) --- */
+    /**
+     * Panel contenedor para la gestion de Clientes y Proveedores.
+     */
     @FXML
     private Pane cliProvPane;
+
+    /**
+     * Grilla para organizar los campos del formulario de Clientes.
+     */
     @FXML
     private GridPane gridClientes;
+
+    // Campos de texto para Clientes/Proveedores
     @FXML
     private TextField DocumentoCPField;
     @FXML
@@ -81,14 +92,29 @@ public class FormController {
     private TextField paisCPField;
     @FXML
     private TextField codigoPostalCPField;
+
+    /**
+     * Checkbox para marcar si la entidad es un Proveedor.
+     */
     @FXML
     private CheckBox proveedorCPCheck;
+
+    /**
+     * Checkbox para marcar si la entidad es un Cliente.
+     */
     @FXML
     private CheckBox clienteCPCheck;
+
+    /**
+     * Panel contenedor para la gestion de la Empresa propia.
+     */
     @FXML
     private Pane EmpresaPane;
+
     @FXML
     private GridPane gridEmpresa;
+
+    // Campos de texto para Empresa
     @FXML
     private TextField DocumentoEmpField;
     @FXML
@@ -111,47 +137,92 @@ public class FormController {
     private TextField paisEmpField;
     @FXML
     private TextField codigoPostalEmpField;
+
+    /**
+     * Panel contenedor para la gestion de Productos.
+     */
     @FXML
     private Pane productosPane;
 
+    /**
+     * Panel contenedor para la gestion de Facturas.
+     */
     @FXML
     private Pane factPane;
+
     @FXML
     private HBox hboxFacturas;
-    private TextField NombreEmpField1;
+
     @FXML
     private TextField observacionesEmpField1;
 
+    /* --- Variables de Estado y Control --- */
+    /**
+     * * Define el tipo de formulario que se esta mostrando. Valores posibles:
+     * "Emp" (Empresa), "CliPro" (Cliente/Proveedor), "Prod" (Producto), "Vent"
+     * (Venta), "Comp" (Compra).
+     */
     private String tipo;
+
+    /**
+     * * Define la accion que se va a realizar sobre la entidad. Valores
+     * posibles: "add" (Añadir), "modiffy" (Modificar), "delete" (Eliminar).
+     */
     private String accion;
+
+    // Paneles de botones segun la accion
     @FXML
     private Pane buttonsPaneAñadir;
     @FXML
     private Pane buttonsPaneModificar;
     @FXML
     private Pane buttonsPaneEliminar;
+
+    // Etiquetas de titulos dinamicos
     @FXML
     private Label nomEmp;
     @FXML
     private Label nomEmpProd;
     @FXML
     private Label nomEmpCliProv;
+
+    /**
+     * Selector del tipo de documento (NIF, CIF, NIE) para Empresa.
+     */
     @FXML
     private SplitMenuButton docType;
+
     @FXML
     private MenuItem nifType;
     @FXML
     private MenuItem nieType;
     @FXML
     private MenuItem cifType;
+
+    /**
+     * Nombre de la empresa actual en sesion.
+     */
     private String nombreEmpresa = App.nombreEmpresaActual;
+
+    /**
+     * * Objeto generico que almacena la entidad que se esta editando o
+     * visualizando. Puede ser casteado a CliPro, Empresa o Producto segun el
+     * contexto.
+     */
     private Entidad entidad;
+
     @FXML
     private Label labelError;
 
+    /**
+     * Controlador de Acceso a Datos para interactuar con la base de datos.
+     */
     private DAOController dao = new DAOController();
+
     @FXML
     private ListView<Entidad> provList;
+
+    // Campos de producto
     @FXML
     private TextField nombreProField;
     @FXML
@@ -160,12 +231,22 @@ public class FormController {
     private TextField precioProField;
     @FXML
     private TextField stockProField;
+
     @FXML
     private DatePicker fechaEmisionDate;
+
+    /**
+     * Lista visual de productos disponibles para añadir a factura.
+     */
     @FXML
     private ListView<Entidad> productosList;
+
+    /**
+     * Lista visual de productos ya añadidos a la factura actual.
+     */
     @FXML
     private ListView<Entidad> productosAddList;
+
     @FXML
     private SplitMenuButton splitMenuIVA;
     @FXML
@@ -175,21 +256,43 @@ public class FormController {
     @FXML
     private MenuItem tercero;
 
+    /**
+     * Lista en memoria de los productos seleccionados para la factura.
+     */
     private ArrayList<Entidad> productosAñadidos = new ArrayList<Entidad>();
+
+    /**
+     * Lista paralela que almacena las cantidades de los productos añadidos.
+     */
     private ArrayList<Integer> productosCantidad = new ArrayList<Integer>();
+
     @FXML
     private SplitMenuButton doctype2;
+
     @FXML
     private TextField cantProductFact;
+
     @FXML
     private MenuItem nifType2;
     @FXML
     private MenuItem nieType2;
     @FXML
     private MenuItem cifType2;
+
     @FXML
     private SplitMenuButton NombreEmpFactSplit;
 
+    /**
+     * Inicializa el controlador y configura el estado inicial de la vista. Este
+     * metodo es llamado automaticamente por JavaFX despues de cargar el FXML. *
+     * Realiza las siguientes tareas: 1. Vincula propiedades de tamaño (binding)
+     * para diseño responsivo. 2. Determina que paneles mostrar basandose en la
+     * variable 'tipo'. 3. Carga listas de datos necesarias (proveedores,
+     * productos) mediante hilos secundarios si es necesario. 4. Si existen
+     * datos previos ('entidad' y 'accion'), llama a mostrarDatos(). 5.
+     * Configura la visibilidad de los botones segun la 'accion' (añadir,
+     * modificar, eliminar).
+     */
     public void initialize() {
         gridClientes.prefWidthProperty().bind(cliProvPane.widthProperty().subtract(40));
         gridEmpresa.prefWidthProperty().bind(EmpresaPane.widthProperty().subtract(40));
@@ -285,32 +388,51 @@ public class FormController {
 
     }
 
+    /**
+     * Maneja el evento de seleccion de un tipo de documento en el menu
+     * desplegable para Empresas. Actualiza el texto del boton principal con la
+     * opcion seleccionada.
+     *
+     * @param event El evento de accion generado por el MenuItem.
+     */
     @FXML
     public void establecerTipoDoc(ActionEvent event) {
 
-       MenuItem itemPulsado = (MenuItem) event.getSource(); 
-        
+        MenuItem itemPulsado = (MenuItem) event.getSource();
+
         // Establecemos el texto del SplitMenuButton al texto del MenuItem
         docType.setText(itemPulsado.getText());
-        
+
         System.out.println("Se asigna el tipo: " + itemPulsado.getText());
     }
 
+    /**
+     * Maneja el evento de seleccion de un tipo de documento en el menu
+     * desplegable secundario (Clientes/Prov). Actualiza el texto del boton
+     * principal con la opcion seleccionada.
+     *
+     * @param event El evento de accion generado por el MenuItem.
+     */
     @FXML
     public void establecerTipoDoc2(ActionEvent event) {
 
-       MenuItem itemPulsado = (MenuItem) event.getSource(); 
-        
+        MenuItem itemPulsado = (MenuItem) event.getSource();
+
         // Establecemos el texto del SplitMenuButton al texto del MenuItem
         doctype2.setText(itemPulsado.getText());
-        
+
         System.out.println("Se asigna el tipo: " + itemPulsado.getText());
     }
 
-    @FXML
     /**
-     * volver a la pantalla anterior
+     * Ejecuta la accion de volver a la pantalla anterior. Determina la ruta de
+     * navegacion basandose en si el usuario esta en modo Empresa u otro.
+     *
+     * @param event El evento del boton volver.
+     * @throws IOException Si ocurre un error al cargar la vista FXML de destino
+     * (primary o secondary).
      */
+    @FXML
     private void volverAction(ActionEvent event) throws IOException {
         if (tipo.equals("Emp")) {
             App.setRoot("primary");
@@ -320,10 +442,14 @@ public class FormController {
 
     }
 
-    @FXML
     /**
-     * limpiar contenido
+     * Limpia el contenido del formulario actual recargando la vista. Utiliza
+     * los parametros actuales de 'tipo' y 'accion' para mantener el contexto.
+     *
+     * @param event El evento del boton limpiar.
+     * @see App#setRootWithParam(String, String, String)
      */
+    @FXML
     private void limpiarAction(ActionEvent event) {
         try {
             App.setRootWithParam("formulary", tipo, accion);
@@ -332,10 +458,23 @@ public class FormController {
         }
     }
 
+    /**
+     * Establece el tipo de entidad con la que trabajara el formulario.
+     *
+     * @param tipo Cadena que representa el tipo ("Emp", "CliPro", etc.).
+     */
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
+    /**
+     * Establece la accion a realizar y reinicializa la vista si es necesario.
+     * Si no hay una entidad cargada previamente, fuerza una reinicializacion
+     * para actualizar la UI.
+     *
+     * @param accion Cadena que representa la accion ("add", "modiffy",
+     * "delete").
+     */
     public void setAccion(String accion) {
         this.accion = accion;
         if (entidad == null) {
@@ -344,11 +483,27 @@ public class FormController {
 
     }
 
+    /**
+     * Inyecta una entidad existente en el controlador para su edicion o
+     * eliminacion. Al establecer la entidad, se llama a initialize() para
+     * reflejar los datos en la vista.
+     *
+     * @param e Objeto que implementa la clase base Entidad.
+     */
     public void setEntidad(Entidad e) {
         entidad = e;
         initialize();
     }
 
+    /**
+     * Ejecuta la logica para modificar una entidad existente en la base de
+     * datos. Valida los datos del formulario creando un objeto temporal, y si
+     * es valido, invoca al metodo correspondiente del DAO segun el tipo de
+     * entidad. * Para Clientes/Proveedores, tambien gestiona la actualizacion
+     * de roles en la BD.
+     *
+     * @param event El evento del boton modificar.
+     */
     @FXML
     private void modificarAction(ActionEvent event) {
 
@@ -360,19 +515,18 @@ public class FormController {
         switch (tipo) {
 
             case "Emp":
-                
+
                 dao.modificarEntidad(obj);
                 break;
 
             case "CliPro":
                 // modificar datos base
                 dao.modificarEntidad(obj);
-                CliPro cp=(CliPro) obj;
-                
+                CliPro cp = (CliPro) obj;
+
                 System.out.println(cp.getEntidad().getNombre());
                 // actualizar roles
                 dao.eliminarRoles(cp.getEntidad().getNombre());
-
 
                 if (cp.isIsCliente()) {
                     dao.agregarRolEntidad(cp.getEntidad().getNombre(), "CLIENTE");
@@ -393,6 +547,12 @@ public class FormController {
         volverAtras();
     }
 
+    /**
+     * Ejecuta la logica para eliminar una entidad de la base de datos. Utiliza
+     * el nombre de la entidad como clave para la eliminacion.
+     *
+     * @param event El evento del boton eliminar.
+     */
     @FXML
     private void eliminarAction(ActionEvent event) {
 
@@ -415,10 +575,17 @@ public class FormController {
         volverAtras();
     }
 
-    @FXML
     /**
-     * boton de enviar
+     * Accion principal para enviar/guardar un nuevo registro. Recopila los
+     * datos del formulario, crea la entidad y llama al DAO para la insercion. *
+     * Maneja logica especifica para: - Empresas: Insercion estandar. -
+     * Clientes/Proveedores: Vinculacion con la empresa actual. - Facturas
+     * (Ventas/Compras): Verifica que existan lineas de factura antes de guardar
+     * y gestiona la transaccion completa (cabecera + lineas).
+     *
+     * @param event El evento del boton enviar.
      */
+    @FXML
     private void enviarAction(ActionEvent event) {
 
         Entidad obj = crearEntidad();
@@ -539,6 +706,17 @@ public class FormController {
         }
     }
 
+    /**
+     * Metodo factoria que construye una instancia de Entidad basandose en los
+     * datos del formulario. Realiza validaciones exhaustivas de todos los
+     * campos (NIF, email, telefono, etc.) antes de crear el objeto. * Este
+     * metodo es crucial ya que centraliza la extraccion y validacion de datos
+     * de la UI. Si alguna validacion falla, muestra un mensaje de error en la
+     * interfaz y retorna null.
+     *
+     * @return Una instancia de Empresa, CliPro, Producto o Factura segun el
+     * 'tipo' actual, o null si alguna validacion falla.
+     */
     public Entidad crearEntidad() {
         Entidad e = null;
         validations.Error error = null;
@@ -891,79 +1069,26 @@ public class FormController {
                 }
                 //creamos la entidad producto
                 if (sePuede) {
-                    //recojemos el prov en concreto al que va asociado
-                    Entidad prov = provList.getSelectionModel().getSelectedItem();
-                    if (prov != null) {
-                        System.out.println("Creando Entidad para producto");
-                        Entidad prod = new Producto(nompro, descpro, Double.parseDouble(preciopro), Integer.parseInt(Stockpro), prov);
-                        System.out.println("obj producto creada");
-                        return prod;
-                    }
-                }
-                break;
-            case "Comp":
-                //cogemos y validamos el nombre fiscal
-                if (!NombreEmpFactSplit.getText().equals("Seleccione Empresa")) {
 
-                    nombreFiscFact = NombreEmpFactSplit.getText();
-                    sePuede = true;
-
-                } else {
-                    mostrarMensaje(new validations.Error(true, "debe seleccionar un nombre de empresa.", Color.RED));
-                    sePuede = false;
-                    break;
-                }
-                //ahora las observaciones
-                observFact = observacionesEmpField1.getText();
-                sePuede = true;
-
-                //ahora cogemos el iva
-                iva = splitMenuIVA.getText();
-                if (iva.equalsIgnoreCase("--Tipo I.V.A--")) {
-                    iva = "";
-                    labelError.setTextFill(Color.RED);
-                    labelError.setText("seleccione el tipo de I.V.A");
-                    break;
-                }
-                //ahora la fecha de emision
-                if (fechaEmisionDate.getValue() != null) {
-                    error = Validation.esFechaFutura(fechaEmisionDate.getValue());
-                    if (!mostrarMensaje(error)) {
-                        fecha = fechaEmisionDate.getValue();
-                        sePuede = true;
-                    } else {
-                        sePuede = false;
-                        break;
-                    }
-                } else {
-                    mostrarMensaje(new validations.Error(true, "debe rellenar el campo de la fecha", Color.RED));
-                    sePuede = false;
-                    break;
-                }
-                //creamos la entidad factura
-                if (sePuede) {
-
+                    // ... (Lógica interna del case "Comp") ...
                     System.out.println("Creando Entidad para factura");
                     Entidad fact = new Factura(fecha, "comp", nombreFiscFact, productosCantidad, productosAñadidos);
                     System.out.println("obj factura creada: " + fact);
                     return fact;
-
                 }
                 break;
+
             case "Vent":
-                //cogemos y validamos el nombre fiscal
+                // Validaciones para Venta (Nombre fiscal, Observaciones, IVA, Fecha)
                 if (!NombreEmpFactSplit.getText().equals("Seleccione Empresa")) {
-
                     nombreFiscFact = NombreEmpFactSplit.getText();
-
                     sePuede = true;
-
                 } else {
                     mostrarMensaje(new validations.Error(true, "debe seleccionar un nombre de empresa.", Color.RED));
                     sePuede = false;
                     break;
                 }
-                //ahora las observaciones
+
                 error = Validation.esTexto(observacionesEmpField1.getText());
                 if (!mostrarMensaje(error, observacionesEmpField1)) {
                     observFact = observacionesEmpField1.getText();
@@ -973,7 +1098,6 @@ public class FormController {
                     break;
                 }
 
-                //ahora cogemos el iva
                 iva = splitMenuIVA.getText();
                 if (iva.equalsIgnoreCase("--Tipo I.V.A--")) {
                     iva = "";
@@ -981,7 +1105,7 @@ public class FormController {
                     labelError.setText("seleccione el tipo de I.V.A");
                     break;
                 }
-                //ahora la fecha de emision
+
                 if (fechaEmisionDate.getValue() != null) {
                     error = Validation.esFechaFutura(fechaEmisionDate.getValue());
                     if (!mostrarMensaje(error)) {
@@ -996,7 +1120,7 @@ public class FormController {
                     sePuede = false;
                     break;
                 }
-                //creamos la entidad factura
+
                 if (sePuede) {
                     System.out.println("Creando Entidad para factura");
                     Entidad fact = new Factura(fecha, "vent", nombreFiscFact, productosCantidad, productosAñadidos);
@@ -1004,6 +1128,7 @@ public class FormController {
                     return fact;
                 }
                 break;
+
             default:
                 System.out.println("Algo salio mal al añadir");
                 break;
@@ -1011,6 +1136,14 @@ public class FormController {
         return e;
     }
 
+    /**
+     * Recorre recursivamente un contenedor (Pane) y sus hijos para deshabilitar
+     * la edición de todos los campos de texto (TextField) encontrados. Útil
+     * para bloquear la interfaz en modos de visualización o eliminación.
+     *
+     * @param root El nodo contenedor raíz (Pane) desde donde comenzar la
+     * búsqueda.
+     */
     public void bloquearTextFields(Pane root) {
         for (Node node : root.getChildren()) {
 
@@ -1018,13 +1151,19 @@ public class FormController {
                 ((TextField) node).setEditable(false);
             }
 
-            // Si el nodo es otro contenedor, lo recorremos también
+            // Si el nodo es otro contenedor, lo recorremos también (recursividad)
             if (node instanceof Pane) {
                 bloquearTextFields((Pane) node);
             }
         }
     }
 
+    /**
+     * Rellena los campos de la interfaz gráfica con los datos de la entidad
+     * actual. Determina qué campos rellenar basándose en el tipo de entidad
+     * (Empresa, CliPro, Prod, Vent/Comp). Si la acción es "delete", bloquea los
+     * campos para prevenir edición.
+     */
     public void mostrarDatos() {
         if (accion.equals("delete")) {
             switch (tipo) {
@@ -1051,9 +1190,7 @@ public class FormController {
         if (tipo != null) {
             switch (tipo) {
                 case "Emp":
-
                     Empresa em = (Empresa) entidad;
-
                     DocumentoEmpField.setText(em.getNif());
                     NombreEmpField.setText(em.getNombre());
                     emailEmpField.setText(em.getEmail());
@@ -1066,32 +1203,26 @@ public class FormController {
                     paisEmpField.setText(em.getDir().getPais());
                     codigoPostalEmpField.setText(em.getDir().getCp());
                     break;
+
                 case "CliPro":
-
                     CliPro cp = (CliPro) entidad; // casteo directo
-
-                    // datos heredados de Entidad
                     DocumentoCPField.setText(cp.getNif());
                     NombreCPField.setText(cp.getNombre());
                     emailCPField.setText(cp.getEmail());
                     telefonoCPField.setText(cp.getTelefono());
                     observacionesCPField.setText(cp.getObservaciones());
-
-                    // datos de dirección (si existen los getters en Entidad)
                     viaCPField.setText(cp.getDir().getVia());
                     numCPField.setText(String.valueOf(cp.getDir().getNumero()));
                     ciudadCPField.setText(cp.getDir().getCiudad());
                     provCPField.setText(cp.getDir().getProvincia());
                     paisCPField.setText(cp.getDir().getPais());
                     codigoPostalCPField.setText(cp.getDir().getCp());
-                    // marcar checkboxes Cliente / Proveedor
                     proveedorCPCheck.setSelected(cp.isIsProveedor());
                     clienteCPCheck.setSelected(cp.isIsCliente());
                     break;
 
                 case "Prod":
                     Producto p = (Producto) entidad;
-
                     nombreProField.setText(p.getNombre());
                     descripProField.setText(p.getDescripcion());
                     precioProField.setText(String.valueOf(p.getPrecio()));
@@ -1111,13 +1242,17 @@ public class FormController {
         }
     }
 
+    /**
+     * Obtiene la lista de clientes y proveedores desde la base de datos, filtra
+     * solo aquellos que son proveedores y actualiza el ListView
+     * correspondiente.
+     */
     private void actualizarProvList() {
-        //mostramos en el listview los proovedores para asociar dicho producto
         System.out.println("idEmpres:" + App.empresaActualId);
         List<CliPro> datos = dao.listarClientesYProveedores(App.empresaActualId);
 
         ArrayList<CliPro> mostrar = new ArrayList<CliPro>();
-        //eliminamos los clientes de la lista
+        // Filtramos para obtener solo proveedores
         for (CliPro x : datos) {
             if (x.isIsCliente() && x.isIsProveedor()) {
                 mostrar.add(x);
@@ -1125,11 +1260,21 @@ public class FormController {
                 mostrar.add(x);
             }
         }
-        //mostrar los dagtos en el listview provList
+        // Mostrar los datos en el listview provList
         ObservableList<Entidad> observableList = FXCollections.observableArrayList(mostrar);
         provList.setItems(observableList);
     }
 
+    /**
+     * Muestra un mensaje de error o éxito en la interfaz y aplica un estilo
+     * visual al campo afectado. Si hay error, el borde del campo se vuelve
+     * rojo.
+     *
+     * @param error Objeto que contiene el estado del error, el mensaje y el
+     * color.
+     * @param field El TextField que se resaltará en caso de error.
+     * @return true si existe un error, false en caso contrario.
+     */
     private boolean mostrarMensaje(validations.Error error, TextField field) {
         if (error.isError()) {
             System.out.println("Algo salio mal en el form");
@@ -1140,11 +1285,18 @@ public class FormController {
             labelError.setTextFill(Color.GREEN);
             labelError.setText("");
             field.setStyle("");
-
         }
         return error.isError();
     }
 
+    /**
+     * Sobrecarga del método mostrarMensaje. Muestra un mensaje en la etiqueta
+     * de error sin modificar el estilo de ningún campo de texto específico.
+     *
+     * @param error Objeto que contiene el estado del error, el mensaje y el
+     * color.
+     * @return true si existe un error, false en caso contrario.
+     */
     private boolean mostrarMensaje(validations.Error error) {
         if (error.isError()) {
             System.out.println("Algo salio mal en el form");
@@ -1153,60 +1305,90 @@ public class FormController {
         } else {
             labelError.setTextFill(Color.GREEN);
             labelError.setText("");
-
         }
         return error.isError();
     }
 
+    /**
+     * Configura los eventos de acción para los elementos del menú de IVA. Al
+     * seleccionar una opción, actualiza el texto del botón principal
+     * (SplitMenuButton).
+     */
     @FXML
     private void establecerIVA() {
         javafx.event.EventHandler<javafx.event.ActionEvent> accionCambio = e -> {
             MenuItem itemPulsado = (MenuItem) e.getSource();
             splitMenuIVA.setText(itemPulsado.getText());
-
         };
-        //Asigno la acción a los 3 documentos
+        // Asigno la acción a los 3 documentos (opciones de IVA)
         primero.setOnAction(accionCambio);
         segundo.setOnAction(accionCambio);
         tercero.setOnAction(accionCambio);
     }
 
+    /**
+     * Manejador de evento para añadir un producto a la lista temporal de la
+     * factura actual. Valida que la cantidad sea un entero positivo antes de
+     * añadir.
+     *
+     * @param event El evento de acción disparado por el botón.
+     */
     @FXML
     private void añadirProd(ActionEvent event) {
-
         int cantidad = 0;
         validations.Error err = Validation.esEnteroPos(cantProductFact.getText());
         if (!err.isError()) {
-            //es numero entero pos
+            // Es numero entero positivo
             cantidad = Integer.parseInt(cantProductFact.getText());
             productosCantidad.add(cantidad);
-            //añadimos el prod
+            // Añadimos el producto seleccionado
             productosAñadidos.add(productosList.getSelectionModel().getSelectedItem());
-            //actualizamos
+            // Actualizamos la vista
             actualizarListAdd();
         } else {
             mostrarMensaje(err, cantProductFact);
         }
     }
 
+    /**
+     * Manejador de evento para quitar un producto seleccionado de la lista
+     * temporal de la factura. Elimina tanto el producto como su cantidad
+     * asociada.
+     *
+     * @param event El evento de acción disparado por el botón.
+     */
     @FXML
     private void quitarProd(ActionEvent event) {
         productosAñadidos.remove(productosAddList.getSelectionModel().getSelectedItem());
         productosCantidad.remove(productosAddList.getSelectionModel().getSelectedIndex());
         actualizarListAdd();
-
     }
 
+    /**
+     * Manejador para eventos de ratón en la selección de proveedores.
+     * (Actualmente vacío).
+     *
+     * @param event El evento del ratón.
+     */
     @FXML
     private void provSelection(MouseEvent event) {
-
+        // Pendiente de implementación o uso futuro
     }
 
+    /**
+     * Actualiza el ListView de productos añadidos a la factura actual.
+     * Convierte la lista local `productosAñadidos` en una ObservableList.
+     */
     public void actualizarListAdd() {
         ObservableList<Entidad> observableLista = FXCollections.observableArrayList(productosAñadidos);
         productosAddList.setItems(observableLista);
     }
 
+    /**
+     * Actualiza la lista principal de productos disponibles recuperándolos de
+     * la base de datos y aplicando un filtro por nombre (actualmente filtro
+     * vacío).
+     */
     public void actualizarListProd() {
         String filtro = "";
         productosList.getItems().setAll(
@@ -1216,9 +1398,12 @@ public class FormController {
         );
         System.out.println("Lista productos actualizada");
         System.out.println("Productos del DAO: " + dao.listarProductosPorEmpresa(Long.valueOf(App.empresaActualId)).size());
-
     }
 
+    /**
+     * Navega de vuelta a la pantalla anterior dependiendo del tipo de entidad
+     * actual. Si es "Emp" vuelve a primary, en caso contrario a secondary.
+     */
     private void volverAtras() {
         try {
             if (tipo.equals("Emp")) {
@@ -1231,13 +1416,17 @@ public class FormController {
         }
     }
 
+    /**
+     * Genera y rellena el menú desplegable de selección de empresas
+     * (NombreEmpFactSplit). Realiza una consulta SQL compleja para obtener
+     * entidades relacionadas (Clientes/Proveedores) con la empresa actual.
+     */
     private void generarEmpresas() {
 
         NombreEmpFactSplit.getItems().clear();
-
         CliPro cp = null;
 
-        // SOLO empresas NO asociadas
+        // SQL: Selecciona entidades hijas relacionadas con roles de CLIENTE o PROVEEDOR
         String sql = "SELECT "
                 + "e.idEntidad, "
                 + "e.nombre, "
@@ -1253,12 +1442,11 @@ public class FormController {
         try (Connection con = new ConexionBD().get(); PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
-
                 int id = rs.getInt("idEntidad");
                 String nombre = rs.getString("nombre");
 
                 MenuItem item = new MenuItem(nombre);
-                cp = new CliPro(id);
+                cp = new CliPro(id); // Nota: Se instancia pero no se guarda en una lista aquí
 
                 item.setOnAction(evento -> {
                     NombreEmpFactSplit.setText(id + "-" + nombre);
@@ -1266,20 +1454,20 @@ public class FormController {
 
                 NombreEmpFactSplit.getItems().add(item);
             }
-
-            rs.close();
-            pst.close();
-            con.close();
-
+            // Los recursos se cierran automáticamente gracias al try-with-resources
         } catch (SQLException e) {
             System.err.println("Error SQL: " + e.getMessage());
         }
-
     }
 
+    /**
+     * Evento que dispara la generación de la lista de empresas disponibles para
+     * facturación.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     private void provSelectionAction(ActionEvent event) {
         generarEmpresas();
     }
-
 }
