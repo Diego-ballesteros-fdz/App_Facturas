@@ -1,0 +1,100 @@
+.root {
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+    -fx-background-color: #8699ac; 
+}
+
+.split-pane > .split-pane-divider {
+    -fx-background-color: #d1d5db; 
+}
+
+.sidebar {
+    -fx-background-color: #102a43; 
+}
+
+.flat-button {
+    -fx-text-fill: black;          
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER_LEFT;     
+    -fx-padding: 15 20 15 20;       
+    -fx-background-radius: 0;       
+    -fx-border-width: 0 0 1 0;      
+    -fx-border-color: rgba(0, 0, 0, 0.1);
+    -fx-cursor: hand;
+}
+
+#vboxPane{
+    -fx-background-color: #e2e8f0;
+}
+#menuPane{
+    -fx-background-color: #f8fafc;
+}
+
+#createButton {
+    -fx-background-color: #93c5fd; 
+    -fx-font-weight: bold;
+}
+#createButton:hover {
+    -fx-font-weight: bold;
+    -fx-background-color: #0056b3; 
+    -fx-border-color: black;     
+    -fx-border-width: 0 0 0 4;  
+    -fx-text-fill: #93c5fd;
+}
+
+#deleteButton {
+    -fx-background-color: #93c5fd; 
+    -fx-font-weight: bold;
+}
+#deleteButton:hover {
+    -fx-font-weight: bold;
+    -fx-background-color: #0056b3; 
+    -fx-border-color: black;     
+    -fx-border-width: 0 0 0 4;    
+    -fx-text-fill: #93c5fd;  
+}
+
+#modifyButton {
+    -fx-background-color: #93c5fd; 
+    -fx-font-weight: bold;
+}
+#modifyButton:hover {
+    -fx-font-weight: bold;
+    -fx-background-color: #0056b3; 
+    -fx-border-color: black;     
+    -fx-border-width: 0 0 0 4;   
+    -fx-text-fill: #93c5fd;   
+}
+
+
+.split-menu-button {
+    -fx-background-color: #007bff; 
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 5, 0, 0, 2); 
+}
+
+.split-menu-button > .label {
+    -fx-text-fill: black; 
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-padding: 8 15 8 15;
+}
+
+.split-menu-button > .arrow-button {
+    -fx-background-color: #0056b3;
+    -fx-background-radius: 0 5 5 0;
+    -fx-padding: 0 12 0 12;
+}
+
+.split-menu-button > .arrow-button > .arrow {
+    -fx-background-color: white;
+}
+
+.split-menu-button:hover {
+    -fx-background-color: #0069d9;
+}
+
+.header-label {
+    -fx-text-fill: #2c3e50; 
+    -fx-font-family: "Segoe UI Light";
+}

@@ -1,0 +1,4 @@
+--patch-module
+com.app_facturas.app_facturas=_
+--add-reads
+com.app_facturas.app_facturas=ALL-UNNAMED
