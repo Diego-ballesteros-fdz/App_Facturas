@@ -41,7 +41,7 @@
                 <configuration>
                   <transformers>
                     <transformer>
-                      <mainClass>com.app_facturas.app_facturas.main</mainClass>
+                      <mainClass>com.app_facturas.app_facturas.Launcher</mainClass>
                     </transformer>
                   </transformers>
                   <filters>
