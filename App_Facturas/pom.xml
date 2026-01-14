@@ -103,7 +103,7 @@
                                 <configuration>
                                     <transformers>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                            <mainClass>com.app_facturas.app_facturas.main</mainClass>
+                                            <mainClass>com.app_facturas.app_facturas.Launcher</mainClass>
                                         </transformer>
                                     </transformers>
                                     <filters>

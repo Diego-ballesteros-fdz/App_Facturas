@@ -17,6 +17,7 @@ validations\Validation.class
 com\app_facturas\app_facturas\App.class
 com\app_facturas\app_facturas\PrimaryController.class
 connection\DAO\FacturaDAO.class
+com\app_facturas\app_facturas\Launcher.class
 connection\DAO\EmpresaRelacionDAO.class
 connection\DAO\ProductoDAO.class
 com\app_facturas\app_facturas\BuscarEntidadController.class
